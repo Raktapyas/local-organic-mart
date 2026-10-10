@@ -3,7 +3,6 @@ import Link from "next/link";
 import {
   ArrowRight,
   Camera,
-  Clock,
   MapPin,
   Search,
   ShieldCheck,
@@ -26,13 +25,15 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
+import { CountdownChip } from "@/components/countdown-chip";
+import { ProductCard } from "@/components/product-card";
+import { SectionHeader } from "@/components/section-header";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardAction,
   CardContent,
   CardDescription,
   CardHeader,
@@ -42,13 +43,13 @@ import {
   baskets,
   categories,
   dishes,
-  discountPercent,
   farmers,
   heroImage,
   farmerBandImage,
   offerProduct,
   offers,
   restaurantBandImage,
+  dealsCloseAt,
   type CategoryIconName,
   type Product,
 } from "@/lib/data";
@@ -135,12 +136,10 @@ export default function Home() {
 
         {/* Category rail */}
         <section className="mx-auto w-full max-w-7xl px-6 py-20">
-          <div className="flex flex-col gap-2">
-            <h2 className="text-3xl tracking-tight">Foraged &amp; Cultivated</h2>
-            <p className="text-sm text-muted-foreground">
-              Ten departments, filled from the morning harvest.
-            </p>
-          </div>
+          <SectionHeader
+            title="Foraged & Cultivated"
+            subline="Ten departments, filled from the morning harvest."
+          />
 
           <ul className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
             {categories.map((category) => {
@@ -182,69 +181,29 @@ export default function Home() {
         <section className="border-y border-foreground/10 bg-card">
           <div className="mx-auto w-full max-w-7xl px-6 py-20">
             <div className="flex flex-wrap items-end justify-between gap-6">
-              <div className="flex flex-col gap-2">
-                <Badge variant="outline" className="w-fit border-gold/60 text-gold">
-                  Limited Reserve
-                </Badge>
-                <h2 className="text-3xl tracking-tight">This week&rsquo;s big deals</h2>
-                <p className="text-sm text-muted-foreground">
-                  Small allocations from this week&rsquo;s harvest.
-                </p>
-              </div>
-              <span className="inline-flex items-center gap-2 rounded-full bg-coral/12 px-4 py-2 text-sm text-coral">
-                <Clock className="size-4" aria-hidden />
-                Ends in 1d 09:44:39
-              </span>
+              <SectionHeader
+                title="This week's big deals"
+                subline="Small allocations from this week's harvest."
+              />
+              <CountdownChip closesAt={dealsCloseAt} />
             </div>
 
             <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {dealProducts.map((product) => {
-                const off = discountPercent(product);
-                return (
-                  <li key={product.id}>
-                    <Card className="h-full">
-                      <CardHeader>
-                        <CardTitle>{product.name}</CardTitle>
-                        <CardDescription>
-                          {product.nepaliName} &middot; {product.unit}
-                        </CardDescription>
-                        <CardAction>
-                          {off !== null && (
-                            <Badge className="bg-coral/12 text-coral">
-                              &minus;{off}%
-                            </Badge>
-                          )}
-                        </CardAction>
-                      </CardHeader>
-                      <CardContent className="mt-auto flex items-center justify-between gap-3">
-                        <span className="flex items-baseline gap-2">
-                          <span className="font-heading text-lg">Rs {npr.format(product.price)}</span>
-                          {product.oldPrice && (
-                            <span className="text-xs text-muted-foreground line-through">
-                              Rs {npr.format(product.oldPrice)}
-                            </span>
-                          )}
-                        </span>
-                        <Button size="sm" className="rounded-full">
-                          Add
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  </li>
-                );
-              })}
+              {dealProducts.map((product) => (
+                <li key={product.id}>
+                  <ProductCard product={product} />
+                </li>
+              ))}
             </ul>
           </div>
         </section>
 
         {/* Baskets */}
         <section className="mx-auto w-full max-w-7xl px-6 py-20">
-          <div className="flex flex-col gap-2">
-            <h2 className="text-3xl tracking-tight">Baskets &amp; bundles</h2>
-            <p className="text-sm text-muted-foreground">
-              Curated weekly farm boxes, calibrated for Kathmandu households.
-            </p>
-          </div>
+          <SectionHeader
+            title="Baskets & bundles"
+            subline="Curated weekly farm boxes, calibrated for Kathmandu households."
+          />
 
           <ul className="mt-10 grid gap-6 md:grid-cols-3">
             {baskets.slice(0, 3).map((basket) => (
