@@ -22,8 +22,7 @@ export function SiteFooter() {
               <span className="font-heading text-lg tracking-tight">{siteName}</span>
             </Link>
             <p className="max-w-xs text-sm leading-relaxed text-muted-foreground">
-              Highland botanical and agricultural collective. Everything we sell
-              is grown, gathered, or pressed within the valley and the high hills.
+              Farm-fresh, delivered across Kathmandu Valley.
             </p>
             <div className="flex flex-col gap-2 pt-2 text-sm text-muted-foreground">
               <a

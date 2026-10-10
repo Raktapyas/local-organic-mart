@@ -201,7 +201,7 @@ export const products: Product[] = [
     category: "Dairy & Eggs",
     outOfStock: false,
     image: "/images/eggs.jpg",
-    badge: "Kavre Valley Pasture",
+    badge: "pasture-raised, free range",
     flags: { local: true },
     region: "Kathmandu Valley",
     harvestedOn: "11 Feb",
@@ -264,7 +264,7 @@ export const products: Product[] = [
     category: "Grains & Pulses",
     outOfStock: false,
     image: "/images/rice.jpg",
-    badge: "Aged 2 Years",
+    badge: "aged and stone-milled",
     flags: { organic: true, local: true },
     region: "Jumla",
     harvestedOn: "2 Nov",
@@ -330,8 +330,8 @@ export const products: Product[] = [
     desc: "Raw cliff honey gathered at 2,400m, unheated and unfiltered.",
     category: "Foraged",
     outOfStock: false,
-    image: "/images/honey.jpg",
-    badge: "Lamjung Cliff Harvest",
+    image: "/images/product-honey.jpg",
+    badge: "highland cliff harvest",
     flags: { organic: true, local: true },
     region: "Jumla",
     harvestedOn: "6 Feb",
@@ -370,7 +370,7 @@ export const products: Product[] = [
     desc: "Bilona churned from cultured butter, slow-cooked to a nutty aroma.",
     category: "Oils & Ghee",
     outOfStock: false,
-    image: "/images/ghee.jpg",
+    image: "/images/product-ghee.jpg",
     badge: "Bilona Churned",
     flags: { organic: true, local: true },
     region: "Ilam",
@@ -480,7 +480,7 @@ export const dishes: Dish[] = [
     prepTime: "20–30 min",
     spice: "Medium",
     diet: "Non-Veg",
-    image: "/images/momo.jpg",
+    image: "/images/dish-chicken-momo.jpg",
     tags: ["popular", "snacks"],
   },
   {
@@ -493,7 +493,7 @@ export const dishes: Dish[] = [
     prepTime: "20–25 min",
     spice: "Mild",
     diet: "Vegetarian",
-    image: "/images/momo.jpg",
+    image: "/images/dish-veg-momo.jpg",
     tags: ["organic", "snacks"],
   },
   {
@@ -818,36 +818,30 @@ export const farmerBandImage = "/images/farmers-band.jpg";
 export const paymentMethods = ["eSewa", "Khalti", "Fonepay QR", "Cash on Delivery"] as const;
 
 /** Four link columns; the brand column is rendered separately. */
+/** Shop links are derived from `categories` so the two can never drift. */
 export const footerColumns: { title: string; links: NavLink[] }[] = [
   {
     title: "Shop",
-    links: [
-      { label: "Fresh Produce", href: "/mart/produce" },
-      { label: "Fruits", href: "/mart/fruit" },
-      { label: "Dairy & Chhurpi", href: "/mart/dairy" },
-      { label: "Pantry & Foraged", href: "/mart/pantry" },
-      { label: "Meat & Range Eggs", href: "/mart/meat" },
-      { label: "Restaurant Menus", href: "/restaurant" },
-    ],
+    links: categories.map((category) => ({
+      label: category.name,
+      href: category.href,
+    })),
   },
   {
     title: "Company",
     links: [
       { label: "Farm to Home", href: "/farmers" },
-      { label: "Ethical Sourcing Protocol", href: "/about" },
       { label: "Our Story", href: "/about" },
-      { label: "Our Kitchens", href: "/restaurant" },
-      { label: "Sourcing Protocol", href: "/about" },
       { label: "Membership", href: "/membership" },
     ],
   },
   {
     title: "Support",
     links: [
-      { label: "Track Valley Order", href: "/orders" },
-      { label: "Delivery Zones (Ring Road)", href: "/support" },
-      { label: "Refund & Freshness Guarantee", href: "/support" },
-      { label: "Privacy & Provenance", href: "/support" },
+      { label: "Track Order", href: "/orders" },
+      { label: "Delivery Zones", href: "/support" },
+      { label: "Refund Policy", href: "/support" },
+      { label: "Privacy Policy", href: "/support" },
     ],
   },
 ];
@@ -883,10 +877,9 @@ export const provenanceMarks: MartFilterOption[] = [
 ];
 
 export const sortOptions = [
-  "Terroir & Harvest Date",
+  "Featured",
   "Price: Low to High",
   "Price: High to Low",
-  "Elevation & Rarity",
 ] as const;
 
 /** Ceiling of the Mart price slider, in NPR. */
@@ -894,9 +887,6 @@ export const priceCeiling = 3000;
 
 /** When the weekly deals allocation closes. Drives the live countdown chip. */
 export const dealsCloseAt = "2026-10-13T05:00:00+05:45";
-
-/** Catalogue size shown alongside the filtered result count. */
-export const catalogueTotal = 148;
 /** URL segment for a product, e.g. "/product/wild-honey". */
 export function productSlug(product: Product): string {
   return product.id;

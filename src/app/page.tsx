@@ -111,8 +111,7 @@ export default function Home() {
 
             <p className="max-w-lg text-base leading-relaxed text-muted-foreground">
               Harvested before dawn in Kavre, Jumla, and Mustang. Dispatched
-              Dispatched within three hours, still cold when it reaches your
-              kitchen.
+              within three hours, still cold when it reaches your kitchen.
             </p>
 
             <form

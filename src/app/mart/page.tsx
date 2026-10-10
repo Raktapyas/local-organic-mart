@@ -14,7 +14,6 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { Button } from "@/components/ui/button";
 import {
-  catalogueTotal,
   categories,
   dealsCloseAt,
   filterAttributes,
@@ -24,11 +23,6 @@ import {
   sortOptions,
 } from "@/lib/data";
 
-/** Distinct product categories, in the order they first appear. */
-const categoryFilters = products.reduce<string[]>((acc, product) => {
-  if (!acc.includes(product.category)) acc.push(product.category);
-  return acc;
-}, []);
 
 export default function MartPage() {
   return (
@@ -124,16 +118,16 @@ export default function MartPage() {
                   Categories
                 </legend>
                 <ul className="mt-3 flex flex-col gap-2.5">
-                  {categoryFilters.map((category) => (
-                    <li key={category}>
+                  {categories.map((category) => (
+                    <li key={category.id}>
                       <label className="flex cursor-pointer items-center gap-2.5 text-sm text-muted-foreground transition-colors hover:text-foreground">
                         <input
                           type="checkbox"
                           name="category"
-                          value={category}
-                          className="size-4 shrink-0 rounded border-input accent-[#8FE3B0]"
+                          value={category.name}
+                          className="size-4 shrink-0 rounded border-input accent-mint"
                         />
-                        {category}
+                        {category.name}
                       </label>
                     </li>
                   ))}
@@ -185,22 +179,14 @@ export default function MartPage() {
 
           <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-4 border-b border-border pb-4 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex flex-col gap-1">
-                <span className="text-xs tracking-wider text-sage uppercase">
-                  Collection Filtered
-                </span>
-                <p className="text-[17px]">
-                  Showing {products.length} of {catalogueTotal} artisanal
-                  provisions
-                </p>
-              </div>
+              <p className="text-[17px]">{products.length} products</p>
 
               <div className="flex items-center gap-3">
                 <label
                   htmlFor="sort"
                   className="text-xs tracking-wider text-sage uppercase"
                 >
-                  Arrange:
+                  Sort:
                 </label>
                 <div className="relative">
                   <select
@@ -230,12 +216,8 @@ export default function MartPage() {
 
             <div className="flex flex-col items-center gap-3 pt-4">
               <Button variant="outline" className="rounded-full px-8">
-                Load more provisions
+                Load more
               </Button>
-              <p className="text-xs text-muted-foreground">
-                Viewing {products.length} of {catalogueTotal} items across
-                Kathmandu Valley depots
-              </p>
             </div>
           </div>
         </section>

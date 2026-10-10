@@ -14,12 +14,28 @@ that are not obvious from the code.
 
       Candidates still missing real photography:
 
-      | File | Subject | Current image is a substitute? |
-      |------|---------|-------------------------------|
-      | `public/images/ghee.jpg` | Cow Ghee | Yes — jar of blackberry preserve |
-      | `public/images/mustard-oil.jpg` | Mustard Oil | Yes — vintage oil can |
-      | `public/images/lassi.jpg` | Sweet Lassi | Yes — creamy drink, not lassi |
+      | File | Subject | Problem |
+      |------|---------|---------|
+      | `public/images/mustard-oil.jpg` | Mustard Oil | Substitute — vintage oil can |
+      | `public/images/lassi.jpg` | Sweet Lassi | Substitute — creamy drink, not lassi |
       | `public/images/cauliflower.jpg` | Cauliflower | Partial — rustic bowl on black |
+      | `public/images/lentils.jpg` | Red Lentil | Wrong subject — shows a thali, not pulses |
+      | `public/images/dish-sel-roti.jpg` | Sel Roti | A hand is in frame |
+      | `public/images/restaurant-band.jpg` | Restaurant hero | Duplicates the Home restaurant band photo |
+
+      `ghee.jpg` and `honey.jpg` were near-identical jam jars and have been
+      replaced with `product-ghee.jpg` and `product-honey.jpg`. The pink-background
+      `momo.jpg` is gone, replaced by `dish-chicken-momo.jpg` and
+      `dish-veg-momo.jpg`.
+
+- [ ] **Copy: remaining invented numbers.** Under the rule "invented proper
+      nouns, brand entities, and numbers are banned", two survive in
+      `data.ts` and need a ruling:
+      - `Complete Kitchen Basket` desc: "assembled before the 5:00 AM cutoff"
+      - `Wild Honey` desc: "gathered at 2,400m"
+
+      Elevation and harvest times are plausibly real, so neither was changed
+      unilaterally.
 
 - [ ] **Wire the cart.** `src/components/product-purchase.tsx` logs a
       `cart:add` payload instead of writing to a store. Client-side totals are
