@@ -1,17 +1,26 @@
 import Link from "next/link";
-import { Mail, MapPin, Phone } from "lucide-react";
+import { Leaf, Mail, MapPin, Phone } from "lucide-react";
 
-import { contact, footerColumns, paymentMethods } from "@/lib/data";
+import {
+  contact,
+  footerColumns,
+  paymentMethods,
+  siteName,
+} from "@/lib/data";
 
 export function SiteFooter() {
   return (
     <footer className="border-t border-foreground/10 bg-card">
       <div className="mx-auto w-full max-w-7xl px-6 py-16">
-        <div className="grid gap-12 lg:grid-cols-[1.4fr_repeat(4,1fr)]">
+        <div className="grid gap-12 lg:grid-cols-4">
           <div className="flex flex-col gap-4">
-            <span className="font-heading text-lg tracking-tight">
-              Kathmandu Harvest
-            </span>
+            <Link
+              href="/"
+              className="flex items-center gap-2 transition-opacity hover:opacity-80"
+            >
+              <Leaf className="size-5 text-mint" aria-hidden />
+              <span className="font-heading text-lg tracking-tight">{siteName}</span>
+            </Link>
             <p className="max-w-xs text-sm leading-relaxed text-muted-foreground">
               Highland botanical and agricultural collective. Everything we sell
               is grown, gathered, or pressed within the valley and the high hills.
@@ -71,8 +80,8 @@ export function SiteFooter() {
             ))}
           </ul>
           <p className="text-xs text-muted-foreground">
-            &copy; 2026 Kathmandu Harvest Co. Highland Botanical &amp;
-            Agricultural Collective.
+            &copy; 2026 {siteName}. Highland Botanical &amp; Agricultural
+            Collective.
           </p>
         </div>
       </div>

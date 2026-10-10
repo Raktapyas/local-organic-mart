@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Leaf, MapPin, Search, ShoppingBag } from "lucide-react";
 
-import { navLinks } from "@/lib/data";
+import { navLinks, siteName } from "@/lib/data";
 
 export function SiteHeader() {
   return (
@@ -12,9 +12,7 @@ export function SiteHeader() {
           className="flex shrink-0 items-center gap-2 text-foreground transition-opacity hover:opacity-80"
         >
           <Leaf className="size-5 text-mint" aria-hidden />
-          <span className="font-heading text-lg tracking-tight">
-            Kathmandu Harvest
-          </span>
+          <span className="font-heading text-lg tracking-tight">{siteName}</span>
         </Link>
 
         <nav aria-label="Primary" className="hidden lg:block">

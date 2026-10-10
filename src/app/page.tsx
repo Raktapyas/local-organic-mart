@@ -12,6 +12,20 @@ import {
   Truck,
 } from "lucide-react";
 
+import {
+  Apple,
+  Beef,
+  CandlestickChart,
+  FlaskConical,
+  Globe2,
+  Milk,
+  Package,
+  Sprout,
+  UtensilsCrossed,
+  Wheat,
+} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { Badge } from "@/components/ui/badge";
@@ -35,8 +49,22 @@ import {
   offerProduct,
   offers,
   restaurantBandImage,
+  type CategoryIconName,
   type Product,
 } from "@/lib/data";
+
+const categoryIcons: Record<CategoryIconName, LucideIcon> = {
+  sprout: Sprout,
+  apple: Apple,
+  milk: Milk,
+  flask: FlaskConical,
+  wheat: Wheat,
+  beef: Beef,
+  candlestick: CandlestickChart,
+  package: Package,
+  globe: Globe2,
+  utensils: UtensilsCrossed,
+};
 
 /** Deal lines resolved against the product table, discounted lines only. */
 const dealProducts = offers
@@ -115,31 +143,38 @@ export default function Home() {
           </div>
 
           <ul className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-            {categories.map((category) => (
-              <li key={category.id}>
-                <Link
-                  href={category.href}
-                  className="group relative block aspect-square overflow-hidden rounded-xl ring-1 ring-foreground/10 transition-all hover:ring-mint/35"
-                >
-                  <Image
-                    src={category.image}
-                    alt=""
-                    fill
-                    sizes="(min-width: 1024px) 20vw, (min-width: 640px) 33vw, 50vw"
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
-                  <div className="absolute inset-x-0 bottom-0 p-4">
-                    <h3 className="font-heading text-base leading-tight">
-                      {category.name}
-                    </h3>
-                    <p className="mt-0.5 text-xs text-muted-foreground">
-                      {category.note}
-                    </p>
-                  </div>
-                </Link>
-              </li>
-            ))}
+            {categories.map((category) => {
+              const Icon = categoryIcons[category.icon];
+              return (
+                <li key={category.id}>
+                  <Link
+                    href={category.href}
+                    className="group relative block aspect-square overflow-hidden rounded-xl ring-1 ring-foreground/10 transition-all hover:ring-mint/35"
+                  >
+                    <Image
+                      src={category.image}
+                      alt=""
+                      fill
+                      sizes="(min-width: 1024px) 20vw, (min-width: 640px) 33vw, 50vw"
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
+                    <div className="absolute inset-x-0 bottom-0 flex flex-col gap-1 p-4">
+                      <Icon
+                        className="size-4 text-mint transition-transform duration-300 group-hover:-translate-y-0.5"
+                        aria-hidden
+                      />
+                      <h3 className="font-heading text-base leading-tight">
+                        {category.name}
+                      </h3>
+                      <p className="mt-0.5 text-xs text-muted-foreground">
+                        {category.note}
+                      </p>
+                    </div>
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </section>
 

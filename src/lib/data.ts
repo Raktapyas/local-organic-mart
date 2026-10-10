@@ -472,11 +472,13 @@ export interface NavLink {
 export const navLinks: NavLink[] = [
   { label: "Home", href: "/" },
   { label: "Mart", href: "/mart" },
-  { label: "Tasting Menus", href: "/restaurant" },
-  { label: "Seasonal Batches", href: "/offers" },
-  { label: "Farm Provenance", href: "/farmers" },
+  { label: "Restaurant", href: "/restaurant" },
+  { label: "Offers", href: "/offers" },
+  { label: "Farm to Home", href: "/farmers" },
   { label: "Membership", href: "/membership" },
 ];
+
+export const siteName = "Local Organic Mart";
 
 export interface Category {
   id: string;
@@ -485,35 +487,50 @@ export interface Category {
   note: string;
   href: string;
   image: string;
+  /** Key into `categoryIcons`; resolved by the home screen. */
+  icon: CategoryIconName;
 }
 
 export const categories: Category[] = [
-  { id: "produce", name: "Fresh Produce", note: "Palung rayo & greens", href: "/mart/produce", image: "/img/cat-produce.jpg" },
-  { id: "fruit", name: "Fruits", note: "Mustang apples & oranges", href: "/mart/fruit", image: "/img/cat-fruit.jpg" },
-  { id: "dairy", name: "Dairy", note: "Chhurpi & Ilam cow ghee", href: "/mart/dairy", image: "/img/cat-dairy.jpg" },
-  { id: "essentials", name: "Daily Essentials", note: "Mustard oil & sea salt", href: "/mart/essentials", image: "/img/cat-essentials.jpg" },
-  { id: "pantry", name: "Pantry", note: "Jumla Marsi rice & lentils", href: "/mart/pantry", image: "/img/cat-pantry.jpg" },
-  { id: "meat", name: "Meat & Eggs", note: "Himalayan pasture fowl", href: "/mart/meat", image: "/img/cat-meat.jpg" },
-  { id: "herbs", name: "Herbs & Spice", note: "Wild jimbu & timur pepper", href: "/mart/herbs", image: "/img/cat-herbs.jpg" },
-  { id: "local", name: "Local Products", note: "Artisanal dalle & yak butter", href: "/mart/local", image: "/img/cat-local.jpg" },
-  { id: "global", name: "Global Pantry", note: "Highland honey & tea blends", href: "/mart/global", image: "/img/cat-global.jpg" },
-  { id: "restaurant", name: "Restaurant", note: "Steamed momos & Newari sets", href: "/restaurant", image: "/img/cat-restaurant.jpg" },
+  { id: "produce", name: "Fresh Produce", note: "Palung rayo & greens", href: "/mart/produce", image: "/images/category-produce.jpg", icon: "sprout" },
+  { id: "fruit", name: "Fruits", note: "Mustang apples & oranges", href: "/mart/fruit", image: "/images/category-fruit.jpg", icon: "apple" },
+  { id: "dairy", name: "Dairy", note: "Chhurpi & Ilam cow ghee", href: "/mart/dairy", image: "/images/category-dairy.jpg", icon: "milk" },
+  { id: "essentials", name: "Daily Essentials", note: "Mustard oil & sea salt", href: "/mart/essentials", image: "/images/category-essentials.jpg", icon: "flask" },
+  { id: "pantry", name: "Pantry", note: "Jumla Marsi rice & lentils", href: "/mart/pantry", image: "/images/category-pantry.jpg", icon: "wheat" },
+  { id: "meat", name: "Meat & Eggs", note: "Himalayan pasture fowl", href: "/mart/meat", image: "/images/category-meat.jpg", icon: "beef" },
+  { id: "herbs", name: "Herbs & Spice", note: "Wild jimbu & timur pepper", href: "/mart/herbs", image: "/images/category-herbs.jpg", icon: "candlestick" },
+  { id: "local", name: "Local Products", note: "Artisanal dalle & yak butter", href: "/mart/local", image: "/images/category-local.jpg", icon: "package" },
+  { id: "global", name: "Global Pantry", note: "Highland honey & tea blends", href: "/mart/global", image: "/images/category-global.jpg", icon: "globe" },
+  { id: "restaurant", name: "Restaurant", note: "Steamed momos & Newari sets", href: "/restaurant", image: "/images/category-restaurant.jpg", icon: "utensils" },
 ];
 
-export const heroImage = "/img/hero-farm.jpg";
-export const restaurantBandImage = "/img/band-restaurant.jpg";
-export const farmerBandImage = "/img/band-farmers.jpg";
+export type CategoryIconName =
+  | "sprout"
+  | "apple"
+  | "milk"
+  | "flask"
+  | "wheat"
+  | "beef"
+  | "candlestick"
+  | "package"
+  | "globe"
+  | "utensils";
+
+export const heroImage = "/images/hero-farm.jpg";
+export const restaurantBandImage = "/images/restaurant-band.jpg";
+export const farmerBandImage = "/images/farmers-band.jpg";
 
 export const paymentMethods = ["eSewa", "Khalti", "Fonepay QR", "Cash on Delivery"] as const;
 
+/** Four link columns; the brand column is rendered separately. */
 export const footerColumns: { title: string; links: NavLink[] }[] = [
   {
     title: "Shop",
     links: [
       { label: "Fresh Produce", href: "/mart/produce" },
-      { label: "Valley Terroirs", href: "/mart" },
-      { label: "Pantry & Foraged", href: "/mart/pantry" },
+      { label: "Fruits", href: "/mart/fruit" },
       { label: "Dairy & Chhurpi", href: "/mart/dairy" },
+      { label: "Pantry & Foraged", href: "/mart/pantry" },
       { label: "Meat & Range Eggs", href: "/mart/meat" },
       { label: "Restaurant Menus", href: "/restaurant" },
     ],
@@ -526,25 +543,16 @@ export const footerColumns: { title: string; links: NavLink[] }[] = [
       { label: "Baluwatar Depot", href: "/about" },
       { label: "Sanepa Kitchens", href: "/restaurant" },
       { label: "Jhamsikhel Cellars", href: "/about" },
-      { label: "Guild Membership", href: "/membership" },
+      { label: "Membership", href: "/membership" },
     ],
   },
   {
-    title: "Assistance",
+    title: "Support",
     links: [
       { label: "Track Valley Order", href: "/orders" },
-      { label: "Delivery Zones (Ring Road)", href: "/about" },
+      { label: "Delivery Zones (Ring Road)", href: "/support" },
       { label: "Refund & Freshness Guarantee", href: "/support" },
       { label: "Privacy & Provenance", href: "/support" },
-    ],
-  },
-  {
-    title: "Depots & Kitchens",
-    links: [
-      { label: "Baluwatar Central Depot", href: "/about" },
-      { label: "Sanepa Botanical Kitchens", href: "/restaurant" },
-      { label: "Jhamsikhel Ferment Cellars", href: "/about" },
-      { label: "Nagarkot Forage Reserve", href: "/farmers" },
     ],
   },
 ];
