@@ -1,69 +1,422 @@
 import Image from "next/image";
+import Link from "next/link";
+import {
+  ArrowRight,
+  Camera,
+  Clock,
+  MapPin,
+  Search,
+  ShieldCheck,
+  Sparkles,
+  Star,
+  Truck,
+} from "lucide-react";
+
+import { SiteFooter } from "@/components/site-footer";
+import { SiteHeader } from "@/components/site-header";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  baskets,
+  categories,
+  dishes,
+  discountPercent,
+  farmers,
+  heroImage,
+  farmerBandImage,
+  offerProduct,
+  offers,
+  restaurantBandImage,
+  type Product,
+} from "@/lib/data";
+
+/** Deal lines resolved against the product table, discounted lines only. */
+const dealProducts = offers
+  .map(offerProduct)
+  .filter((product): product is Product => product !== undefined && !product.outOfStock);
+
+/** Featured dishes for the restaurant band. */
+const featuredDishes = dishes.slice(0, 3);
+
+const npr = new Intl.NumberFormat("en-NP");
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <>
+      <SiteHeader />
+
+      <main className="flex flex-1 flex-col">
+        {/* Hero */}
+        <section className="relative isolate flex min-h-[calc(100svh-4rem)] items-center overflow-hidden">
+          <Image
+            src={heroImage}
+            alt="Terraced highland fields above the Kathmandu valley at dawn"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-background/40" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/50 to-transparent" />
+
+          <div className="relative mx-auto flex w-full max-w-7xl flex-col items-start gap-8 px-6 py-24">
+            <Badge
+              variant="outline"
+              className="border-gold/60 text-gold backdrop-blur-sm"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              Valley Terroirs &amp; Highland Harvest
+            </Badge>
+
+            <h1 className="max-w-3xl text-5xl leading-[1.02] tracking-tight text-balance sm:text-6xl md:text-7xl">
+              Organic grocery delivery in Kathmandu.
+            </h1>
+
+            <p className="max-w-lg text-base leading-relaxed text-muted-foreground">
+              Harvested before dawn in Kavre, Jumla, and Mustang. Dispatched
+              from Baluwatar within three hours, still cold when it reaches your
+              kitchen.
+            </p>
+
+            <form
+              action="/search"
+              role="search"
+              className="flex w-full max-w-xl items-center gap-3 rounded-full border border-foreground/15 bg-background/60 p-2 pl-5 shadow-lg backdrop-blur-xl transition-colors focus-within:border-mint/50"
             >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+              <Search className="size-4 shrink-0 text-muted-foreground" aria-hidden />
+              <input
+                type="search"
+                name="q"
+                aria-label="Search produce, pantry, and menus"
+                placeholder="Search produce, pantry, and menus"
+                className="h-9 min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+              />
+              <Button type="submit" className="rounded-full px-5">
+                Search
+              </Button>
+            </form>
+          </div>
+        </section>
+
+        {/* Category rail */}
+        <section className="mx-auto w-full max-w-7xl px-6 py-20">
+          <div className="flex flex-col gap-2">
+            <h2 className="text-3xl tracking-tight">Foraged &amp; Cultivated</h2>
+            <p className="text-sm text-muted-foreground">
+              Ten departments, filled from the morning harvest.
+            </p>
+          </div>
+
+          <ul className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+            {categories.map((category) => (
+              <li key={category.id}>
+                <Link
+                  href={category.href}
+                  className="group relative block aspect-square overflow-hidden rounded-xl ring-1 ring-foreground/10 transition-all hover:ring-mint/35"
+                >
+                  <Image
+                    src={category.image}
+                    alt=""
+                    fill
+                    sizes="(min-width: 1024px) 20vw, (min-width: 640px) 33vw, 50vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
+                  <div className="absolute inset-x-0 bottom-0 p-4">
+                    <h3 className="font-heading text-base leading-tight">
+                      {category.name}
+                    </h3>
+                    <p className="mt-0.5 text-xs text-muted-foreground">
+                      {category.note}
+                    </p>
+                  </div>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        {/* Deals rail */}
+        <section className="border-y border-foreground/10 bg-card">
+          <div className="mx-auto w-full max-w-7xl px-6 py-20">
+            <div className="flex flex-wrap items-end justify-between gap-6">
+              <div className="flex flex-col gap-2">
+                <Badge variant="outline" className="w-fit border-gold/60 text-gold">
+                  Limited Reserve
+                </Badge>
+                <h2 className="text-3xl tracking-tight">This week&rsquo;s big deals</h2>
+                <p className="text-sm text-muted-foreground">
+                  Small allocations from this week&rsquo;s harvest.
+                </p>
+              </div>
+              <span className="inline-flex items-center gap-2 rounded-full bg-coral/12 px-4 py-2 text-sm text-coral">
+                <Clock className="size-4" aria-hidden />
+                Ends in 1d 09:44:39
+              </span>
+            </div>
+
+            <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {dealProducts.map((product) => {
+                const off = discountPercent(product);
+                return (
+                  <li key={product.id}>
+                    <Card className="h-full">
+                      <CardHeader>
+                        <CardTitle>{product.name}</CardTitle>
+                        <CardDescription>
+                          {product.nepaliName} &middot; {product.unit}
+                        </CardDescription>
+                        <CardAction>
+                          {off !== null && (
+                            <Badge className="bg-coral/12 text-coral">
+                              &minus;{off}%
+                            </Badge>
+                          )}
+                        </CardAction>
+                      </CardHeader>
+                      <CardContent className="mt-auto flex items-center justify-between gap-3">
+                        <span className="flex items-baseline gap-2">
+                          <span className="font-heading text-lg">Rs {npr.format(product.price)}</span>
+                          {product.oldPrice && (
+                            <span className="text-xs text-muted-foreground line-through">
+                              Rs {npr.format(product.oldPrice)}
+                            </span>
+                          )}
+                        </span>
+                        <Button size="sm" className="rounded-full">
+                          Add
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </section>
+
+        {/* Baskets */}
+        <section className="mx-auto w-full max-w-7xl px-6 py-20">
+          <div className="flex flex-col gap-2">
+            <h2 className="text-3xl tracking-tight">Baskets &amp; bundles</h2>
+            <p className="text-sm text-muted-foreground">
+              Curated weekly farm boxes, calibrated for Kathmandu households.
+            </p>
+          </div>
+
+          <ul className="mt-10 grid gap-6 md:grid-cols-3">
+            {baskets.slice(0, 3).map((basket) => (
+              <li key={basket.id}>
+                <Card className="h-full">
+                  <CardHeader>
+                    <Badge variant="outline" className="w-fit border-gold/60 text-gold">
+                      {basket.tag}
+                    </Badge>
+                    <CardTitle className="pt-2">{basket.name}</CardTitle>
+                    <CardDescription>
+                      {basket.nepaliName} &middot; {basket.includes.length} items
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="flex flex-1 flex-col gap-5">
+                    <p className="text-sm leading-relaxed text-muted-foreground">
+                      {basket.desc}
+                    </p>
+                    <ul className="flex flex-col gap-1.5">
+                      {basket.includes.map((item) => (
+                        <li
+                          key={item}
+                          className="flex items-center gap-2 text-sm text-muted-foreground"
+                        >
+                          <span
+                            aria-hidden
+                            className="size-1 shrink-0 rounded-full bg-gold"
+                          />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="mt-auto flex items-center justify-between gap-4 pt-2">
+                      <span className="flex items-baseline gap-2">
+                        <span className="font-heading text-2xl">
+                          Rs {npr.format(basket.price)}
+                        </span>
+                        {basket.oldPrice && (
+                          <span className="text-sm text-muted-foreground line-through">
+                            Rs {npr.format(basket.oldPrice)}
+                          </span>
+                        )}
+                      </span>
+                      <Button className="rounded-full">Add basket</Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        {/* Restaurant split band */}
+        <section className="border-y border-foreground/10">
+          <div className="mx-auto grid w-full max-w-7xl gap-0 px-6 lg:grid-cols-2">
+            <div className="relative aspect-4/3 lg:aspect-auto lg:min-h-[34rem]">
+              <Image
+                src={restaurantBandImage}
+                alt="A brass thali of Nepali dishes set for a feast"
+                fill
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                className="object-cover"
+              />
+            </div>
+
+            <div className="flex flex-col justify-center gap-8 py-16 lg:py-24 lg:pl-16">
+              <div className="flex flex-col gap-3">
+                <span className="flex items-center gap-2 text-sm text-mint">
+                  <Sparkles className="size-4" aria-hidden />
+                  Highland Culinary Lab
+                </span>
+                <h2 className="text-4xl leading-tight tracking-tight text-balance">
+                  Local Organic Restaurant
+                </h2>
+                <p className="max-w-md text-sm leading-relaxed text-muted-foreground">
+                  Cooked to order on stone hearths and delivered hot across
+                  Kathmandu Valley in 30&ndash;60 minutes.
+                </p>
+              </div>
+
+              <ul className="flex flex-col gap-3">
+                {featuredDishes.map((dish) => (
+                  <li
+                    key={dish.id}
+                    className="flex items-center justify-between gap-4 border-b border-foreground/10 pb-3 last:border-0"
+                  >
+                    <span className="flex flex-col gap-0.5">
+                      <span className="font-heading text-base">{dish.name}</span>
+                      <span className="text-xs text-muted-foreground">
+                        {dish.nepaliName} &middot; {dish.portion} &middot; {dish.spice} &middot;{" "}
+                        {dish.diet}
+                      </span>
+                    </span>
+                    <span className="shrink-0 font-heading text-base">
+                      Rs {npr.format(dish.price)}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+
+              <div className="flex flex-wrap gap-x-6 gap-y-2 text-xs text-muted-foreground">
+                <span className="flex items-center gap-1.5">
+                  <Truck className="size-3.5" aria-hidden />
+                  Valley-wide delivery
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <ShieldCheck className="size-3.5" aria-hidden />
+                  Cooked in A2 ghee and cold mustard oil
+                </span>
+              </div>
+
+              <div>
+                <Button variant="outline" className="rounded-full" asChild>
+                  <Link href="/restaurant">
+                    Browse the menu
+                    <ArrowRight className="size-4" aria-hidden />
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Farmer story band */}
+        <section className="mx-auto w-full max-w-7xl px-6 py-20">
+          <div className="flex flex-col gap-2">
+            <span className="flex items-center gap-2 text-sm text-mint">
+              <ShieldCheck className="size-4" aria-hidden />
+              Ethical Provenance Protocol
+            </span>
+            <h2 className="max-w-2xl text-3xl tracking-tight text-balance">
+              From our farmers to your home
+            </h2>
+            <p className="max-w-xl text-sm leading-relaxed text-muted-foreground">
+              Kavre greens picked within a day of delivery. Every lot carries the
+              name and elevation of the steward who grew it.
+            </p>
+          </div>
+
+          <ul className="mt-10 grid gap-6 md:grid-cols-3">
+            {farmers.map((farmer) => (
+              <li key={farmer.id}>
+                <Card className="h-full">
+                  <CardHeader>
+                    <CardTitle>{farmer.name}</CardTitle>
+                    <CardDescription className="flex items-center gap-1.5">
+                      <MapPin className="size-3.5 shrink-0" aria-hidden />
+                      {farmer.location}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm leading-relaxed text-muted-foreground">
+                      {farmer.story}
+                    </p>
+                  </CardContent>
+                </Card>
+              </li>
+            ))}
+          </ul>
+
+          <div className="mt-10">
+            <Button variant="outline" className="rounded-full" asChild>
+              <Link href="/farmers">
+                Meet the farmers
+                <ArrowRight className="size-4" aria-hidden />
+              </Link>
+            </Button>
+          </div>
+        </section>
+
+        {/* Membership */}
+        <section className="mx-auto w-full max-w-7xl px-6 pb-24">
+          <div className="relative overflow-hidden rounded-2xl border border-gold/30 bg-accent p-10 sm:p-14">
             <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
+              src={farmerBandImage}
+              alt=""
+              aria-hidden
+              fill
+              sizes="100vw"
+              className="object-cover opacity-20"
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+            <div className="relative flex flex-col items-start gap-6 lg:flex-row lg:items-center lg:justify-between">
+              <div className="flex flex-col gap-3">
+                <span className="flex items-center gap-2 text-sm text-gold">
+                  <Star className="size-4" aria-hidden />
+                  Harvest Guild
+                </span>
+                <h2 className="max-w-lg text-3xl tracking-tight text-balance">
+                  Membership &mdash; 10% off, reward points, and early access to
+                  every deal.
+                </h2>
+              </div>
+              <div className="flex shrink-0 flex-col gap-3 sm:flex-row sm:items-center">
+                <Button className="rounded-full" asChild>
+                  <Link href="/membership">Join membership</Link>
+                </Button>
+                <span className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <Camera className="size-3.5" aria-hidden />
+                  Member pricing unlocks at checkout
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
-    </div>
+
+      <SiteFooter />
+    </>
   );
 }
