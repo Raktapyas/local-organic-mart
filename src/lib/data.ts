@@ -34,6 +34,35 @@ export interface Product {
   /** Harvest window, e.g. "Oct–Mar". Absent for year-round staples. */
   season?: string;
   outOfStock: boolean;
+  /** Listing photo, square, dark-lit. */
+  image: string;
+  /** Short provenance label above the name, e.g. "Jumla Bio". */
+  badge: string;
+  /** Replaces the Add button when out of stock. */
+  soldOutNote?: string;
+  /** Provenance chips. Gold in the product header, so premium signals only. */
+  flags: { organic?: boolean; local?: boolean };
+  /** Region the lot was grown or gathered in. */
+  region: string;
+  /** Human-readable harvest date, e.g. "6 Feb". */
+  harvestedOn: string;
+  /** Traceability lot code, e.g. "K-118". */
+  batch: string;
+  /** Freshness promise shown in the traceability strip. */
+  freshness: string;
+  /** Volume tiers. Omitted for items sold only in single units. */
+  bulkTiers?: { label: string; note: string }[];
+  /** Patron reviews. Absent means the Reviews tab shows an empty state. */
+  reviews?: Review[];
+}
+
+export interface Review {
+  id: string;
+  author: string;
+  locality: string;
+  rating: 1 | 2 | 3 | 4 | 5;
+  body: string;
+  verified: boolean;
 }
 
 /** Percent off, derived from the price pair so a badge can never go stale. */
@@ -66,6 +95,18 @@ export const products: Product[] = [
     category: "Leafy Greens",
     season: "Oct–Mar",
     outOfStock: false,
+    image: "/images/spinach.jpg",
+    badge: "In season: Oct–Mar",
+    flags: { organic: true, local: true },
+    region: "Kavre",
+    harvestedOn: "6 Feb",
+    batch: "K-118",
+    freshness: "Picked within a day of delivery",
+    bulkTiers: [
+      { label: "1–5 kg retail", note: "Standard" },
+      { label: "6–20 kg", note: "−5% savings" },
+      { label: "21+ kg", note: "−10% savings" },
+    ],
   },
   {
     id: "cauliflower",
@@ -76,6 +117,18 @@ export const products: Product[] = [
     desc: "Dense white curds from Kavre morning fields, cooled within the hour.",
     category: "Vegetables",
     outOfStock: false,
+    image: "/images/cauliflower.jpg",
+    badge: "Kavre Morning Harvest",
+    flags: { organic: true, local: true },
+    region: "Kavre",
+    harvestedOn: "9 Feb",
+    batch: "K-124",
+    freshness: "Delivered within 24 hours of harvest",
+    bulkTiers: [
+      { label: "1–5 kg retail", note: "Standard" },
+      { label: "6–20 kg", note: "−5% savings" },
+      { label: "21+ kg", note: "−10% savings" },
+    ],
   },
   {
     id: "tomatoes",
@@ -86,6 +139,18 @@ export const products: Product[] = [
     desc: "Ripened on the vine in thin valley air for a deeper, less watery flesh.",
     category: "Vegetables",
     outOfStock: false,
+    image: "/images/tomatoes.jpg",
+    badge: "Harvested yesterday",
+    flags: { local: true },
+    region: "Kavre",
+    harvestedOn: "10 Feb",
+    batch: "K-131",
+    freshness: "Vine-ripened, never force-ripened",
+    bulkTiers: [
+      { label: "1–5 kg retail", note: "Standard" },
+      { label: "6–20 kg", note: "−5% savings" },
+      { label: "21+ kg", note: "−10% savings" },
+    ],
   },
   {
     id: "sweet-oranges",
@@ -98,6 +163,18 @@ export const products: Product[] = [
     category: "Fruit",
     season: "Oct–Dec",
     outOfStock: false,
+    image: "/images/oranges.jpg",
+    badge: "In season: Oct–Dec",
+    flags: { organic: true },
+    region: "Gorkha",
+    harvestedOn: "4 Jan",
+    batch: "G-207",
+    freshness: "Hand-sorted, unbruised",
+    bulkTiers: [
+      { label: "1–5 kg retail", note: "Standard" },
+      { label: "6–20 kg", note: "−5% savings" },
+      { label: "21+ kg", note: "−10% savings" },
+    ],
   },
   {
     id: "farm-eggs",
@@ -108,6 +185,36 @@ export const products: Product[] = [
     desc: "Free-roaming country hens on pesticide-free fodder, delivered chilled.",
     category: "Dairy & Eggs",
     outOfStock: false,
+    image: "/images/eggs.jpg",
+    badge: "Kavre Valley Pasture",
+    flags: { local: true },
+    region: "Kathmandu Valley",
+    harvestedOn: "11 Feb",
+    batch: "K-142",
+    freshness: "Collected daily under cold chain",
+    bulkTiers: [
+      { label: "1–5 kg retail", note: "Standard" },
+      { label: "6–20 kg", note: "−5% savings" },
+      { label: "21+ kg", note: "−10% savings" },
+    ],
+    reviews: [
+      {
+        id: "r-eggs-1",
+        author: "Sabina T.",
+        locality: "Lalitpur",
+        rating: 5,
+        body: "Yolks were orange when they cracked. You can taste the difference in a fried egg.",
+        verified: true,
+      },
+      {
+        id: "r-eggs-2",
+        author: "Rajan K.",
+        locality: "Boudha",
+        rating: 4,
+        body: "Consistent every crate so far. Delivery runs a little early in the rain.",
+        verified: true,
+      },
+    ],
   },
   {
     id: "fresh-milk",
@@ -118,6 +225,18 @@ export const products: Product[] = [
     desc: "Raw unhomogenised A2 milk from pasture-grazed native cows.",
     category: "Dairy & Eggs",
     outOfStock: false,
+    image: "/images/milk.jpg",
+    badge: "A2 Chilled",
+    flags: { organic: true, local: true },
+    region: "Godavari",
+    harvestedOn: "11 Feb",
+    batch: "GV-058",
+    freshness: "Raw, unhomogenised A2",
+    bulkTiers: [
+      { label: "1–5 kg retail", note: "Standard" },
+      { label: "6–20 kg", note: "−5% savings" },
+      { label: "21+ kg", note: "−10% savings" },
+    ],
   },
   {
     id: "himali-basmati-rice",
@@ -129,6 +248,18 @@ export const products: Product[] = [
     desc: "Aged long-grain Himali basmati, stone-milled to order for whole-grain bite.",
     category: "Grains & Pulses",
     outOfStock: false,
+    image: "/images/rice.jpg",
+    badge: "Aged 2 Years",
+    flags: { organic: true, local: true },
+    region: "Jumla",
+    harvestedOn: "2 Nov",
+    batch: "J-401",
+    freshness: "Stone-milled to order",
+    bulkTiers: [
+      { label: "1–5 kg retail", note: "Standard" },
+      { label: "6–20 kg", note: "−5% savings" },
+      { label: "21+ kg", note: "−10% savings" },
+    ],
   },
   {
     id: "red-lentil",
@@ -139,6 +270,18 @@ export const products: Product[] = [
     desc: "Split Masoor from Jumla terraces, hand-sorted and sun-dried on stone.",
     category: "Grains & Pulses",
     outOfStock: false,
+    image: "/images/lentils.jpg",
+    badge: "Jumla Bio",
+    flags: { organic: true },
+    region: "Jumla",
+    harvestedOn: "28 Sep",
+    batch: "J-388",
+    freshness: "Hand-sorted, sun-dried on stone",
+    bulkTiers: [
+      { label: "1–5 kg retail", note: "Standard" },
+      { label: "6–20 kg", note: "−5% savings" },
+      { label: "21+ kg", note: "−10% savings" },
+    ],
   },
   {
     id: "mustard-oil",
@@ -149,6 +292,18 @@ export const products: Product[] = [
     desc: "Cold-pressed Mustang seed, low-heat so the pungency stays bright.",
     category: "Oils & Ghee",
     outOfStock: false,
+    image: "/images/mustard-oil.jpg",
+    badge: "Stone Milled",
+    flags: { organic: true, local: true },
+    region: "Mustang",
+    harvestedOn: "19 Dec",
+    batch: "M-076",
+    freshness: "Cold-pressed, low heat",
+    bulkTiers: [
+      { label: "1–5 kg retail", note: "Standard" },
+      { label: "6–20 kg", note: "−5% savings" },
+      { label: "21+ kg", note: "−10% savings" },
+    ],
   },
   {
     id: "wild-honey",
@@ -160,6 +315,36 @@ export const products: Product[] = [
     desc: "Raw cliff honey gathered at 2,400m, unheated and unfiltered.",
     category: "Foraged",
     outOfStock: false,
+    image: "/images/honey.jpg",
+    badge: "Lamjung Cliff Harvest",
+    flags: { organic: true, local: true },
+    region: "Jumla",
+    harvestedOn: "6 Feb",
+    batch: "K-118",
+    freshness: "Picked within a day of delivery",
+    bulkTiers: [
+      { label: "1–5 kg retail", note: "Standard" },
+      { label: "6–20 kg", note: "−5% savings" },
+      { label: "21+ kg", note: "−10% savings" },
+    ],
+    reviews: [
+      {
+        id: "r-honey-1",
+        author: "Aarav S.",
+        locality: "Jhamsikhel",
+        rating: 5,
+        body: "Tastes of the cliff, not the supermarket shelf. The jar arrived still cold.",
+        verified: true,
+      },
+      {
+        id: "r-honey-2",
+        author: "Pooja M.",
+        locality: "Baluwatar",
+        rating: 5,
+        body: "I have stopped buying honey anywhere else. Worth the price for the traceability.",
+        verified: true,
+      },
+    ],
   },
   {
     id: "cow-ghee",
@@ -170,6 +355,36 @@ export const products: Product[] = [
     desc: "Bilona churned from cultured butter, slow-cooked to a nutty aroma.",
     category: "Oils & Ghee",
     outOfStock: false,
+    image: "/images/ghee.jpg",
+    badge: "Bilona Churned",
+    flags: { organic: true, local: true },
+    region: "Ilam",
+    harvestedOn: "22 Jan",
+    batch: "I-233",
+    freshness: "Bilona churned, slow-cooked",
+    bulkTiers: [
+      { label: "1–5 kg retail", note: "Standard" },
+      { label: "6–20 kg", note: "−5% savings" },
+      { label: "21+ kg", note: "−10% savings" },
+    ],
+    reviews: [
+      {
+        id: "r-ghee-1",
+        author: "Nisha R.",
+        locality: "Sanepa",
+        rating: 5,
+        body: "Proper bilona, with the grain and nutty smell that ghee should have.",
+        verified: true,
+      },
+      {
+        id: "r-ghee-2",
+        author: "Deepak G.",
+        locality: "Balkhu",
+        rating: 4,
+        body: "Rich colour and clean taste. The jar is smaller than I expected at this price.",
+        verified: false,
+      },
+    ],
   },
   {
     id: "goat-meat",
@@ -180,6 +395,13 @@ export const products: Product[] = [
     desc: "Whole pasture-grazed cuts, butchered to order on the morning of dispatch.",
     category: "Meat",
     outOfStock: false,
+    image: "/images/goat-meat.jpg",
+    badge: "Ethically Raised",
+    flags: { local: true },
+    region: "Sindhupalchok",
+    harvestedOn: "11 Feb",
+    batch: "K-149",
+    freshness: "Butchered on the morning of dispatch",
   },
   {
     id: "morel-mushroom",
@@ -190,6 +412,14 @@ export const products: Product[] = [
     desc: "Forest-gathered after the first monsoon rains. Season closed until next year.",
     category: "Foraged",
     outOfStock: true,
+    soldOutNote: "Sold out — next harvest April",
+    image: "/images/morel.jpg",
+    badge: "Foraged High Altitude",
+    flags: { organic: true },
+    region: "Nagarkot",
+    harvestedOn: "14 Aug",
+    batch: "N-061",
+    freshness: "Next harvest opens April",
   },
 ];
 
@@ -562,3 +792,52 @@ export const contact = {
   phone: "+977 9851054917",
   address: "Lazimpat, Kathmandu 44600, Nepal",
 };
+
+/* ------------------------------------------------------------------ */
+/* Mart listing                                                        */
+/* ------------------------------------------------------------------ */
+
+export interface MartFilterOption {
+  id: string;
+  label: string;
+}
+
+/** Quick attribute toggles shown above the category list. */
+export const filterAttributes: MartFilterOption[] = [
+  { id: "organic", label: "Organic" },
+  { id: "local", label: "Local" },
+  { id: "in-season", label: "In season" },
+  { id: "in-stock", label: "In stock" },
+];
+
+/** Verification marks shown at the foot of the Mart sidebar. */
+export const provenanceMarks: MartFilterOption[] = [
+  { id: "jumla-bio", label: "Jumla Bio Protocol" },
+  { id: "kavre-organic", label: "Kavre Certified Organic" },
+  { id: "mustang-wild", label: "Mustang Highland Wild" },
+];
+
+export const sortOptions = [
+  "Terroir & Harvest Date",
+  "Price: Low to High",
+  "Price: High to Low",
+  "Elevation & Rarity",
+] as const;
+
+/** Ceiling of the Mart price slider, in NPR. */
+export const priceCeiling = 3000;
+
+/** When the weekly deals allocation closes. Drives the live countdown chip. */
+export const dealsCloseAt = "2026-10-13T05:00:00+05:45";
+
+/** Catalogue size shown alongside the filtered result count. */
+export const catalogueTotal = 148;
+/** URL segment for a product, e.g. "/product/wild-honey". */
+export function productSlug(product: Product): string {
+  return product.id;
+}
+
+/** Resolve a slug back to its product. */
+export function productBySlug(slug: string): Product | undefined {
+  return products.find((product) => product.id === slug);
+}
