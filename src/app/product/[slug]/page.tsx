@@ -19,7 +19,6 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
-  categories,
   discountPercent,
   productBySlug,
   products,
@@ -27,6 +26,15 @@ import {
 } from "@/lib/data";
 
 const npr = new Intl.NumberFormat("en-NP");
+
+/**
+ * Only the products in `generateStaticParams` are built. Unknown slugs are
+ * rejected by the `notFound()` call below.
+ *
+ * `dynamicParams = false` would express this directly, but it is not
+ * available while Cache Components is enabled (next.config.ts), so the guard
+ * below is what actually returns the 404.
+ */
 
 /** Prerender every product at build time. */
 export function generateStaticParams() {
@@ -65,12 +73,13 @@ function Stars({ rating }: { rating: number }) {
   );
 }
 
-/** Category tile photo for a product, used as the gallery's second frame. */
-function categoryImage(product: Product) {
-  const match = categories.find((category) =>
-    product.category.toLowerCase().includes(category.name.split(" ")[0].toLowerCase()),
-  );
-  return match?.image ?? "/images/category-produce.jpg";
+/**
+ * Unique gallery frames for a product, main photo first. Duplicates are
+ * dropped so a product never shows the same frame twice, and a product with
+ * only one frame renders no thumbnail strip at all.
+ */
+function galleryFrames(product: Product) {
+  return [...new Set([product.image, ...(product.gallery ?? [])])];
 }
 
 export default async function ProductPage({
@@ -83,11 +92,8 @@ export default async function ProductPage({
   if (!product) notFound();
 
   const off = discountPercent(product);
-  const thumbs = [
-    { src: product.image, alt: `${product.name}, close view` },
-    { src: categoryImage(product), alt: `${product.category}, from the mart` },
-    { src: "/images/category-global.jpg", alt: `${product.name}, in the valley` },
-  ];
+  const frames = galleryFrames(product);
+  const thumbs = frames.slice(1);
 
   const related = products
     .filter((item) => item.id !== product.id && item.category === product.category)
@@ -123,30 +129,32 @@ export default async function ProductPage({
           <div className="flex flex-col gap-4">
             <div className="relative aspect-square overflow-hidden rounded-xl border border-border">
               <Image
-                src={thumbs[0].src}
-                alt={thumbs[0].alt}
+                src={frames[0]}
+                alt={product.name}
                 fill
                 priority
                 sizes="(min-width: 1024px) 45vw, 92vw"
                 className="object-cover"
               />
             </div>
-            <ul className="grid grid-cols-3 gap-4">
-              {thumbs.slice(1).map((thumb) => (
-                <li
-                  key={thumb.src}
-                  className="relative aspect-square overflow-hidden rounded-lg border border-border"
-                >
-                  <Image
-                    src={thumb.src}
-                    alt={thumb.alt}
-                    fill
-                    sizes="(min-width: 1024px) 15vw, 30vw"
-                    className="object-cover"
-                  />
-                </li>
-              ))}
-            </ul>
+            {thumbs.length > 0 && (
+              <ul className="grid grid-cols-3 gap-4">
+                {thumbs.map((src) => (
+                  <li
+                    key={src}
+                    className="relative aspect-square overflow-hidden rounded-lg border border-border"
+                  >
+                    <Image
+                      src={src}
+                      alt=""
+                      fill
+                      sizes="(min-width: 1024px) 15vw, 30vw"
+                      className="object-cover"
+                    />
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
 
           {/* Detail */}
@@ -274,9 +282,8 @@ export default async function ProductPage({
 
             <TabsContent value="description" className="pt-6">
               <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-                {product.desc} Every lot is dispatched from Baluwatar within
-                three hours of harvest, and every crate carries the batch code
-                printed above.
+                {product.desc} Every lot is dispatched within three hours of
+                harvest, and every crate carries the batch code printed above.
               </p>
             </TabsContent>
 

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Leaf, MapPin, Search, ShoppingBag } from "lucide-react";
+import { Leaf, Search, ShoppingBag } from "lucide-react";
 
 import { navLinks, siteName } from "@/lib/data";
 
@@ -44,11 +44,6 @@ export function SiteHeader() {
               className="h-9 w-56 rounded-full border border-input bg-background/60 pl-9 pr-4 text-sm outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-mint focus-visible:ring-3 focus-visible:ring-ring/40"
             />
           </form>
-
-          <span className="hidden items-center gap-1.5 rounded-full border border-foreground/10 px-3 py-1.5 text-xs text-muted-foreground md:inline-flex">
-            <MapPin className="size-3.5" aria-hidden />
-            Lazimpat Zone
-          </span>
 
           <span className="rounded-full border border-foreground/10 px-3 py-1.5 text-xs text-muted-foreground">
             नेपाली

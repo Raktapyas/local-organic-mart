@@ -80,8 +80,8 @@ export function SiteFooter() {
             ))}
           </ul>
           <p className="text-xs text-muted-foreground">
-            &copy; 2026 {siteName}. Highland Botanical &amp; Agricultural
-            Collective.
+            {siteName} Pvt. Ltd. &middot; Kathmandu, Nepal &middot;{" "}
+            {contact.email} &middot; {contact.phone}
           </p>
         </div>
       </div>

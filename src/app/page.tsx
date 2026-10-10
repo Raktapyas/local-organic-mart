@@ -101,7 +101,7 @@ export default function Home() {
               variant="outline"
               className="border-gold/60 text-gold backdrop-blur-sm"
             >
-              Valley Terroirs &amp; Highland Harvest
+              Kathmandu Valley delivery
             </Badge>
 
             <h1 className="max-w-3xl text-5xl leading-[1.02] tracking-tight text-balance sm:text-6xl md:text-7xl">
@@ -110,7 +110,7 @@ export default function Home() {
 
             <p className="max-w-lg text-base leading-relaxed text-muted-foreground">
               Harvested before dawn in Kavre, Jumla, and Mustang. Dispatched
-              from Baluwatar within three hours, still cold when it reaches your
+              Dispatched within three hours, still cold when it reaches your
               kitchen.
             </p>
 
@@ -137,7 +137,7 @@ export default function Home() {
         {/* Category rail */}
         <section className="mx-auto w-full max-w-7xl px-6 py-20">
           <SectionHeader
-            title="Foraged & Cultivated"
+            title="Shop by category"
             subline="Ten departments, filled from the morning harvest."
           />
 
@@ -273,7 +273,7 @@ export default function Home() {
               <div className="flex flex-col gap-3">
                 <span className="flex items-center gap-2 text-sm text-mint">
                   <Sparkles className="size-4" aria-hidden />
-                  Highland Culinary Lab
+                  Cooked to order
                 </span>
                 <h2 className="text-4xl leading-tight tracking-tight text-balance">
                   Local Organic Restaurant
@@ -332,7 +332,7 @@ export default function Home() {
           <div className="flex flex-col gap-2">
             <span className="flex items-center gap-2 text-sm text-mint">
               <ShieldCheck className="size-4" aria-hidden />
-              Ethical Provenance Protocol
+              From our farmers to your home
             </span>
             <h2 className="max-w-2xl text-3xl tracking-tight text-balance">
               From our farmers to your home
@@ -389,7 +389,7 @@ export default function Home() {
               <div className="flex flex-col gap-3">
                 <span className="flex items-center gap-2 text-sm text-gold">
                   <Star className="size-4" aria-hidden />
-                  Harvest Guild
+                  Membership
                 </span>
                 <h2 className="max-w-lg text-3xl tracking-tight text-balance">
                   Membership &mdash; 10% off, reward points, and early access to

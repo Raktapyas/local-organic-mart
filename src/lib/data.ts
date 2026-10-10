@@ -36,6 +36,12 @@ export interface Product {
   outOfStock: boolean;
   /** Listing photo, square, dark-lit. */
   image: string;
+  /**
+   * Extra gallery frames after the main photo. Entries must not repeat
+   * `image` or each other. Most products ship with a single frame today —
+   * see NOTES.md for the photo top-up task.
+   */
+  gallery?: string[];
   /** Short provenance label above the name, e.g. "Jumla Bio". */
   badge: string;
   /** Replaces the Add button when out of stock. */
@@ -100,7 +106,7 @@ export const products: Product[] = [
     flags: { organic: true, local: true },
     region: "Kavre",
     harvestedOn: "6 Feb",
-    batch: "K-118",
+    batch: "K-163",
     freshness: "Picked within a day of delivery",
     bulkTiers: [
       { label: "1–5 kg retail", note: "Standard" },
@@ -407,7 +413,7 @@ export const products: Product[] = [
     id: "morel-mushroom",
     name: "Morel Mushroom",
     nepaliName: "सिनार",
-    price: 1440,
+    price: 2800,
     unit: "100 g glass jar",
     desc: "Forest-gathered after the first monsoon rains. Season closed until next year.",
     category: "Foraged",
@@ -770,9 +776,9 @@ export const footerColumns: { title: string; links: NavLink[] }[] = [
     links: [
       { label: "Farm to Home", href: "/farmers" },
       { label: "Ethical Sourcing Protocol", href: "/about" },
-      { label: "Baluwatar Depot", href: "/about" },
-      { label: "Sanepa Kitchens", href: "/restaurant" },
-      { label: "Jhamsikhel Cellars", href: "/about" },
+      { label: "Our Story", href: "/about" },
+      { label: "Our Kitchens", href: "/restaurant" },
+      { label: "Sourcing Protocol", href: "/about" },
       { label: "Membership", href: "/membership" },
     ],
   },
@@ -790,7 +796,7 @@ export const footerColumns: { title: string; links: NavLink[] }[] = [
 export const contact = {
   email: "info@localorganicmart.com",
   phone: "+977 9851054917",
-  address: "Lazimpat, Kathmandu 44600, Nepal",
+  address: "Kathmandu, Nepal",
 };
 
 /* ------------------------------------------------------------------ */
