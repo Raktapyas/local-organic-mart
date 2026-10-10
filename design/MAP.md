@@ -16,7 +16,7 @@ reference, not build targets, and are excluded.
 | 1 | `local_organic_mart_home_page_flagship` | `/` | **done** |
 | 2 | `local_organic_mart_kathmandu_desktop_flagship` | `/` | todo (variant) |
 | 3 | `local_organic_mart_mart_listing_page` | `/mart` | **done** |
-| 4 | `local_organic_mart_restaurant_page` | `/restaurant` | todo |
+| 4 | `local_organic_mart_restaurant_page` | `/restaurant` | **done** |
 | 5 | `local_organic_mart_offers_page` | `/offers` | todo |
 | 6 | `local_organic_mart_farm_to_home_page` | `/farmers` | todo |
 | 7 | `local_organic_mart_membership_page` | `/membership` | todo |
@@ -61,4 +61,4 @@ their own mocks.
 
 ## Progress
 
-3 of 18 routes built. 15 todo.
+4 of 18 routes built. 14 todo.

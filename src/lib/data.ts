@@ -9,6 +9,15 @@
 export type Diet = "Vegan" | "Vegetarian" | "Non-Veg" | "Contains dairy";
 export type Spice = "Non-spicy" | "Mild" | "Medium" | "Spicy" | "Aromatic";
 
+/** Filter buckets for the restaurant menu. */
+export type DishTag =
+  | "popular"
+  | "healthy"
+  | "organic"
+  | "nepali-traditional"
+  | "snacks"
+  | "drinks";
+
 export type ProductCategory =
   | "Leafy Greens"
   | "Vegetables"
@@ -441,6 +450,10 @@ export interface Dish {
   prepTime: string;
   spice: Spice;
   diet: Diet;
+  /** Menu photo, 4:3, dark-lit. */
+  image: string;
+  /** Filter buckets. */
+  tags: DishTag[];
 }
 
 export const dishes: Dish[] = [
@@ -454,6 +467,8 @@ export const dishes: Dish[] = [
     prepTime: "25–35 min",
     spice: "Mild",
     diet: "Vegan",
+    image: "/images/dal-bhat.jpg",
+    tags: ["popular", "organic", "nepali-traditional"],
   },
   {
     id: "chicken-momo",
@@ -465,6 +480,8 @@ export const dishes: Dish[] = [
     prepTime: "20–30 min",
     spice: "Medium",
     diet: "Non-Veg",
+    image: "/images/momo.jpg",
+    tags: ["popular", "snacks"],
   },
   {
     id: "veg-momo",
@@ -476,6 +493,8 @@ export const dishes: Dish[] = [
     prepTime: "20–25 min",
     spice: "Mild",
     diet: "Vegetarian",
+    image: "/images/momo.jpg",
+    tags: ["organic", "snacks"],
   },
   {
     id: "veg-thukpa",
@@ -487,6 +506,8 @@ export const dishes: Dish[] = [
     prepTime: "20–30 min",
     spice: "Medium",
     diet: "Vegan",
+    image: "/images/thukpa.jpg",
+    tags: ["popular", "organic", "nepali-traditional"],
   },
   {
     id: "millet-dhido-set",
@@ -498,6 +519,8 @@ export const dishes: Dish[] = [
     prepTime: "30–40 min",
     spice: "Medium",
     diet: "Vegetarian",
+    image: "/images/dish-dhido.jpg",
+    tags: ["healthy", "organic", "nepali-traditional"],
   },
   {
     id: "sel-roti-aloo-tarkari",
@@ -509,6 +532,8 @@ export const dishes: Dish[] = [
     prepTime: "15–25 min",
     spice: "Mild",
     diet: "Vegan",
+    image: "/images/dish-sel-roti.jpg",
+    tags: ["organic", "nepali-traditional", "snacks"],
   },
   {
     id: "chicken-choila",
@@ -520,6 +545,8 @@ export const dishes: Dish[] = [
     prepTime: "25–35 min",
     spice: "Spicy",
     diet: "Non-Veg",
+    image: "/images/dish-choila.jpg",
+    tags: ["popular"],
   },
   {
     id: "masala-chiya",
@@ -531,6 +558,8 @@ export const dishes: Dish[] = [
     prepTime: "10–15 min",
     spice: "Aromatic",
     diet: "Contains dairy",
+    image: "/images/chiya.jpg",
+    tags: ["popular", "nepali-traditional", "drinks"],
   },
   {
     id: "sweet-lassi",
@@ -542,6 +571,8 @@ export const dishes: Dish[] = [
     prepTime: "5–10 min",
     spice: "Non-spicy",
     diet: "Vegetarian",
+    image: "/images/lassi.jpg",
+    tags: ["snacks", "drinks"],
   },
   {
     id: "fresh-orange-juice",
@@ -553,6 +584,34 @@ export const dishes: Dish[] = [
     prepTime: "5 min",
     spice: "Non-spicy",
     diet: "Vegan",
+    image: "/images/dish-orange-juice.jpg",
+    tags: ["healthy", "drinks"],
+  },
+  {
+    id: "fresh-green-salad",
+    name: "Fresh Green Salad",
+    nepaliName: "ताजा हरियो सलाद",
+    price: 240,
+    portion: "350 g",
+    desc: "Kavre greens, cucumber, and lemon dressed to order.",
+    prepTime: "15–20 min",
+    spice: "Non-spicy",
+    diet: "Vegan",
+    image: "/images/dish-salad.jpg",
+    tags: ["healthy", "organic"],
+  },
+  {
+    id: "honey-lemon-tea",
+    name: "Honey Lemon Tea",
+    nepaliName: "मह निम्बा चिया",
+    price: 120,
+    portion: "250 ml",
+    desc: "Leaf tea steeped with wild honey, ginger, and lemon.",
+    prepTime: "8–12 min",
+    spice: "Aromatic",
+    diet: "Vegetarian",
+    image: "/images/dish-honey-tea.jpg",
+    tags: ["healthy", "drinks"],
   },
 ];
 

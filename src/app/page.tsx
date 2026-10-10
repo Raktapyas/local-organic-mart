@@ -26,6 +26,7 @@ import {
 import type { LucideIcon } from "lucide-react";
 
 import { CountdownChip } from "@/components/countdown-chip";
+import { DishCard } from "@/components/dish-card";
 import { ProductCard } from "@/components/product-card";
 import { SectionHeader } from "@/components/section-header";
 import { SiteFooter } from "@/components/site-footer";
@@ -284,22 +285,10 @@ export default function Home() {
                 </p>
               </div>
 
-              <ul className="flex flex-col gap-3">
+              <ul className="grid gap-4 sm:grid-cols-3">
                 {featuredDishes.map((dish) => (
-                  <li
-                    key={dish.id}
-                    className="flex items-center justify-between gap-4 border-b border-foreground/10 pb-3 last:border-0"
-                  >
-                    <span className="flex flex-col gap-0.5">
-                      <span className="font-heading text-base">{dish.name}</span>
-                      <span className="text-xs text-muted-foreground">
-                        {dish.nepaliName} &middot; {dish.portion} &middot; {dish.spice} &middot;{" "}
-                        {dish.diet}
-                      </span>
-                    </span>
-                    <span className="shrink-0 font-heading text-base">
-                      Rs {npr.format(dish.price)}
-                    </span>
+                  <li key={dish.id}>
+                    <DishCard dish={dish} showCustomize={false} />
                   </li>
                 ))}
               </ul>
