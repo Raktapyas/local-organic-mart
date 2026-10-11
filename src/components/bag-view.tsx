@@ -133,7 +133,7 @@ export function BagView() {
           onClick={clear}
           className="w-fit text-xs text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
         >
-          Empty bag
+          Clear bag
         </button>
       </div>
 

@@ -16,6 +16,7 @@ that are not obvious from the code.
 
       | File | Subject | Problem |
       |------|---------|---------|
+      | `public/images/product-ghee.jpg` | Cow Ghee | Wrong subject — a shop shelf of assorted jars. **Pexels searched, no ghee exists**: "ghee jar golden dark" and "clarified butter jar moody" both return skincare cream, white liquid, and spice jars; "melted butter ghee bowl" returns white butter and Turkish kaymak on a bright striped cloth. Needs a real product shot or a commissioned one. |
       | `public/images/mustard-oil.jpg` | Mustard Oil | Substitute — vintage oil can |
       | `public/images/lassi.jpg` | Sweet Lassi | Substitute — creamy drink, not lassi |
       | `public/images/cauliflower.jpg` | Cauliflower | Partial — rustic bowl on black |
