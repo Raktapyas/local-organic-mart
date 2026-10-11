@@ -186,10 +186,18 @@ export default function Home() {
 
         {/* Baskets */}
         <section className="mx-auto w-full max-w-7xl px-6 py-20">
-          <SectionHeader
-            title="Baskets & bundles"
-            subline="Curated weekly farm boxes, calibrated for Kathmandu households."
-          />
+          <div className="flex flex-wrap items-end justify-between gap-6">
+            <SectionHeader
+              title="Baskets & bundles"
+              subline="Curated weekly farm boxes, calibrated for Kathmandu households."
+            />
+            <Button variant="outline" className="rounded-full" asChild>
+              <Link href="/baskets">
+                See all
+                <ArrowRight className="size-4" aria-hidden />
+              </Link>
+            </Button>
+          </div>
 
           <ul className="mt-10 grid gap-6 md:grid-cols-3">
             {baskets.slice(0, 3).map((basket) => (

@@ -938,6 +938,11 @@ export interface Basket {
   desc: string;
   /** Line items summarised for the basket detail view. */
   includes: string[];
+  /**
+   * Background photo for the card, per the client rule that cards carry an
+   * image rather than more copy. Defaults to the basket's hero image.
+   */
+  image?: string;
 }
 
 export const baskets: Basket[] = [
@@ -949,6 +954,7 @@ export const baskets: Basket[] = [
     oldPrice: 2320,
     tag: "Daily Pantry Essential",
     desc: "Everyday staples for a working kitchen, assembled before the 5:00 AM cutoff.",
+    image: "/images/category-produce.jpg",
     includes: [
       "Palung spinach (2 bunches)",
       "Cauliflower (1 kg)",
@@ -966,6 +972,7 @@ export const baskets: Basket[] = [
     oldPrice: 3450,
     tag: "Nutrient Dense",
     desc: "Protein-forward weekly haul for a family of four.",
+    image: "/images/category-dairy.jpg",
     includes: [
       "Farm eggs (24 pcs)",
       "Fresh milk (2 L)",
@@ -983,6 +990,7 @@ export const baskets: Basket[] = [
     oldPrice: 2710,
     tag: "Heritage Heirloom",
     desc: "The valley's own pantry: fermented, milled, and pressed the old way.",
+    image: "/images/category-local.jpg",
     includes: [
       "Red lentil (2 kg)",
       "Mustard oil (1 L)",
@@ -999,12 +1007,81 @@ export const baskets: Basket[] = [
     price: 9329,
     tag: "Highland Festival Reserve",
     desc: "A ceremonial reserve for the biggest days of the year, allocated by request.",
+    image: "/images/basket-dashain.jpg",
     includes: [
       "Aged Jumla red rice (5 kg)",
       "Pure hand-churned bilona ghee (1 L earthen pot)",
       "Mustang wild walnuts (500 g)",
       "Wild honey (500 g jar)",
       "Goat meat butcher reserve voucher",
+    ],
+  },
+  {
+    id: "student-basket",
+    name: "Student Basket",
+    nepaliName: "विद्यार्थी पोषण टोकरी",
+    price: 1733,
+    oldPrice: 2050,
+    tag: "Quick Prep Staples",
+    desc: "Low-lift, high-energy staples for a shared kitchen or hostel.",
+    image: "/images/category-pantry.jpg",
+    includes: [
+      "Red lentil (2 kg)",
+      "Himali basmati rice (2 kg)",
+      "Farm eggs (12 pcs)",
+      "Mustard oil (500 ml)",
+      "Turmeric (100 g)",
+    ],
+  },
+  {
+    id: "monthly-grocery",
+    name: "Monthly Grocery Basket",
+    nepaliName: "मासिक रासन टोकरी",
+    price: 5615,
+    oldPrice: 6400,
+    tag: "Cellar Stock",
+    desc: "A month's dry store, milled and packed to keep.",
+    image: "/images/rice.jpg",
+    includes: [
+      "Himali basmati rice (10 kg)",
+      "Marshi rice (5 kg)",
+      "Red lentil (3 kg)",
+      "Jumla simi beans (2 kg)",
+      "Mustard oil (1 L)",
+      "Cow ghee (500 g)",
+    ],
+  },
+  {
+    id: "tihar-basket",
+    name: "Tihar Basket",
+    nepaliName: "तिहार भाइटीका सौगात",
+    price: 4882,
+    tag: "Bhai Tika Offering",
+    desc: "Everything the five days of Tihar ask for, in one parcel.",
+    image: "/images/basket-tihar.jpg",
+    includes: [
+      "Wild honey (500 g jar)",
+      "Chhurpi (200 g)",
+      "Gundruk (200 g)",
+      "Sel roti mix (1 kg)",
+      "Hill tomatoes (2 kg)",
+      "Fresh sweet oranges (2 kg)",
+    ],
+  },
+  {
+    id: "teej-basket",
+    name: "Teej Basket",
+    nepaliName: "हरितालिका तीज टोकरी",
+    price: 2182,
+    tag: "Green Festival Reserve",
+    desc: "A green festival parcel, reserved ahead of the day.",
+    image: "/images/basket-teej.jpg",
+    includes: [
+      "Palung spinach (3 bunches)",
+      "Fresh sweet oranges (2 kg)",
+      "Gundruk (200 g)",
+      "Hill tomatoes (1 kg)",
+      "Wild jimbu (20 g)",
     ],
   },
 ];
@@ -1150,6 +1227,24 @@ export type CategoryIconName =
   | "globe"
   | "utensils";
 
+/** Delivery cadences offered by the subscription plans. */
+export const subscriptionFrequencies = ["Daily", "Weekly", "Fortnightly"] as const;
+export type SubscriptionFrequency = (typeof subscriptionFrequencies)[number];
+
+/**
+ * TODO: real recurring engine (Laravel scheduler phase). Subscribing today
+ * only flags the cart line; nothing repeats on its own.
+ */
+export interface SubscriptionPlan {
+  basketId: Basket["id"];
+  note: string;
+}
+
+export const subscriptionPlans: SubscriptionPlan[] = [
+  { basketId: "complete-kitchen", note: "Morning staples, restocked daily." },
+  { basketId: "monthly-grocery", note: "Dry store refilled once a month." },
+  { basketId: "healthy-family", note: "Protein-forward weekly run." },
+];
 export const heroImage = "/images/hero-farm.jpg";
 export const restaurantBandImage = "/images/restaurant-band.jpg";
 export const farmerBandImage = "/images/farmers-band.jpg";

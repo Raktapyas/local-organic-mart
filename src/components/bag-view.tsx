@@ -14,7 +14,16 @@ const npr = new Intl.NumberFormat("en-NP");
 const GROUPS = [
   { kind: "product" as const, title: "Grocery" },
   { kind: "dish" as const, title: "Restaurant" },
+  { kind: "basket" as const, title: "Baskets & gifts" },
 ];
+
+/** Where a line's thumbnail links back to, by kind. */
+function lineHref(line: CartLine) {
+  if (line.kind === "basket") return "/baskets";
+  return line.kind === "product"
+    ? `/product/${line.slug}`
+    : `/restaurant/${line.slug}`;
+}
 
 function BagRow({ line }: { line: CartLine }) {
   const setQty = useCartStore((state) => state.setQty);
@@ -23,9 +32,7 @@ function BagRow({ line }: { line: CartLine }) {
   return (
     <li className="flex gap-4 py-6 first:pt-0 last:pb-0">
       <Link
-        href={
-          line.kind === "product" ? `/product/${line.slug}` : `/restaurant/${line.slug}`
-        }
+        href={lineHref(line)}
         className="relative size-20 shrink-0 overflow-hidden rounded-lg border border-border"
       >
         {line.image ? (
@@ -95,6 +102,7 @@ export function BagView() {
 
   const food = lines.filter((line) => line.kind === "product");
   const dishes = lines.filter((line) => line.kind === "dish");
+  const giftBaskets = lines.filter((line) => line.kind === "basket");
   const isEmpty = lines.length === 0;
 
   const { itemSubtotal, total } = cartTotals(lines);
@@ -118,7 +126,12 @@ export function BagView() {
     <div className="grid gap-10 lg:grid-cols-[1fr_360px]">
       <div className="flex flex-col gap-10">
         {GROUPS.map((group) => {
-          const groupLines = group.kind === "product" ? food : dishes;
+          const groupLines =
+            group.kind === "product"
+              ? food
+              : group.kind === "dish"
+                ? dishes
+                : giftBaskets;
           if (groupLines.length === 0) return null;
           return (
             <section key={group.kind}>

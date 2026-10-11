@@ -5,7 +5,7 @@ import { createJSONStorage, persist } from "zustand/middleware";
 
 import { DELIVERY_FEE_FLAT } from "@/lib/data";
 
-export type CartKind = "product" | "dish";
+export type CartKind = "product" | "dish" | "basket";
 
 export interface CartLine {
   /** Derived: `${kind}:${refId}:${sorted customizations}`. */
