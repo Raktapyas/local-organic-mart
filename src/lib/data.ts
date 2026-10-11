@@ -1310,6 +1310,45 @@ export const contact = {
   address: "Kathmandu, Nepal",
 };
 
+/** WhatsApp hand-off for the About enquiry form. Digits only, no spaces. */
+export const whatsappNumber = "9779851054917";
+
+/** About page hero copy. */
+export const aboutHero = {
+  headline: "Buy local farm products online in Nepal.",
+  subline:
+    "Organic grocery delivery service in Kathmandu, Lalitpur and Bhaktapur — fresh vegetables, dairy, honey, spices and cooked meals from our organic kitchen.",
+};
+
+export type AboutValueIconName = "sprout" | "tag" | "shield";
+
+/**
+ * Living principles. Each line describes something the data model actually
+ * guarantees — no rate claims, no certification claims, nothing a collective
+ * has not told us.
+ */
+export const aboutValues: {
+  icon: AboutValueIconName;
+  title: string;
+  note: string;
+}[] = [
+  {
+    icon: "sprout",
+    title: "Farm-direct sourcing",
+    note: "Every lot is bought from the collective that grew it.",
+  },
+  {
+    icon: "tag",
+    title: "Origin on every product",
+    note: "Region, harvest date and batch printed on every listing.",
+  },
+  {
+    icon: "shield",
+    title: "No synthetic pesticides",
+    note: "Stated by the collectives themselves, on their own terms.",
+  },
+];
+
 /* ------------------------------------------------------------------ */
 /* Mart listing                                                        */
 /* ------------------------------------------------------------------ */
