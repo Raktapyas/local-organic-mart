@@ -8,7 +8,6 @@ import {
   CheckCircle2,
   ClipboardList,
   CookingPot,
-  Info,
   MessageCircle,
   Package,
   Phone,
@@ -16,6 +15,7 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
+import { OrderNotFound } from "@/components/order-not-found";
 import { Button } from "@/components/ui/button";
 import { RIDER } from "@/lib/data";
 import { useOrderStore } from "@/lib/order-store";
@@ -217,28 +217,6 @@ export function OrderConfirmation() {
           <Link href="/mart">Continue shopping</Link>
         </Button>
       </div>
-    </div>
-  );
-}
-
-/**
- * Shown for an order id that does not match the session's order — a fake id,
- * a stale bookmark, or a refresh after the in-memory order was lost.
- */
-function OrderNotFound() {
-  return (
-    <div className="flex flex-col items-center gap-6 py-24 text-center">
-      <span className="inline-flex size-12 items-center justify-center rounded-full bg-mint text-primary-foreground">
-        <Info className="size-6" aria-hidden />
-      </span>
-      <h1 className="text-4xl tracking-tight sm:text-5xl">Order not found.</h1>
-      <p className="max-w-md text-sm text-sage">
-        Demo orders live for this session only. Place a new order to see live
-        tracking.
-      </p>
-      <Button className="h-12 rounded-full px-8" asChild>
-        <Link href="/mart">Browse the Mart</Link>
-      </Button>
     </div>
   );
 }

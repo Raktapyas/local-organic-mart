@@ -36,6 +36,12 @@ export interface Product {
   id: string;
   name: string;
   nepaliName: string;
+  /**
+   * Other words customers type for this item — romanised spellings and
+   * common Nepali forms. Searched alongside `name` and `nepaliName` so
+   * "saag" and "साग" both reach Palung Spinach.
+   */
+  aliases?: string[];
   /** Selling price in NPR. Authoritative — the figure shown to customers. */
   price: number;
   /** Pre-discount price in NPR. Omitted when the item is not reduced. */
@@ -108,6 +114,7 @@ export const products: Product[] = [
     id: "palung-spinach",
     name: "Fresh Palung Spinach",
     nepaliName: "पालुंगो",
+    aliases: ["साग", "saag"],
     price: 43,
     oldPrice: 50,
     unit: "1 bunch",
@@ -262,6 +269,7 @@ export const products: Product[] = [
     id: "himali-basmati-rice",
     name: "Himali Basmati Rice",
     nepaliName: "बासमती",
+    aliases: ["चामल"],
     price: 357,
     oldPrice: 420,
     unit: "5 kg bag",
@@ -285,6 +293,7 @@ export const products: Product[] = [
     id: "red-lentil",
     name: "Red Lentil",
     nepaliName: "मसुर दाल",
+    aliases: ["दाल", "dal", "daal"],
     price: 250,
     unit: "1 kg",
     desc: "Split Masoor from Jumla terraces, hand-sorted and sun-dried on stone.",
@@ -329,6 +338,7 @@ export const products: Product[] = [
     id: "wild-honey",
     name: "Wild Honey",
     nepaliName: "सिस्नो मह",
+    aliases: ["मह"],
     price: 1232,
     oldPrice: 1400,
     unit: "500 g jar",
@@ -597,6 +607,8 @@ export interface Dish {
   id: string;
   name: string;
   nepaliName: string;
+  /** Alternate spellings customers type. Searched with name + Nepali name. */
+  aliases?: string[];
   price: number;
   /** Serving size as printed, e.g. "10 pcs" or "1 Thali". */
   portion: string;
@@ -677,6 +689,7 @@ export const dishes: Dish[] = [
     id: "chicken-momo",
     name: "Chicken Momo",
     nepaliName: "कुखुराको मःम",
+    aliases: ["मोमो", "momos"],
     price: 320,
     portion: "10 pcs",
     desc: "Minced country chicken with ginger and scallion, folded thin.",
@@ -1283,10 +1296,10 @@ export const footerColumns: { title: string; links: NavLink[] }[] = [
   {
     title: "Support",
     links: [
-      { label: "Track Order", href: "/orders" },
-      { label: "Delivery Zones", href: "/support" },
-      { label: "Refund Policy", href: "/support" },
-      { label: "Privacy Policy", href: "/support" },
+      { label: "Track Order", href: "/track-order" },
+      { label: "Delivery Zones", href: "/delivery-zones" },
+      { label: "Refund Policy", href: "/refund-policy" },
+      { label: "Privacy Policy", href: "/privacy-policy" },
     ],
   },
 ];
@@ -1473,9 +1486,12 @@ export interface SearchResults {
 /**
  * Catalogue search behind `/search`.
  *
- * Products match on English name, Nepali name, or the merchandising category
- * (`"Dairy & Eggs"`). Dishes match on name, Nepali name, or a menu tag, so
- * `momo` finds the dish by name while `snacks` finds every tagged dish.
+ * Products match on English name, Nepali name, declared `aliases`, or the
+ * merchandising category (`"Dairy & Eggs"`). Dishes match on name, Nepali
+ * name, aliases, or a menu tag, so `momo` finds the dish by name while
+ * `snacks` finds every tagged dish. Aliases cover the words customers
+ * actually type that are not the listing's own wording — `saag` and `साग`
+ * both reach Palung Spinach, which is not labelled either.
  * Matching is a case-insensitive substring, so "Rice" and "rice" agree and
  * "spin" still reaches "Spinach".
  *
@@ -1488,14 +1504,14 @@ export function searchCatalogue(rawQuery: string): SearchResults {
   if (!needle) return { query: "", products: [], dishes: [], total: 0 };
 
   const matchedProducts = products.filter((product) =>
-    [product.name, product.nepaliName, product.category].some((field) =>
-      field.toLowerCase().includes(needle),
+    [product.name, product.nepaliName, ...(product.aliases ?? []), product.category].some(
+      (field) => field.toLowerCase().includes(needle),
     ),
   );
 
   const matchedDishes = dishes.filter((dish) =>
-    [dish.name, dish.nepaliName, ...dish.tags].some((field) =>
-      field.toLowerCase().includes(needle),
+    [dish.name, dish.nepaliName, ...(dish.aliases ?? []), ...dish.tags].some(
+      (field) => field.toLowerCase().includes(needle),
     ),
   );
 
@@ -1509,3 +1525,59 @@ export function searchCatalogue(rawQuery: string): SearchResults {
 
 /** Queries offered when a search returns nothing. */
 export const searchSuggestions = ["milk", "rice", "momo", "honey"];
+
+/** Delivery estimates shown on `/delivery-zones`. */
+export const deliveryZones: { area: string; estimate: string }[] = [
+  { area: "Inside Ring Road", estimate: "45–60 min" },
+  { area: "Lalitpur", estimate: "About 2 hours" },
+  { area: "Bhaktapur", estimate: "About 2 hours" },
+  { area: "Rest of Nepal", estimate: "1–3 days" },
+  { area: "Worldwide", estimate: "Courier dependent" },
+];
+
+/** Copy blocks for the two policy pages. Sample language throughout. */
+export const refundPolicy: { heading: string; body: string }[] = [
+  {
+    heading: "Sample policy — not yet in force",
+    body: "This is placeholder language for layout only. Nothing here is a binding commitment, and no refund has been offered under it.",
+  },
+  {
+    heading: "Damaged or short on arrival",
+    body: "Raise it with the rider before they leave, or contact us within 24 hours of delivery quoting your order reference.",
+  },
+  {
+    heading: "Perishable goods",
+    body: "Fresh produce and dairy are perishable. We cannot refund them once they have left cold-chain handling, except where the fault is ours.",
+  },
+  {
+    heading: "Cancelled orders",
+    body: "Orders cancelled before dispatch are refunded to the original payment method. After dispatch, the order becomes eligible for a return-at-door instead.",
+  },
+  {
+    heading: "Payment refunds",
+    body: "Refunds settle through the payment provider named at checkout. Bank and wallet clearing times vary and are outside our control.",
+  },
+];
+
+export const privacyPolicy: { heading: string; body: string }[] = [
+  {
+    heading: "Sample policy — not yet in force",
+    body: "Placeholder language for layout only. This site is a design prototype and collects no production personal data.",
+  },
+  {
+    heading: "What we hold",
+    body: "In this build the cart and the last placed order live in your browser only. Nothing is sent to a server.",
+  },
+  {
+    heading: "Payment details",
+    body: "Payment is handled by the provider you select at checkout. Card and wallet credentials never pass through this site.",
+  },
+  {
+    heading: "Third parties",
+    body: "A production launch would name its analytics, hosting, and courier partners here, with what each one can see.",
+  },
+  {
+    heading: "Contact",
+    body: "Questions about this policy can go to the address listed in the footer. A named data-protection contact would be added before launch.",
+  },
+];
