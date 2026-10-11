@@ -1019,6 +1019,9 @@ export const priceCeiling = 3000;
 
 /** When the weekly deals allocation closes. Drives the live countdown chip. */
 export const dealsCloseAt = "2026-10-13T05:00:00+05:45";
+
+// TODO: delivery zones — one flat fee for now, not zone-dependent.
+export const DELIVERY_FEE_FLAT = 120;
 /** URL segment for a product, e.g. "/product/wild-honey". */
 export function productSlug(product: Product): string {
   return product.id;

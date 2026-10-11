@@ -2,8 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { Clock, Flame } from "lucide-react";
 
+import { AddToCartButton } from "@/components/add-to-cart-button";
 import { Button } from "@/components/ui/button";
-import type { Dish, Spice } from "@/lib/data";
+import { spicePreset, type Dish, type Spice } from "@/lib/data";
 
 const npr = new Intl.NumberFormat("en-NP");
 
@@ -94,9 +95,23 @@ export function DishCard({
                 <Link href={`/restaurant/${dish.id}`}>Customize</Link>
               </Button>
             )}
-            <Button size="sm" className="rounded-full">
+            <AddToCartButton
+              className="inline-flex h-8 shrink-0 items-center justify-center rounded-full bg-primary px-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+              line={{
+                kind: "dish",
+                refId: dish.id,
+                slug: dish.id,
+                name: dish.name,
+                nepaliName: dish.nepaliName,
+                unit: dish.portions[0].serves,
+                unitPrice: dish.price,
+                qty: 1,
+                image: dish.image,
+                customizations: [spicePreset(dish)],
+              }}
+            >
               Add
-            </Button>
+            </AddToCartButton>
           </div>
         </div>
       </div>

@@ -4,13 +4,14 @@ import { useState } from "react";
 
 import { QuantityStepper } from "@/components/quantity-stepper";
 import { Button } from "@/components/ui/button";
+import { useCartStore } from "@/lib/cart-store";
 import type { Product } from "@/lib/data";
 
 const npr = new Intl.NumberFormat("en-NP");
 
 /**
- * Basket action block. Holds quantity locally and reports the payload to the
- * console; wiring this to a real cart store is still TODO.
+ * Basket action block. Holds quantity locally and pushes a line to the cart
+ * store on add.
  */
 export function ProductPurchase({
   product,
@@ -20,6 +21,7 @@ export function ProductPurchase({
   /** Extra percent off applied by the selected volume tier. */
   bulkDiscountPct?: number;
 }) {
+  const addItem = useCartStore((state) => state.addItem);
   const [quantity, setQuantity] = useState(1);
   // TODO: server-side recalc — these client totals are a preview only. The API
   // owns real pricing, tier eligibility, and the authoritative line total.
@@ -42,14 +44,19 @@ export function ProductPurchase({
       ) : (
         <Button
           className="h-12 w-full rounded-full"
+          // TODO: server-side recalc — the client total is a preview only. The
+          // API owns pricing, tier eligibility, and the authoritative total.
           onClick={() =>
-            console.log("cart:add", {
-              productId: product.id,
+            addItem({
+              kind: "product",
+              refId: product.id,
               slug: product.id,
-              quantity,
+              name: product.name,
+              nepaliName: product.nepaliName,
+              unit: product.unit,
               unitPrice: unit,
-              bulkDiscountPct,
-              lineTotal: total,
+              qty: quantity,
+              image: product.image,
             })
           }
         >

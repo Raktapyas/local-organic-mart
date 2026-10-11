@@ -5,6 +5,7 @@ import { Check } from "lucide-react";
 
 import { QuantityStepper } from "@/components/quantity-stepper";
 import { Button } from "@/components/ui/button";
+import { useCartStore } from "@/lib/cart-store";
 import {
   spiceLevels,
   spicePreset,
@@ -14,7 +15,12 @@ import {
 
 const npr = new Intl.NumberFormat("en-NP");
 
+function spiceLevelLabel(spice: DishSpice): string {
+  return spiceLevels.find((level) => level.id === spice)?.label ?? spice;
+}
+
 export function DishCustomizer({ dish }: { dish: Dish }) {
+  const addItem = useCartStore((state) => state.addItem);
   const [portionId, setPortionId] = useState(dish.portions[0].id);
   const [spice, setSpice] = useState<DishSpice>(() => spicePreset(dish));
   const [addons, setAddons] = useState<string[]>([]);
@@ -164,17 +170,31 @@ export function DishCustomizer({ dish }: { dish: Dish }) {
 
       <Button
         className="h-12 w-full rounded-full"
+        // TODO: server-side recalc — the client total is a preview only. The API
+        // owns pricing, portion availability, and the authoritative line total.
         onClick={() =>
-          // TODO: server-side recalc — the client total is a preview only. The API
-          // owns pricing, portion availability, and the authoritative line total.
-          console.log("cart:add", {
-            type: "dish",
-            dishId: dish.id,
-            portionId: portion.id,
-            spice,
-            addons,
-            quantity,
-            total,
+          addItem({
+            kind: "dish",
+            refId: dish.id,
+            slug: dish.id,
+            name: dish.name,
+            nepaliName: dish.nepaliName,
+            unit: portion.serves,
+            unitPrice:
+              dish.price +
+              portion.price +
+              dish.addons
+                .filter((addon) => addons.includes(addon.id))
+                .reduce((sum, addon) => sum + addon.price, 0),
+            qty: quantity,
+            image: dish.image,
+            customizations: [
+              `${portion.label} portion`,
+              spiceLevelLabel(spice),
+              ...dish.addons
+                .filter((addon) => addons.includes(addon.id))
+                .map((addon) => addon.label),
+            ],
           })
         }
       >

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Leaf, Search, ShoppingBag } from "lucide-react";
 
+import { CartBadge } from "@/components/cart-badge";
 import { navLinks, siteName } from "@/lib/data";
 
 export function SiteHeader() {
@@ -52,16 +53,14 @@ export function SiteHeader() {
             NPR
           </span>
 
-          <button
-            type="button"
-            aria-label="Open basket, 3 items"
+          <Link
+            href="/bag"
+            aria-label="Open basket"
             className="relative inline-flex size-9 items-center justify-center rounded-full border border-foreground/10 transition-colors hover:border-mint/40 hover:text-mint"
           >
             <ShoppingBag className="size-4" aria-hidden />
-            <span className="absolute -right-1 -top-1 inline-flex min-w-4 items-center justify-center rounded-full bg-mint px-1 text-[10px] font-semibold text-primary-foreground">
-              3
-            </span>
-          </button>
+            <CartBadge />
+          </Link>
         </div>
       </div>
     </header>

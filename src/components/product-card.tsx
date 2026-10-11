@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Heart, Plus } from "lucide-react";
 
+import { AddToCartButton } from "@/components/add-to-cart-button";
 import { Button } from "@/components/ui/button";
 import { discountPercent, type Product } from "@/lib/data";
 
@@ -91,13 +92,22 @@ export function ProductCard({ product }: { product: Product }) {
               Notify me
             </Button>
           ) : (
-            <Button
-              size="icon-sm"
-              className="rounded-full"
-              aria-label={`Add ${product.name} to basket`}
+            <AddToCartButton
+              className="size-8 shrink-0 rounded-full bg-primary text-primary-foreground transition-opacity hover:opacity-90"
+              line={{
+                kind: "product",
+                refId: product.id,
+                slug: product.id,
+                name: product.name,
+                nepaliName: product.nepaliName,
+                unit: product.unit,
+                unitPrice: product.price,
+                qty: 1,
+                image: product.image,
+              }}
             >
               <Plus className="size-4" aria-hidden />
-            </Button>
+            </AddToCartButton>
           )}
         </div>
       </div>
