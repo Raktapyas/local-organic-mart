@@ -6,7 +6,7 @@ import { navLinks, siteName } from "@/lib/data";
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-50 border-b border-foreground/10 bg-background/70 backdrop-blur-xl backdrop-saturate-150">
+    <header className="sticky top-0 z-50 hidden border-b border-foreground/10 bg-background/70 backdrop-blur-xl backdrop-saturate-150 lg:block">
       <div className="mx-auto flex h-16 w-full max-w-7xl items-center gap-6 px-6">
         <Link
           href="/"

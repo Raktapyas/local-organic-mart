@@ -1465,6 +1465,19 @@ export const contact = {
 /** WhatsApp hand-off for the About enquiry form. Digits only, no spaces. */
 export const whatsappNumber = "9779851054917";
 
+/**
+ * Messaging deep links, shared by the mobile header, the floating contact
+ * buttons and the My Home support card so the three can't drift apart.
+ *
+ * E.164 digits: `wa.me` and `tel:` both want them bare, while Viber wants the
+ * number percent-encoded with a leading `+`.
+ */
+export const contactChannels = {
+  whatsapp: `https://wa.me/${whatsappNumber}`,
+  viber: `viber://chat?number=%2B${whatsappNumber}`,
+  call: `tel:+${whatsappNumber}`,
+} as const;
+
 /** About page hero copy. */
 export const aboutHero = {
   headline: "Buy local farm products online in Nepal.",
