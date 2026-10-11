@@ -26,6 +26,7 @@ import {
 import type { LucideIcon } from "lucide-react";
 
 import { CountdownChip } from "@/components/countdown-chip";
+import { HeroSlider } from "@/components/hero-slider";
 import { DishCard } from "@/components/dish-card";
 import { ProductCard } from "@/components/product-card";
 import { SectionHeader } from "@/components/section-header";
@@ -45,7 +46,7 @@ import {
   categories,
   dishes,
   farmers,
-  heroImage,
+  heroSlides,
   farmerBandImage,
   offerProduct,
   offers,
@@ -85,35 +86,12 @@ export default function Home() {
 
       <main className="flex flex-1 flex-col">
         {/* Hero */}
-        <section className="relative isolate flex min-h-[calc(100svh-4rem)] items-center overflow-hidden">
-          <Image
-            src={heroImage}
-            alt="Terraced highland fields above the Kathmandu valley at dawn"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-background/40" />
-          <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/50 to-transparent" />
+        <section className="relative isolate min-h-[calc(100svh-4rem)] overflow-hidden">
+          {/* Slider sits behind at z-0 and paints the backgrounds + copy. */}
+          <HeroSlider slides={heroSlides} />
 
-          <div className="relative mx-auto flex w-full max-w-7xl flex-col items-start gap-8 px-6 py-24">
-            <Badge
-              variant="outline"
-              className="border-gold/60 text-gold backdrop-blur-sm"
-            >
-              Kathmandu Valley delivery
-            </Badge>
-
-            <h1 className="max-w-3xl text-5xl leading-[1.02] tracking-tight text-balance sm:text-6xl md:text-7xl">
-              Organic grocery delivery in Kathmandu.
-            </h1>
-
-            <p className="max-w-lg text-base leading-relaxed text-muted-foreground">
-              Harvested before dawn in Kavre, Jumla, and Mustang. Dispatched
-              within three hours, still cold when it reaches your kitchen.
-            </p>
-
+          {/* Search floats above the slider, overlapping its lower third. */}
+          <div className="relative z-10 mx-auto flex min-h-[calc(100svh-4rem)] w-full max-w-7xl flex-col items-start justify-end px-6 pb-14">
             <form
               action="/search"
               role="search"

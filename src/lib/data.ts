@@ -1154,6 +1154,63 @@ export const heroImage = "/images/hero-farm.jpg";
 export const restaurantBandImage = "/images/restaurant-band.jpg";
 export const farmerBandImage = "/images/farmers-band.jpg";
 
+export type HeroSlide = {
+  /** `video` slides mount a background loop; `image` slides ken-burns a still. */
+  kind: "video" | "image";
+  /** Still frame. Doubles as the video poster so there is no pop on load. */
+  image: string;
+  /** Background loop, slide 1 only. Omitted means an image slide. */
+  video?: string;
+  alt: string;
+  kicker: string;
+  headline: string;
+  /** Word inside the headline that sweeps ivory to mint on hover. */
+  highlight: string;
+  /** One line. Deliberately short — see the client copy rules in NOTES.md. */
+  line: string;
+  cta: { label: string; href: string; variant: "mint" | "ghost" };
+};
+
+/**
+ * Home hero slider. The first slide is video; the rest are stills.
+ *
+ * `heroImage` is intentionally left alone — `/about` still uses it for the
+ * story row, so swapping the Home hero must not break that page.
+ */
+export const heroSlides: HeroSlide[] = [
+  {
+    kind: "video",
+    image: "/images/hero-terraces-poster.jpg",
+    video: "/videos/hero-terraces.mp4",
+    alt: "Terraced highland fields seen from above",
+    kicker: "Kathmandu Valley delivery",
+    headline: "Organic grocery delivery in Kathmandu.",
+    highlight: "Kathmandu",
+    line: "Harvested before dawn in Kavre, Jumla and Mustang, dispatched within three hours.",
+    cta: { label: "Browse the Mart", href: "/mart", variant: "mint" },
+  },
+  {
+    kind: "image",
+    image: farmerBandImage,
+    alt: "Valley farmers at work after the morning harvest",
+    kicker: "Farm to Home",
+    headline: "From our farmers to your home.",
+    highlight: "farmers",
+    line: "Three collectives across the valley and the high hills.",
+    cta: { label: "Meet the farmers", href: "/farmers", variant: "ghost" },
+  },
+  {
+    kind: "image",
+    image: "/images/dish-chicken-momo.jpg",
+    alt: "Steamed chicken momos plated for service",
+    kicker: "Local Organic Restaurant",
+    headline: "Hot meals in 30–45 minutes.",
+    highlight: "minutes",
+    line: "Momos, thalis and chai, cooked to order.",
+    cta: { label: "Order from the kitchen", href: "/restaurant", variant: "mint" },
+  },
+];
+
 /** Farm to Home hero copy. Lives here so the page inlines no strings. */
 export const farmToHome = {
   heroImage: "/images/farm-hero.jpg",
