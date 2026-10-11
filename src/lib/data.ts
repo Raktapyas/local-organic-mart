@@ -1460,3 +1460,52 @@ export function categoriesFromFarmer(
 export function dishBySlug(slug: string): Dish | undefined {
   return dishes.find((dish) => dish.id === slug);
 }
+
+export interface SearchResults {
+  /** Trimmed query, echoed back for the header and the input. */
+  query: string;
+  products: Product[];
+  dishes: Dish[];
+  /** Combined hit count across both grids. */
+  total: number;
+}
+
+/**
+ * Catalogue search behind `/search`.
+ *
+ * Products match on English name, Nepali name, or the merchandising category
+ * (`"Dairy & Eggs"`). Dishes match on name, Nepali name, or a menu tag, so
+ * `momo` finds the dish by name while `snacks` finds every tagged dish.
+ * Matching is a case-insensitive substring, so "Rice" and "rice" agree and
+ * "spin" still reaches "Spinach".
+ *
+ * An empty query returns nothing rather than the whole catalogue: `/search`
+ * with no `?q=` should prompt, not dump 33 tiles.
+ */
+export function searchCatalogue(rawQuery: string): SearchResults {
+  const query = rawQuery.trim();
+  const needle = query.toLowerCase();
+  if (!needle) return { query: "", products: [], dishes: [], total: 0 };
+
+  const matchedProducts = products.filter((product) =>
+    [product.name, product.nepaliName, product.category].some((field) =>
+      field.toLowerCase().includes(needle),
+    ),
+  );
+
+  const matchedDishes = dishes.filter((dish) =>
+    [dish.name, dish.nepaliName, ...dish.tags].some((field) =>
+      field.toLowerCase().includes(needle),
+    ),
+  );
+
+  return {
+    query,
+    products: matchedProducts,
+    dishes: matchedDishes,
+    total: matchedProducts.length + matchedDishes.length,
+  };
+}
+
+/** Queries offered when a search returns nothing. */
+export const searchSuggestions = ["milk", "rice", "momo", "honey"];
