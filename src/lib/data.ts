@@ -1022,6 +1022,46 @@ export const dealsCloseAt = "2026-10-13T05:00:00+05:45";
 
 // TODO: delivery zones — one flat fee for now, not zone-dependent.
 export const DELIVERY_FEE_FLAT = 120;
+
+/* ------------------------------------------------------------------ */
+/* Checkout demo content                                              */
+/*                                                                     */
+/* These are demo user records, not brand copy. They stand in for the  */
+/* data a real account and dispatch API would return.                  */
+/* ------------------------------------------------------------------ */
+
+export interface SavedAddress {
+  id: string;
+  label: string;
+  detail: string;
+}
+
+export const ADDRESSES: SavedAddress[] = [
+  { id: "home", label: "Home", detail: "Baluwatar, Kathmandu" },
+  { id: "office", label: "Office", detail: "Durbar Marg, Kathmandu" },
+];
+
+export interface DeliverySlot {
+  id: string;
+  label: string;
+}
+
+export const DELIVERY_SLOTS: DeliverySlot[] = [
+  { id: "asap", label: "ASAP" },
+  { id: "morning", label: "Morning" },
+  { id: "afternoon", label: "Afternoon" },
+  { id: "evening", label: "Evening" },
+];
+
+export interface Rider {
+  name: string;
+  role: string;
+}
+
+export const RIDER: Rider = {
+  name: "Suman",
+  role: "Delivery partner",
+};
 /** URL segment for a product, e.g. "/product/wild-honey". */
 export function productSlug(product: Product): string {
   return product.id;

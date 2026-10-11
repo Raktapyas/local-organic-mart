@@ -2,6 +2,8 @@
 
 import { create } from "zustand";
 
+import { DELIVERY_FEE_FLAT } from "@/lib/data";
+
 export type CartKind = "product" | "dish";
 
 export interface CartLine {
@@ -91,4 +93,19 @@ export function itemCount(lines: CartLine[]): number {
 /** Sum of line totals, before delivery. */
 export function subtotal(lines: CartLine[]): number {
   return lines.reduce((sum, line) => sum + line.unitPrice * line.qty, 0);
+}
+
+/**
+ * Single source of truth for cart money. The bag and the checkout summary both
+ * call this so their totals can never disagree. An empty cart charges no
+ * delivery.
+ */
+export function cartTotals(lines: CartLine[]) {
+  const itemSubtotal = subtotal(lines);
+  const delivery = lines.length > 0 ? DELIVERY_FEE_FLAT : 0;
+  return {
+    itemSubtotal,
+    delivery,
+    total: itemSubtotal + delivery,
+  };
 }

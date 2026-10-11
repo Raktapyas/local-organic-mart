@@ -5,7 +5,7 @@ import Link from "next/link";
 
 import { QuantityStepper } from "@/components/quantity-stepper";
 import { Button } from "@/components/ui/button";
-import { useCartStore, type CartLine } from "@/lib/cart-store";
+import { cartTotals, useCartStore, type CartLine } from "@/lib/cart-store";
 import { DELIVERY_FEE_FLAT, paymentMethods } from "@/lib/data";
 
 const npr = new Intl.NumberFormat("en-NP");
@@ -92,8 +92,7 @@ export function BagView() {
   const dishes = lines.filter((line) => line.kind === "dish");
   const isEmpty = lines.length === 0;
 
-  const subtotal = lines.reduce((sum, line) => sum + line.unitPrice * line.qty, 0);
-  const total = isEmpty ? 0 : subtotal + DELIVERY_FEE_FLAT;
+  const { itemSubtotal, total } = cartTotals(lines);
 
   if (isEmpty) {
     return (
@@ -141,7 +140,7 @@ export function BagView() {
         <div className="flex flex-col gap-4 rounded-xl border border-border bg-card p-6">
           <div className="flex items-center justify-between text-sm">
             <span className="text-muted-foreground">Subtotal</span>
-            <span>Rs {npr.format(subtotal)}</span>
+            <span>Rs {npr.format(itemSubtotal)}</span>
           </div>
           <div className="flex items-center justify-between text-sm">
             <span className="text-muted-foreground">Delivery</span>
