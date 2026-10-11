@@ -1084,6 +1084,46 @@ export function productBySlug(slug: string): Product | undefined {
   return products.find((product) => product.id === slug);
 }
 
+/** Nav categories that own a `/mart/[category]` route. Restaurant is not one. */
+export const martCategories = categories.filter(
+  (category) => category.href.startsWith("/mart/"),
+);
+
+/**
+ * Which `Product.category` values belong under each nav category.
+ *
+ * The two vocabularies are deliberately different: `Product.category` is a
+ * merchandising label ("Dairy & Eggs"), while the nav slug is a department
+ * ("dairy"). Nothing derives one from the other, so the membership is stated
+ * here rather than inferred. Departments with no matching line yet (`herbs`
+ * and `local`) resolve to an empty grid rather than a wrong one.
+ */
+const categoryMembership: Record<string, ProductCategory[]> = {
+  produce: ["Leafy Greens", "Vegetables"],
+  fruit: ["Fruit"],
+  dairy: ["Dairy & Eggs"],
+  essentials: ["Oils & Ghee"],
+  pantry: ["Grains & Pulses"],
+  meat: ["Meat"],
+  herbs: [],
+  local: [],
+  global: ["Foraged"],
+};
+
+/** Resolve a `/mart/[category]` slug. */
+export function categoryBySlug(
+  slug: string,
+): (typeof martCategories)[number] | undefined {
+  return martCategories.find((category) => category.id === slug);
+}
+
+/** Products filed under a nav category. Empty for an unknown slug. */
+export function productsInCategory(slug: string): Product[] {
+  const groups = categoryMembership[slug];
+  if (!groups) return [];
+  return products.filter((product) => groups.includes(product.category));
+}
+
 /** Resolve a slug back to its dish. */
 export function dishBySlug(slug: string): Dish | undefined {
   return dishes.find((dish) => dish.id === slug);
