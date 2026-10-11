@@ -1002,22 +1002,44 @@ export interface Farmer {
   location: string;
   /** Single-line summary of what makes this group distinct. */
   story: string;
+  /** Collective portrait, square, dark-lit. */
+  photo: string;
+  /** Elevation range shown beside the location pin. */
+  elevation: string;
+  /**
+   * `Product["region"]` values this collective supplies. Every chip on the
+   * page is derived from real products filed against these regions, so no
+   * listing or category can be invented here.
+   */
+  regions: string[];
+  /** Why this collective's lot is worth the premium. */
+  special: string;
 }
 
 export const farmers: Farmer[] = [
   {
     id: "kavre-growers-group",
     name: "Kavre Growers Group",
-    location: "Kavre Valley, 1,500m",
+    location: "Kavre Valley",
     story:
       "Fourteen families growing chemical-free greens on terrace plots watered by mountain springs, harvested strictly to order at dawn.",
+    photo: "/images/farmer-kavre.jpg",
+    elevation: "1,500m",
+    regions: ["Kavre"],
+    special:
+      "Palung spinach, cauliflower and vine tomatoes off the same spring-fed terrace block, picked the morning they ship.",
   },
   {
     id: "hill-producers-network",
     name: "Hill Producers Network",
-    location: "Jumla & High Hills, 2,400–3,200m",
+    location: "Jumla & High Hills",
     story:
       "Indigenous high-altitude agro-pastoral methods passed down through generations, with no synthetic intervention at any stage.",
+    photo: "/images/farmer-highlands.jpg",
+    elevation: "2,400–3,200m",
+    regions: ["Jumla", "Mustang", "Nagarkot", "Ilam", "Sindhupalchok"],
+    special:
+      "Marshi rice and Jumla simi beans from cold terraces, plus Mustang mustard oil and Ilam turmeric that no supermarket stocks.",
   },
   {
     id: "local-dairy-poultry-partners",
@@ -1025,6 +1047,11 @@ export const farmers: Farmer[] = [
     location: "Kathmandu Valley Foothills & Godavari",
     story:
       "Pasture-grazed native cows and country hens fed organic fodder, milked and collected the same day under cold-chain handling.",
+    photo: "/images/farmer-valley.jpg",
+    elevation: "900–1,300m",
+    regions: ["Kathmandu Valley", "Godavari", "Gorkha"],
+    special:
+      "Raw A2 milk and country eggs moved on a same-day cold chain, alongside gundruk cured in the valley winter air.",
   },
 ];
 
@@ -1113,6 +1140,27 @@ export type CategoryIconName =
 export const heroImage = "/images/hero-farm.jpg";
 export const restaurantBandImage = "/images/restaurant-band.jpg";
 export const farmerBandImage = "/images/farmers-band.jpg";
+
+/** Farm to Home hero copy. Lives here so the page inlines no strings. */
+export const farmToHome = {
+  heroImage: "/images/farm-hero.jpg",
+  heroAlt:
+    "Terraced highland fields and farmhouses above a Nepali valley at first light",
+  kicker: "Local → Trusted → Organic → Healthy",
+  headline: "From our farmers to your home",
+  subline:
+    "Three collectives, one cold chain. Every lot below names the household that grew it, the elevation it was grown at, and the batch it shipped under.",
+};
+
+/** The six custody steps shown in the traceability bar. */
+export const traceabilitySteps: { label: string; note: string }[] = [
+  { label: "Farm", note: "Terrace plot named on the lot" },
+  { label: "Farmer", note: "Collective steward verified" },
+  { label: "Production", note: "No synthetic intervention" },
+  { label: "Processing", note: "Stone ground or sun dried" },
+  { label: "Packing", note: "Sealed at the valley depot" },
+  { label: "Delivery", note: "Same-day cold-chain drop" },
+];
 
 export const paymentMethods = ["eSewa", "Khalti", "Fonepay QR", "Cash on Delivery"] as const;
 
@@ -1260,7 +1308,7 @@ const categoryMembership: Record<string, ProductCategory[]> = {
   fruit: ["Fruit"],
   dairy: ["Dairy & Eggs"],
   essentials: ["Oils & Ghee"],
-  pantry: ["Grains & Pulses"],
+  pantry: ["Grains & Pulses", "Heritage Grain"],
   meat: ["Meat"],
   herbs: ["Spices"],
   local: ["Fermented", "Pulses", "Heritage Grain"],
@@ -1279,6 +1327,35 @@ export function productsInCategory(slug: string): Product[] {
   const groups = categoryMembership[slug];
   if (!groups) return [];
   return products.filter((product) => groups.includes(product.category));
+}
+
+/** Products a collective supplies, matched on `Product.region`. */
+export function productsFromFarmer(farmer: Farmer): Product[] {
+  return products.filter((product) => farmer.regions.includes(product.region));
+}
+
+/**
+ * Nav categories a collective's lots appear under, as live `/mart/[category]`
+ * targets. Derived from the same membership map the Mart pages use, so a chip
+ * can never point at a department with nothing in it.
+ */
+export function categoriesFromFarmer(
+  farmer: Farmer,
+): { id: string; name: string; href: string }[] {
+  const supplied = new Set(
+    productsFromFarmer(farmer).map((product) => product.category),
+  );
+  return martCategories
+    .filter((category) =>
+      (categoryMembership[category.id] ?? []).some((group) =>
+        supplied.has(group),
+      ),
+    )
+    .map((category) => ({
+      id: category.id,
+      name: category.name,
+      href: category.href,
+    }));
 }
 
 /** Resolve a slug back to its dish. */
