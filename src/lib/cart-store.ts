@@ -1,6 +1,7 @@
 "use client";
 
 import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 import { DELIVERY_FEE_FLAT } from "@/lib/data";
 
@@ -51,40 +52,79 @@ interface CartState {
   clear: () => void;
 }
 
-// TODO: persist to localStorage + server-side recalc. Until then the cart is
-// session-only and unit prices are whatever the client computed.
-export const useCartStore = create<CartState>()((set) => ({
-  lines: [],
+declare global {
+  interface Window {
+    /** Guards the cross-tab listener against duplicate registration on HMR. */
+    __lomCartSync?: () => void;
+  }
+}
 
-  addItem: (line) =>
-    set((state) => {
-      const id = lineId(line.kind, line.refId, line.customizations);
-      const existing = state.lines.find((l) => l.id === id);
+/** localStorage key. Bump the suffix if the persisted shape ever changes. */
+const STORAGE_KEY = "lom-cart-v1";
 
-      if (existing) {
-        return {
-          lines: state.lines.map((l) =>
-            l.id === id ? { ...l, qty: l.qty + line.qty } : l,
-          ),
-        };
-      }
+// TODO: server-side recalc. The cart now survives a refresh and syncs across
+// tabs, but unit prices are still whatever the client computed — the API must
+// own pricing and tier eligibility before this is safe for real orders.
+export const useCartStore = create<CartState>()(
+  persist(
+    (set) => ({
+      lines: [],
 
-      return { lines: [...state.lines, { ...line, id }] };
+      addItem: (line) =>
+        set((state) => {
+          const id = lineId(line.kind, line.refId, line.customizations);
+          const existing = state.lines.find((l) => l.id === id);
+
+          if (existing) {
+            return {
+              lines: state.lines.map((l) =>
+                l.id === id ? { ...l, qty: l.qty + line.qty } : l,
+              ),
+            };
+          }
+
+          return { lines: [...state.lines, { ...line, id }] };
+        }),
+
+      setQty: (id, qty) =>
+        set((state) => ({
+          lines:
+            qty <= 0
+              ? state.lines.filter((l) => l.id !== id)
+              : state.lines.map((l) => (l.id === id ? { ...l, qty } : l)),
+        })),
+
+      removeLine: (id) =>
+        set((state) => ({ lines: state.lines.filter((l) => l.id !== id) })),
+
+      clear: () => set({ lines: [] }),
     }),
+    {
+      name: STORAGE_KEY,
+      storage: createJSONStorage(() => localStorage),
+      // Persist the cart contents only. Actions are re-created on every load
+      // and must never be written to storage.
+      partialize: (state) => ({ lines: state.lines }),
+    },
+  ),
+);
 
-  setQty: (id, qty) =>
-    set((state) => ({
-      lines:
-        qty <= 0
-          ? state.lines.filter((l) => l.id !== id)
-          : state.lines.map((l) => (l.id === id ? { ...l, qty } : l)),
-    })),
-
-  removeLine: (id) =>
-    set((state) => ({ lines: state.lines.filter((l) => l.id !== id) })),
-
-  clear: () => set({ lines: [] }),
-}));
+/**
+ * Cross-tab sync. `storage` fires in *other* tabs only, so each one re-reads
+ * the key the writer just persisted and merges it into its own store. Without
+ * this the badge would silently diverge between tabs.
+ */
+if (typeof window !== "undefined" && !window.__lomCartSync) {
+  window.__lomCartSync = () => {
+    window.addEventListener("storage", (event) => {
+      // `key === null` means the whole store was cleared.
+      if (event.key === null || event.key === STORAGE_KEY) {
+        void useCartStore.persist.rehydrate();
+      }
+    });
+  };
+  window.__lomCartSync();
+}
 
 /** Total number of units in the cart, across all lines. */
 export function itemCount(lines: CartLine[]): number {

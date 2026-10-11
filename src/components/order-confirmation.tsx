@@ -8,6 +8,7 @@ import {
   CheckCircle2,
   ClipboardList,
   CookingPot,
+  Info,
   MessageCircle,
   Package,
   Phone,
@@ -68,7 +69,15 @@ export function OrderConfirmation() {
     return () => clearInterval(id);
   }, [active, mounted]);
 
-  if (!mounted || !id || !lastOrder || lastOrder.id !== id) return null;
+  // Still hydrating: render nothing so the client paint matches the server
+  // HTML. Only once mounted do we know whether this id resolves.
+  if (!mounted) return null;
+
+  // TODO: a real API returns true 404s for unknown order ids. The server
+  // cannot validate a client-side order id, and Cache Components has already
+  // streamed the 200 by the time the client store is readable, so this is a
+  // designed state rather than `notFound()`.
+  if (!id || !lastOrder || lastOrder.id !== id) return <OrderNotFound />;
 
   return (
     <div className="flex flex-col gap-10">
@@ -208,6 +217,28 @@ export function OrderConfirmation() {
           <Link href="/mart">Continue shopping</Link>
         </Button>
       </div>
+    </div>
+  );
+}
+
+/**
+ * Shown for an order id that does not match the session's order — a fake id,
+ * a stale bookmark, or a refresh after the in-memory order was lost.
+ */
+function OrderNotFound() {
+  return (
+    <div className="flex flex-col items-center gap-6 py-24 text-center">
+      <span className="inline-flex size-12 items-center justify-center rounded-full bg-mint text-primary-foreground">
+        <Info className="size-6" aria-hidden />
+      </span>
+      <h1 className="text-4xl tracking-tight sm:text-5xl">Order not found.</h1>
+      <p className="max-w-md text-sm text-sage">
+        Demo orders live for this session only. Place a new order to see live
+        tracking.
+      </p>
+      <Button className="h-12 rounded-full px-8" asChild>
+        <Link href="/mart">Browse the Mart</Link>
+      </Button>
     </div>
   );
 }

@@ -43,6 +43,18 @@ that are not obvious from the code.
       `npm run build && npx tsc --noEmit`. A CI job that typechecks a fresh
       clone will fail without the build step first.
 
+- [ ] **CI pipeline.** No workflow exists. The ordering above is the hard
+      constraint: install → `next build` → `tsc --noEmit` → `lint`. Add the
+      Playwright job only once that suite lands, so a red e2e run does not mask
+      a red typecheck.
+
+- [ ] **Playwright e2e suite.** Post-demo investment, not a blocker. The
+      purchase funnel was verified manually with screenshots; that leaves the
+      cart rules (line merge on identical customizations, separate lines on a
+      changed spice, `qty 0` removal, cross-tab badge sync) protected only by
+      review. The store logic is already pure and extracted, so it ports to
+      `node:test` + Playwright fixtures cheaply.
+
 - [ ] **Copy: remaining invented numbers.** Under the rule "invented proper
       nouns, brand entities, and numbers are banned", two survive in
       `data.ts` and need a ruling:
@@ -51,10 +63,6 @@ that are not obvious from the code.
 
       Elevation and harvest times are plausibly real, so neither was changed
       unilaterally.
-
-- [ ] **Wire the cart.** `src/components/product-purchase.tsx` logs a
-      `cart:add` payload instead of writing to a store. Client-side totals are
-      preview only; the API owns pricing and tier eligibility.
 
 - [ ] **Wishlist.** The "Save to wishlist" control is inert.
 
@@ -73,6 +81,17 @@ that are not obvious from the code.
   for Wild Honey, so that code stayed put and the collision was resolved on the
   other product rather than the one with a spec reference.
 - **`design/` is untracked.** It is 22 MB of reference mockups, not app code.
+- **The cart persists; orders do not.** The cart is backed by `localStorage`
+  and rehydrates on load, and a `storage` listener re-reads the key so other
+  tabs follow along. The old session-only behaviour was retired: a client who
+  refreshed into an empty cart reads as broken, which is a worse demo risk than
+  the impurity of keeping the cart. `order-store` stays in-memory — a lost
+  order reference now lands on a designed "Order not found." state that says so
+  plainly, which is better than a blank page.
+- **`/order/:id` does not call `notFound()`.** The server cannot validate a
+  client-side order id, and Cache Components has already streamed the 200 by
+  the time the client store is readable. A real API returns true 404s; until
+  then this is a designed state, not an error.
 
 ## Not yet built
 
