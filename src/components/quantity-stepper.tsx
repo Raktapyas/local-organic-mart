@@ -7,22 +7,27 @@ import { cn } from "@/lib/utils";
 
 export function QuantityStepper({
   initial = 1,
+  quantity: controlled,
   min = 1,
   max = 99,
   onChange,
   className,
 }: {
   initial?: number;
+  /** Controlled value. Takes precedence over `initial` when provided. */
+  quantity?: number;
   min?: number;
   max?: number;
   onChange?: (quantity: number) => void;
   className?: string;
 }) {
-  const [quantity, setQuantity] = useState(initial);
+  const [uncontrolled, setUncontrolled] = useState(initial);
+  const controlledMode = controlled !== undefined;
+  const value = controlledMode ? controlled : uncontrolled;
 
   function update(next: number) {
     const clamped = Math.min(max, Math.max(min, next));
-    setQuantity(clamped);
+    if (!controlledMode) setUncontrolled(clamped);
     onChange?.(clamped);
   }
 
@@ -36,20 +41,20 @@ export function QuantityStepper({
       <button
         type="button"
         aria-label="Decrease quantity"
-        disabled={quantity <= min}
-        onClick={() => update(quantity - 1)}
+        disabled={value <= min}
+        onClick={() => update(value - 1)}
         className="text-muted-foreground transition-colors hover:text-mint disabled:opacity-40 disabled:hover:text-muted-foreground"
       >
         <Minus className="size-4" aria-hidden />
       </button>
       <span aria-live="polite" className="text-sm font-semibold tabular-nums">
-        {quantity}
+        {value}
       </span>
       <button
         type="button"
         aria-label="Increase quantity"
-        disabled={quantity >= max}
-        onClick={() => update(quantity + 1)}
+        disabled={value >= max}
+        onClick={() => update(value + 1)}
         className="text-muted-foreground transition-colors hover:text-mint disabled:opacity-40 disabled:hover:text-muted-foreground"
       >
         <Plus className="size-4" aria-hidden />
