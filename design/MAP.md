@@ -32,7 +32,7 @@ reference, not build targets, and are excluded.
 | 17 | `local_organic_mart_about_page_1` | `/about` | todo |
 | 18 | `local_organic_mart_about_page_2` | `/about` | todo (variant) |
 | 19 | `local_organic_mart_wild_honey_product_detail_page` | `/product/[slug]` | **done** |
-| 20 | `local_organic_mart_organic_dal_bhat_set_dish_detail_page` | `/restaurant/dishes/dal-bhat-set` | todo |
+| 20 | `local_organic_mart_organic_dal_bhat_set_dish_detail_page` | `/restaurant/[slug]` | **done** |
 
 **20 folders, 18 distinct routes.** Two routes have competing mockups; treat
 those folders as design options for the route, not as separate pages.
@@ -61,4 +61,4 @@ their own mocks.
 
 ## Progress
 
-4 of 18 routes built. 14 todo.
+5 of 18 routes built. 13 todo.

@@ -1,9 +1,9 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-import { productBySlug } from "@/lib/data";
+import { dishBySlug, productBySlug } from "@/lib/data";
 
 /**
- * Reject unknown product slugs before the response body streams.
+ * Reject unknown product and dish slugs before the response body streams.
  *
  * With Cache Components enabled a streamed page starts with a `200`, so a
  * `notFound()` raised during render only produces a soft 404. Checking the
@@ -12,16 +12,22 @@ import { productBySlug } from "@/lib/data";
  */
 export function proxy(request: NextRequest) {
   const slug = request.nextUrl.pathname.split("/").filter(Boolean)[1];
+  if (!slug) return NextResponse.next();
 
-  if (request.nextUrl.pathname.startsWith("/product/") && slug) {
-    if (!productBySlug(slug)) {
-      return new NextResponse(null, { status: 404 });
-    }
+  const segments = request.nextUrl.pathname.split("/").filter(Boolean);
+  const [root, second] = segments;
+
+  if (root === "product" && !productBySlug(slug)) {
+    return new NextResponse(null, { status: 404 });
+  }
+
+  if (root === "restaurant" && second && !dishBySlug(slug)) {
+    return new NextResponse(null, { status: 404 });
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: "/product/:slug",
+  matcher: ["/product/:slug", "/restaurant/:slug"],
 };

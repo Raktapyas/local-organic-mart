@@ -454,6 +454,44 @@ export interface Dish {
   image: string;
   /** Filter buckets. */
   tags: DishTag[];
+  /** Extra gallery frames after the main photo. Must not repeat `image`. */
+  gallery?: string[];
+  /** Extra serving sizes beyond the base `portion`. First entry is the default. */
+  portions: DishPortion[];
+  /** Optional sides that can be added to the order. */
+  addons: DishAddon[];
+}
+
+export interface DishPortion {
+  id: string;
+  label: string;
+  /** Added to the base price in NPR. */
+  price: number;
+  /** Replaces the base `portion` string when this option is selected. */
+  serves: string;
+}
+
+export interface DishAddon {
+  id: string;
+  label: string;
+  /** Added to the line total in NPR. */
+  price: number;
+}
+
+/** Spice levels offered on the detail page. Mapped onto `Dish.spice`. */
+export const spiceLevels: { id: DishSpice; label: string }[] = [
+  { id: "mild", label: "Mild" },
+  { id: "medium", label: "Medium" },
+  { id: "fiery", label: "Fiery" },
+];
+
+export type DishSpice = "mild" | "medium" | "fiery";
+
+/** Which spice pill to preselect for a dish. */
+export function spicePreset(dish: { spice: Spice }): DishSpice {
+  if (dish.spice === "Spicy") return "fiery";
+  if (dish.spice === "Medium") return "medium";
+  return "mild";
 }
 
 export const dishes: Dish[] = [
@@ -469,6 +507,15 @@ export const dishes: Dish[] = [
     diet: "Vegan",
     image: "/images/dal-bhat.jpg",
     tags: ["popular", "organic", "nepali-traditional"],
+    portions: [
+      { id: "regular", label: "Regular", price: 0, serves: "1 Thali" },
+      { id: "large", label: "Large", price: 120, serves: "2 Thali" },
+    ],
+    addons: [
+      { id: "papad", label: "Extra papad", price: 30 },
+      { id: "ghee", label: "Ghee (warm cup)", price: 40 },
+      { id: "dal", label: "Extra dal", price: 60 },
+    ],
   },
   {
     id: "chicken-momo",
@@ -482,6 +529,14 @@ export const dishes: Dish[] = [
     diet: "Non-Veg",
     image: "/images/dish-chicken-momo.jpg",
     tags: ["popular", "snacks"],
+    portions: [
+      { id: "regular", label: "Regular", price: 0, serves: "10 pcs" },
+      { id: "large", label: "Large", price: 120, serves: "15 pcs" },
+    ],
+    addons: [
+      { id: "chutney", label: "Extra chutney", price: 20 },
+      { id: "soup", label: "Side soup", price: 60 },
+    ],
   },
   {
     id: "veg-momo",
@@ -495,6 +550,14 @@ export const dishes: Dish[] = [
     diet: "Vegetarian",
     image: "/images/dish-veg-momo.jpg",
     tags: ["organic", "snacks"],
+    portions: [
+      { id: "regular", label: "Regular", price: 0, serves: "10 pcs" },
+      { id: "large", label: "Large", price: 120, serves: "15 pcs" },
+    ],
+    addons: [
+      { id: "chutney", label: "Extra chutney", price: 20 },
+      { id: "soup", label: "Side soup", price: 60 },
+    ],
   },
   {
     id: "veg-thukpa",
@@ -508,6 +571,14 @@ export const dishes: Dish[] = [
     diet: "Vegan",
     image: "/images/thukpa.jpg",
     tags: ["popular", "organic", "nepali-traditional"],
+    portions: [
+      { id: "regular", label: "Regular", price: 0, serves: "650 ml bowl" },
+      { id: "large", label: "Large", price: 120, serves: "900 ml bowl" },
+    ],
+    addons: [
+      { id: "papad", label: "Extra papad", price: 30 },
+      { id: "greens", label: "Extra greens", price: 40 },
+    ],
   },
   {
     id: "millet-dhido-set",
@@ -521,6 +592,15 @@ export const dishes: Dish[] = [
     diet: "Vegetarian",
     image: "/images/dish-dhido.jpg",
     tags: ["healthy", "organic", "nepali-traditional"],
+    portions: [
+      { id: "regular", label: "Regular", price: 0, serves: "1 Thali" },
+      { id: "large", label: "Large", price: 120, serves: "2 Thali" },
+    ],
+    addons: [
+      { id: "papad", label: "Extra papad", price: 30 },
+      { id: "ghee", label: "Ghee (warm cup)", price: 40 },
+      { id: "dal", label: "Extra dal", price: 60 },
+    ],
   },
   {
     id: "sel-roti-aloo-tarkari",
@@ -534,6 +614,14 @@ export const dishes: Dish[] = [
     diet: "Vegan",
     image: "/images/dish-sel-roti.jpg",
     tags: ["organic", "nepali-traditional", "snacks"],
+    portions: [
+      { id: "regular", label: "Regular", price: 0, serves: "2 pcs" },
+      { id: "large", label: "Large", price: 120, serves: "4 pcs" },
+    ],
+    addons: [
+      { id: "papad", label: "Extra papad", price: 30 },
+      { id: "ghee", label: "Ghee (warm cup)", price: 40 },
+    ],
   },
   {
     id: "chicken-choila",
@@ -547,6 +635,14 @@ export const dishes: Dish[] = [
     diet: "Non-Veg",
     image: "/images/dish-choila.jpg",
     tags: ["popular"],
+    portions: [
+      { id: "regular", label: "Regular", price: 0, serves: "300 g" },
+      { id: "large", label: "Large", price: 120, serves: "450 g" },
+    ],
+    addons: [
+      { id: "mustard", label: "Mustard oil drizzle", price: 30 },
+      { id: "greens", label: "Extra greens", price: 40 },
+    ],
   },
   {
     id: "masala-chiya",
@@ -560,6 +656,13 @@ export const dishes: Dish[] = [
     diet: "Contains dairy",
     image: "/images/chiya.jpg",
     tags: ["popular", "nepali-traditional", "drinks"],
+    portions: [
+      { id: "regular", label: "Regular", price: 0, serves: "250 ml" },
+      { id: "large", label: "Large", price: 120, serves: "350 ml" },
+    ],
+    addons: [
+      { id: "ginger", label: "Extra ginger", price: 20 },
+    ],
   },
   {
     id: "sweet-lassi",
@@ -573,6 +676,13 @@ export const dishes: Dish[] = [
     diet: "Vegetarian",
     image: "/images/lassi.jpg",
     tags: ["snacks", "drinks"],
+    portions: [
+      { id: "regular", label: "Regular", price: 0, serves: "300 ml" },
+      { id: "large", label: "Large", price: 120, serves: "450 ml" },
+    ],
+    addons: [
+      { id: "pistachio", label: "Pistachio crumble", price: 40 },
+    ],
   },
   {
     id: "fresh-orange-juice",
@@ -586,6 +696,13 @@ export const dishes: Dish[] = [
     diet: "Vegan",
     image: "/images/dish-orange-juice.jpg",
     tags: ["healthy", "drinks"],
+    portions: [
+      { id: "regular", label: "Regular", price: 0, serves: "400 ml" },
+      { id: "large", label: "Large", price: 120, serves: "500 ml" },
+    ],
+    addons: [
+      { id: "mint", label: "Mint", price: 15 },
+    ],
   },
   {
     id: "fresh-green-salad",
@@ -599,6 +716,14 @@ export const dishes: Dish[] = [
     diet: "Vegan",
     image: "/images/dish-salad.jpg",
     tags: ["healthy", "organic"],
+    portions: [
+      { id: "regular", label: "Regular", price: 0, serves: "350 g" },
+      { id: "large", label: "Large", price: 120, serves: "500 g" },
+    ],
+    addons: [
+      { id: "dressing", label: "Dressing on the side", price: 30 },
+      { id: "paneer", label: "Paneer", price: 80 },
+    ],
   },
   {
     id: "honey-lemon-tea",
@@ -612,6 +737,13 @@ export const dishes: Dish[] = [
     diet: "Vegetarian",
     image: "/images/dish-honey-tea.jpg",
     tags: ["healthy", "drinks"],
+    portions: [
+      { id: "regular", label: "Regular", price: 0, serves: "250 ml" },
+      { id: "large", label: "Large", price: 120, serves: "350 ml" },
+    ],
+    addons: [
+      { id: "honey", label: "Extra honey", price: 20 },
+    ],
   },
 ];
 
@@ -895,4 +1027,9 @@ export function productSlug(product: Product): string {
 /** Resolve a slug back to its product. */
 export function productBySlug(slug: string): Product | undefined {
   return products.find((product) => product.id === slug);
+}
+
+/** Resolve a slug back to its dish. */
+export function dishBySlug(slug: string): Dish | undefined {
+  return dishes.find((dish) => dish.id === slug);
 }
