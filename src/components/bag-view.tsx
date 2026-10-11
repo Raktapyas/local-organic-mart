@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { PhotoFallback } from "@/components/photo-fallback";
 import { QuantityStepper } from "@/components/quantity-stepper";
 import { Button } from "@/components/ui/button";
 import { cartTotals, useCartStore, type CartLine } from "@/lib/cart-store";
@@ -27,7 +28,11 @@ function BagRow({ line }: { line: CartLine }) {
         }
         className="relative size-20 shrink-0 overflow-hidden rounded-lg border border-border"
       >
-        <Image src={line.image} alt="" fill sizes="80px" className="object-cover" />
+        {line.image ? (
+          <Image src={line.image} alt="" fill sizes="80px" className="object-cover" />
+        ) : (
+          <PhotoFallback label={line.name} className="absolute inset-0" />
+        )}
       </Link>
 
       <div className="flex flex-1 flex-col gap-2">

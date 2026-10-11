@@ -43,8 +43,9 @@ export interface Product {
   /** Harvest window, e.g. "Oct–Mar". Absent for year-round staples. */
   season?: string;
   outOfStock: boolean;
-  /** Listing photo, square, dark-lit. */
-  image: string;
+  /** Listing photo, square, dark-lit. Omitted when no usable photo exists,
+   *  in which case the UI renders a gradient fallback. */
+  image?: string;
   /**
    * Extra gallery frames after the main photo. Entries must not repeat
    * `image` or each other. Most products ship with a single frame today —
@@ -370,8 +371,7 @@ export const products: Product[] = [
     desc: "Bilona churned from cultured butter, slow-cooked to a nutty aroma.",
     category: "Oils & Ghee",
     outOfStock: false,
-    image: "/images/product-ghee.jpg",
-    badge: "Bilona Churned",
+        badge: "Bilona Churned",
     flags: { organic: true, local: true },
     region: "Ilam",
     harvestedOn: "22 Jan",
@@ -506,6 +506,7 @@ export const dishes: Dish[] = [
     spice: "Mild",
     diet: "Vegan",
     image: "/images/dal-bhat.jpg",
+    gallery: ["/images/gallery-dal-1.jpg", "/images/gallery-dal-2.jpg"],
     tags: ["popular", "organic", "nepali-traditional"],
     portions: [
       { id: "regular", label: "Regular", price: 0, serves: "1 Thali" },
@@ -528,6 +529,7 @@ export const dishes: Dish[] = [
     spice: "Medium",
     diet: "Non-Veg",
     image: "/images/dish-chicken-momo.jpg",
+    gallery: ["/images/gallery-momo-1.jpg", "/images/gallery-momo-2.jpg"],
     tags: ["popular", "snacks"],
     portions: [
       { id: "regular", label: "Regular", price: 0, serves: "10 pcs" },
@@ -549,6 +551,7 @@ export const dishes: Dish[] = [
     spice: "Mild",
     diet: "Vegetarian",
     image: "/images/dish-veg-momo.jpg",
+    gallery: ["/images/gallery-veg-momo-1.jpg"],
     tags: ["organic", "snacks"],
     portions: [
       { id: "regular", label: "Regular", price: 0, serves: "10 pcs" },
@@ -570,6 +573,7 @@ export const dishes: Dish[] = [
     spice: "Medium",
     diet: "Vegan",
     image: "/images/thukpa.jpg",
+    gallery: ["/images/gallery-thukpa-1.jpg"],
     tags: ["popular", "organic", "nepali-traditional"],
     portions: [
       { id: "regular", label: "Regular", price: 0, serves: "650 ml bowl" },
@@ -591,6 +595,7 @@ export const dishes: Dish[] = [
     spice: "Medium",
     diet: "Vegetarian",
     image: "/images/dish-dhido.jpg",
+    gallery: ["/images/gallery-dhido-1.jpg", "/images/gallery-dhido-2.jpg"],
     tags: ["healthy", "organic", "nepali-traditional"],
     portions: [
       { id: "regular", label: "Regular", price: 0, serves: "1 Thali" },
@@ -613,6 +618,7 @@ export const dishes: Dish[] = [
     spice: "Mild",
     diet: "Vegan",
     image: "/images/dish-sel-roti.jpg",
+    gallery: ["/images/gallery-sel-roti-1.jpg"],
     tags: ["organic", "nepali-traditional", "snacks"],
     portions: [
       { id: "regular", label: "Regular", price: 0, serves: "2 pcs" },
@@ -634,6 +640,7 @@ export const dishes: Dish[] = [
     spice: "Spicy",
     diet: "Non-Veg",
     image: "/images/dish-choila.jpg",
+    gallery: ["/images/gallery-choila-1.jpg"],
     tags: ["popular"],
     portions: [
       { id: "regular", label: "Regular", price: 0, serves: "300 g" },
@@ -655,6 +662,7 @@ export const dishes: Dish[] = [
     spice: "Aromatic",
     diet: "Contains dairy",
     image: "/images/chiya.jpg",
+    gallery: ["/images/gallery-chiya-1.jpg"],
     tags: ["popular", "nepali-traditional", "drinks"],
     portions: [
       { id: "regular", label: "Regular", price: 0, serves: "250 ml" },
@@ -675,6 +683,7 @@ export const dishes: Dish[] = [
     spice: "Non-spicy",
     diet: "Vegetarian",
     image: "/images/lassi.jpg",
+    gallery: ["/images/gallery-lassi-1.jpg"],
     tags: ["snacks", "drinks"],
     portions: [
       { id: "regular", label: "Regular", price: 0, serves: "300 ml" },
@@ -695,6 +704,7 @@ export const dishes: Dish[] = [
     spice: "Non-spicy",
     diet: "Vegan",
     image: "/images/dish-orange-juice.jpg",
+    gallery: ["/images/gallery-orange-juice-1.jpg"],
     tags: ["healthy", "drinks"],
     portions: [
       { id: "regular", label: "Regular", price: 0, serves: "400 ml" },
@@ -715,6 +725,7 @@ export const dishes: Dish[] = [
     spice: "Non-spicy",
     diet: "Vegan",
     image: "/images/dish-salad.jpg",
+    gallery: ["/images/gallery-salad-1.jpg"],
     tags: ["healthy", "organic"],
     portions: [
       { id: "regular", label: "Regular", price: 0, serves: "350 g" },
@@ -736,6 +747,7 @@ export const dishes: Dish[] = [
     spice: "Aromatic",
     diet: "Vegetarian",
     image: "/images/dish-honey-tea.jpg",
+    gallery: ["/images/gallery-honey-tea-1.jpg"],
     tags: ["healthy", "drinks"],
     portions: [
       { id: "regular", label: "Regular", price: 0, serves: "250 ml" },

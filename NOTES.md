@@ -5,38 +5,37 @@ that are not obvious from the code.
 
 ## Open tasks
 
-- [ ] **Per-product photo top-up via Pexels MCP before client demo.** Every
-      product currently ships a single frame, so product galleries render one
-      image and no thumbnail strip. The gallery is adaptive by design: add
-      entries to `Product.gallery` in `src/lib/data.ts` and the thumbnails
-      appear. Entries must be unique — repeated sources are de-duplicated, and
-      a product with one frame renders no thumbs at all.
+- [x] **Per-product photo top-up via Pexels MCP.** Every flagged substitute is
+      now a literal subject match: mustard seeds for Mustard Oil, a real lassi
+      glass for Sweet Lassi, a whole cauliflower head, a pile of red lentils,
+      and a distinct candlelit dining room for the Restaurant hero. The
+      over-bright `category-local.jpg` was replaced with an artisanal cheese
+      wheel at luma 75.
 
-      Candidates still missing real photography:
+      Cow Ghee had no usable photo on Pexels across several searches, so
+      `Product.image` is now optional and Cow Ghee renders the `PhotoFallback`
+      gradient card instead of a wrong photo. Sel Roti's hand-in-frame shot was
+      replaced by a clay-tandoor bake with no hands.
 
-      | File | Subject | Problem |
-      |------|---------|---------|
-      | `public/images/product-ghee.jpg` | Cow Ghee | Wrong subject — a shop shelf of assorted jars. **Pexels searched, no ghee exists**: "ghee jar golden dark" and "clarified butter jar moody" both return skincare cream, white liquid, and spice jars; "melted butter ghee bowl" returns white butter and Turkish kaymak on a bright striped cloth. Needs a real product shot or a commissioned one. |
-      | `public/images/mustard-oil.jpg` | Mustard Oil | Substitute — vintage oil can |
-      | `public/images/lassi.jpg` | Sweet Lassi | Substitute — creamy drink, not lassi |
-      | `public/images/cauliflower.jpg` | Cauliflower | Partial — rustic bowl on black |
-      | `public/images/lentils.jpg` | Red Lentil | Wrong subject — shows a thali, not pulses |
-      | `public/images/dish-sel-roti.jpg` | Sel Roti | A hand is in frame |
-      | `public/images/restaurant-band.jpg` | Restaurant hero | Duplicates the Home restaurant band photo |
+      The earlier bad assets are gone: the pink-background `momo.jpg`, the
+      near-identical jam jars behind honey and ghee, and the dish gallery's
+      empty state.
 
-      `ghee.jpg` and `honey.jpg` were near-identical jam jars and have been
-      replaced with `product-ghee.jpg` and `product-honey.jpg`. The pink-background
-      `momo.jpg` is gone, replaced by `dish-chicken-momo.jpg` and
-      `dish-veg-momo.jpg`.
-      `dish-*.jpg` and `product-*.jpg` entries need the same treatment — see
-      the dish gallery note below.
+      The gallery is adaptive: add entries to `Product.gallery` /
+      `Dish.gallery` in `src/lib/data.ts` and the thumbnails appear. Entries
+      must be unique — repeated sources are de-duplicated, and an item with one
+      frame renders no thumbs at all.
 
-- [ ] **Dish gallery top-up.** No dish sets `gallery`, so every dish detail page
-      renders a single 4:3 frame with no thumbnails. The reference design for
-      `/restaurant/[slug]` shows a large photo plus two thumbnails, so the
-      built page currently reads sparser than the mockup. Add entries to
-      `Dish.gallery` in `src/lib/data.ts`; duplicates are dropped
-      automatically and one frame renders no thumbs.
+- [x] **Dish gallery top-up.** All twelve dishes now carry extra angles, so
+      `/restaurant/[slug]` renders the large photo plus thumbnails as the
+      mockup shows. Dal Bhat Set, Chicken Momo, and Millet Dhido Set have two
+      extras each; the other nine have one. Duplicates are dropped
+      automatically.
+
+      **Known limitation:** some second frames are close culinary relatives
+      rather than the exact recipe — the Sel Roti gallery frame is a fried ring
+      bread, and the Thukpa frame is noodle soup. Nothing shot-for-shot wrong,
+      but a client wanting exact dish photography will need a real shoot.
 
 - [ ] **Build before typecheck.** `tsc --noEmit` fails with
       `Cannot find name 'LayoutProps'` if run before `next build`, because

@@ -21,7 +21,8 @@ export interface CartLine {
   /** Price for one unit after customizations, in NPR. */
   unitPrice: number;
   qty: number;
-  image: string;
+  /** Optional: absent when the product has no photo yet. */
+  image?: string;
   /** Human-readable selections, e.g. ["Large portion", "Fiery"]. */
   customizations?: string[];
 }

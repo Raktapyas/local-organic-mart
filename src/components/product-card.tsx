@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Heart, Plus } from "lucide-react";
 
 import { AddToCartButton } from "@/components/add-to-cart-button";
+import { PhotoFallback } from "@/components/photo-fallback";
 import { Button } from "@/components/ui/button";
 import { discountPercent, type Product } from "@/lib/data";
 
@@ -20,6 +21,7 @@ export function ProductCard({ product }: { product: Product }) {
       }
     >
       <div className="relative aspect-square w-full overflow-hidden bg-muted">
+        {product.image ? (
         <Image
           src={product.image}
           alt={product.name}
@@ -31,6 +33,9 @@ export function ProductCard({ product }: { product: Product }) {
               : "object-cover transition-transform duration-500 group-hover:scale-105"
           }
         />
+        ) : (
+          <PhotoFallback label={product.category} className="absolute inset-0" />
+        )}
 
         {sold ? (
           <div className="absolute inset-0 flex items-center justify-center bg-background/60 p-3">

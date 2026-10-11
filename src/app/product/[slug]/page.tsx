@@ -12,6 +12,7 @@ import {
   Star,
 } from "lucide-react";
 
+import { PhotoFallback } from "@/components/photo-fallback";
 import { ProductCard } from "@/components/product-card";
 import { ProductPurchase } from "@/components/product-purchase";
 import { SectionHeader } from "@/components/section-header";
@@ -76,9 +77,11 @@ function Stars({ rating }: { rating: number }) {
 /**
  * Unique gallery frames for a product, main photo first. Duplicates are
  * dropped so a product never shows the same frame twice, and a product with
- * only one frame renders no thumbnail strip at all.
+ * only one frame renders no thumbnail strip at all. A product with no photo
+ * returns no frames and renders the gradient fallback instead.
  */
 function galleryFrames(product: Product) {
+  if (!product.image) return [];
   return [...new Set([product.image, ...(product.gallery ?? [])])];
 }
 
@@ -128,14 +131,21 @@ export default async function ProductPage({
           {/* Gallery */}
           <div className="flex flex-col gap-4">
             <div className="relative aspect-square overflow-hidden rounded-xl border border-border">
-              <Image
-                src={frames[0]}
-                alt={product.name}
-                fill
-                priority
-                sizes="(min-width: 1024px) 45vw, 92vw"
-                className="object-cover"
-              />
+              {frames[0] ? (
+                <Image
+                  src={frames[0]}
+                  alt={product.name}
+                  fill
+                  priority
+                  sizes="(min-width: 1024px) 45vw, 92vw"
+                  className="object-cover"
+                />
+              ) : (
+                <PhotoFallback
+                  label={product.category}
+                  className="absolute inset-0"
+                />
+              )}
             </div>
             {thumbs.length > 0 && (
               <ul className="grid grid-cols-3 gap-4">
