@@ -27,6 +27,21 @@ that are not obvious from the code.
       replaced with `product-ghee.jpg` and `product-honey.jpg`. The pink-background
       `momo.jpg` is gone, replaced by `dish-chicken-momo.jpg` and
       `dish-veg-momo.jpg`.
+      `dish-*.jpg` and `product-*.jpg` entries need the same treatment — see
+      the dish gallery note below.
+
+- [ ] **Dish gallery top-up.** No dish sets `gallery`, so every dish detail page
+      renders a single 4:3 frame with no thumbnails. The reference design for
+      `/restaurant/[slug]` shows a large photo plus two thumbnails, so the
+      built page currently reads sparser than the mockup. Add entries to
+      `Dish.gallery` in `src/lib/data.ts`; duplicates are dropped
+      automatically and one frame renders no thumbs.
+
+- [ ] **Build before typecheck.** `tsc --noEmit` fails with
+      `Cannot find name 'LayoutProps'` if run before `next build`, because
+      that type is generated into `.next/types` by the build. Run
+      `npm run build && npx tsc --noEmit`. A CI job that typechecks a fresh
+      clone will fail without the build step first.
 
 - [ ] **Copy: remaining invented numbers.** Under the rule "invented proper
       nouns, brand entities, and numbers are banned", two survive in
