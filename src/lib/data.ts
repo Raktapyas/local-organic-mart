@@ -26,7 +26,11 @@ export type ProductCategory =
   | "Grains & Pulses"
   | "Oils & Ghee"
   | "Foraged"
-  | "Meat";
+  | "Meat"
+  | "Spices"
+  | "Fermented"
+  | "Pulses"
+  | "Heritage Grain";
 
 export interface Product {
   id: string;
@@ -435,6 +439,157 @@ export const products: Product[] = [
     harvestedOn: "14 Aug",
     batch: "N-061",
     freshness: "Next harvest opens April",
+  },
+  {
+    id: "turmeric",
+    name: "Turmeric",
+    nepaliName: "बेसार",
+    price: 120,
+    unit: "100 g pouch",
+    desc: "Lakpahrid hill turmeric, stone-ground low so the colour stays deep.",
+    category: "Spices",
+    outOfStock: false,
+    image: "/images/turmeric.jpg",
+    badge: "Stone Ground",
+    flags: { organic: true, local: true },
+    region: "Ilam",
+    harvestedOn: "21 Jan",
+    batch: "I-247",
+    freshness: "Stone-ground, no filler",
+    bulkTiers: [
+      { label: "1–3 kg retail", note: "Standard" },
+      { label: "4–15 kg", note: "−5% savings" },
+      { label: "16+ kg", note: "−10% savings" },
+    ],
+  },
+  {
+    id: "timur-pepper",
+    name: "Timur Pepper",
+    nepaliName: "तिमुर",
+    price: 350,
+    unit: "50 g jar",
+    desc: "Wild-flushed Mustang timo, whole and sun-dried for a clean citrus heat.",
+    category: "Spices",
+    outOfStock: false,
+    image: "/images/timur-pepper.jpg",
+    badge: "Wild Harvested",
+    flags: { organic: true, local: true },
+    region: "Mustang",
+    harvestedOn: "8 Nov",
+    batch: "M-082",
+    freshness: "Sun-dried, whole husks",
+  },
+  {
+    id: "cinnamon",
+    name: "Cinnamon",
+    nepaliName: "दालचीनी",
+    price: 180,
+    unit: "100 g pouch",
+    desc: "Sal forest bark quills, hand-rolled and graded by length before packing.",
+    category: "Spices",
+    outOfStock: false,
+    image: "/images/cinnamon.jpg",
+    badge: "Hand Rolled",
+    flags: { organic: true, local: true },
+    region: "Sindhupalchok",
+    harvestedOn: "3 Mar",
+    batch: "S-118",
+    freshness: "Whole quills, ground to order",
+  },
+  {
+    id: "jimbu",
+    name: "Wild Jimbu",
+    nepaliName: "जिम्बु",
+    price: 90,
+    unit: "20 g jar",
+    desc: "Shrouded high-altitude fruit picked after the first frost, then dried.",
+    category: "Spices",
+    outOfStock: false,
+    image: "/images/jimbu.jpg",
+    badge: "Frost Picked",
+    flags: { organic: true, local: true },
+    region: "Mustang",
+    harvestedOn: "26 Dec",
+    batch: "M-091",
+    freshness: "Dried in the open air",
+  },
+  {
+    id: "gundruk",
+    name: "Gundruk",
+    nepaliName: "गुन्द्रुक",
+    price: 250,
+    unit: "200 g bundle",
+    desc: "Sunkhoto greens wilted, sun-cured and sour-sweet for a winter kitchen.",
+    category: "Fermented",
+    outOfStock: false,
+    image: "/images/gundruk.jpg",
+    badge: "Naturally Fermented",
+    flags: { local: true },
+    region: "Kathmandu Valley",
+    harvestedOn: "12 Jan",
+    batch: "K-181",
+    freshness: "Fermented 6 weeks",
+  },
+  {
+    id: "chhurpi",
+    name: "Chhurpi",
+    nepaliName: "छुर्पी",
+    price: 450,
+    unit: "100 g block",
+    desc: "Hard yak cheese, smoked over juniper and cured until crumbly.",
+    category: "Fermented",
+    outOfStock: false,
+    image: "/images/chhurpi.jpg",
+    badge: "Juniper Smoked",
+    flags: { organic: true, local: true },
+    region: "Gorkha",
+    harvestedOn: "9 Feb",
+    batch: "GV-064",
+    freshness: "Cured 3 months",
+  },
+  {
+    id: "jumla-simi-beans",
+    name: "Jumla Simi Beans",
+    nepaliName: "जुम्ला सिमी",
+    price: 380,
+    unit: "500 g pouch",
+    desc: "Black simi beans grown above 2,800 m and hand-sorted for colour.",
+    category: "Pulses",
+    outOfStock: false,
+    image: "/images/simi-beans.jpg",
+    badge: "Jumla Organic",
+    flags: { organic: true, local: true },
+    region: "Jumla",
+    harvestedOn: "30 Oct",
+    batch: "J-412",
+    freshness: "Hand-sorted, unpolished",
+    bulkTiers: [
+      { label: "1–5 kg retail", note: "Standard" },
+      { label: "6–25 kg", note: "−5% savings" },
+      { label: "26+ kg", note: "−10% savings" },
+    ],
+  },
+  {
+    id: "marshi-rice",
+    name: "Marshi Rice",
+    nepaliName: "मार्सी चामल",
+    price: 520,
+    unit: "1 kg bag",
+    desc: "Cold-terrace paddy from Jumla, milled to order so the bran stays on.",
+    category: "Heritage Grain",
+    outOfStock: false,
+    image: "/images/marshi-rice.jpg",
+    badge: "Cold Terrace",
+    flags: { organic: true, local: true },
+    region: "Jumla",
+    harvestedOn: "17 Nov",
+    batch: "J-418",
+    freshness: "Milled to order",
+    bulkTiers: [
+      { label: "1–10 kg retail", note: "Standard" },
+      { label: "11–40 kg", note: "−5% savings" },
+      { label: "41+ kg", note: "−10% savings" },
+    ],
   },
 ];
 
@@ -1095,8 +1250,10 @@ export const martCategories = categories.filter(
  * The two vocabularies are deliberately different: `Product.category` is a
  * merchandising label ("Dairy & Eggs"), while the nav slug is a department
  * ("dairy"). Nothing derives one from the other, so the membership is stated
- * here rather than inferred. Departments with no matching line yet (`herbs`
- * and `local`) resolve to an empty grid rather than a wrong one.
+ * here rather than inferred. Each department owns its own label so the sets
+ * stay disjoint — "Pulses" and "Heritage Grain" are separate from "Grains &
+ * Pulses" purely so the two Jumla lots can sit under `local` without dragging
+ * the pantry's rice and lentils across with them.
  */
 const categoryMembership: Record<string, ProductCategory[]> = {
   produce: ["Leafy Greens", "Vegetables"],
@@ -1105,8 +1262,8 @@ const categoryMembership: Record<string, ProductCategory[]> = {
   essentials: ["Oils & Ghee"],
   pantry: ["Grains & Pulses"],
   meat: ["Meat"],
-  herbs: [],
-  local: [],
+  herbs: ["Spices"],
+  local: ["Fermented", "Pulses", "Heritage Grain"],
   global: ["Foraged"],
 };
 
