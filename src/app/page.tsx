@@ -185,7 +185,15 @@ export default function Home() {
                 title="This week's big deals"
                 subline="Small allocations from this week's harvest."
               />
-              <CountdownChip closesAt={dealsCloseAt} />
+              <div className="flex items-center gap-4">
+                <CountdownChip closesAt={dealsCloseAt} />
+                <Button variant="outline" className="rounded-full" asChild>
+                  <Link href="/offers">
+                    See all
+                    <ArrowRight className="size-4" aria-hidden />
+                  </Link>
+                </Button>
+              </div>
             </div>
 
             <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

@@ -1162,6 +1162,104 @@ export const traceabilitySteps: { label: string; note: string }[] = [
   { label: "Delivery", note: "Same-day cold-chain drop" },
 ];
 
+export type MembershipIconName =
+  | "percent"
+  | "stars"
+  | "clock"
+  | "truck"
+  | "gift"
+  | "headset";
+
+/** Patron Guild benefits. */
+export const membershipBenefits: {
+  icon: MembershipIconName;
+  title: string;
+  note: string;
+}[] = [
+  {
+    icon: "percent",
+    title: "10% off Mart items",
+    note: "Applied at checkout across pantry, dairy and farm provisions.",
+  },
+  {
+    icon: "stars",
+    title: "2 points per Rs 100 spent",
+    note: "Reward units redeemable on Mart orders and Restaurant thalis.",
+  },
+  {
+    icon: "clock",
+    title: "Early access to deal windows",
+    note: "Book flash allocations 24 hours before public release.",
+  },
+  {
+    icon: "truck",
+    title: "Lower free-delivery threshold",
+    note: "Complimentary cold-chain delivery from Rs 800 within the Valley.",
+  },
+  {
+    icon: "gift",
+    title: "Member-only festival baskets",
+    note: "Reserved allocation of seasonal hampers before public dispatch.",
+  },
+  {
+    icon: "headset",
+    title: "Priority support",
+    note: "Dedicated line for members, answered before general enquiries.",
+  },
+];
+
+/** Patron Guild pricing. TODO: the real membership API owns both figures. */
+export const membershipPlan = {
+  name: "Annual Membership",
+  price: 2999,
+  monthlyEquivalent: 250,
+  monthlyPrice: 299,
+  blurb: "Covers Mart + Restaurant.",
+  includes: [
+    "Instant 10% Mart markdown across all provisions",
+    "2x reward points redeemable online and in dining rooms",
+    "Free cold-chain delivery on orders over Rs 800",
+    "Pause or cancel any time from account settings",
+  ],
+};
+
+export const membershipFaqs: { question: string; answer: string }[] = [
+  {
+    question: "How does the 10% Mart discount apply to my basket?",
+    answer:
+      "It is deducted automatically at checkout across eligible pantry, dairy and farm provisions once your membership is active on the account.",
+  },
+  {
+    question: "Can I redeem reward points on Restaurant orders?",
+    answer:
+      "Yes. Reward points accrue on Mart and Restaurant orders alike and are drawn down against either.",
+  },
+  {
+    question: "Where does free delivery apply?",
+    answer:
+      "Across Kathmandu, Lalitpur and Bhaktapur for member carts above Rs 800.",
+  },
+  {
+    question: "How do I pause or cancel?",
+    answer:
+      "Pause or cancel from account settings at any time, with no notice period or penalty.",
+  },
+];
+
+/**
+ * Bundles that add two real dishes to the basket as one click. Saving is
+ * derived from the dish prices above rather than hard-coded, so the copy and
+ * the maths can never disagree.
+ */
+export const comboBundles: {
+  id: string;
+  dishIds: [string, string];
+  saving: number;
+}[] = [
+  { id: "dal-bhat-chiya", dishIds: ["dal-bhat-set", "masala-chiya"], saving: 50 },
+  { id: "momo-lassi", dishIds: ["chicken-momo", "sweet-lassi"], saving: 40 },
+];
+
 export const paymentMethods = ["eSewa", "Khalti", "Fonepay QR", "Cash on Delivery"] as const;
 
 /** Four link columns; the brand column is rendered separately. */
