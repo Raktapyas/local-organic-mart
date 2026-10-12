@@ -154,11 +154,21 @@ export function MobileHeader() {
 
         <Link
           href="/"
-          className="flex shrink-0 items-center gap-2 text-foreground transition-opacity hover:opacity-80"
+          className="flex min-w-0 shrink items-center gap-1.5 text-foreground transition-opacity hover:opacity-80"
         >
-          <Leaf className="size-5 text-mint" aria-hidden />
-          <span className="font-heading text-lg tracking-tight">{siteName}</span>
+          <Leaf className="size-4 shrink-0 text-mint sm:size-5" aria-hidden />
+          <span className="truncate font-heading text-[15px] tracking-tight sm:text-lg">
+            {siteName}
+          </span>
         </Link>
+
+        {/* Compact reference pills; the drawer keeps the full-size rows. */}
+        <div className="ml-auto flex shrink-0 items-center gap-1.5">
+          <LanguageToggle className="px-2 py-1 text-[10px]" />
+          <span className="rounded-full border border-foreground/10 px-2 py-1 text-[10px] text-muted-foreground">
+            NPR
+          </span>
+        </div>
 
         <div className="flex items-center gap-2">
           <div className="relative" ref={popoverRef}>

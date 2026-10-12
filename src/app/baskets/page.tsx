@@ -64,8 +64,11 @@ export default function BasketsPage() {
           </ul>
         </section>
 
-        {/* Subscriptions */}
-        <section className="mx-auto w-full max-w-7xl px-6 pb-24">
+        {/* Subscriptions — `id` is the target for Home's "Set up a plan" band. */}
+        <section
+          id="subscriptions"
+          className="mx-auto w-full max-w-7xl scroll-mt-24 px-6 pb-24"
+        >
           <h2 className="text-xs tracking-wider text-sage uppercase">
             Recurring plans
           </h2>

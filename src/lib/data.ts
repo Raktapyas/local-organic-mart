@@ -1259,16 +1259,16 @@ export const restaurantBandImage = "/images/restaurant-band.jpg";
 export const farmerBandImage = "/images/farmers-band.jpg";
 
 export type HeroSlide = {
-  /** `video` slides mount a background loop; `image` slides ken-burns a still. */
+  /** All Home slides are video; `image` remains valid for image slides. */
   kind: "video" | "image";
   /** Still frame. Doubles as the video poster so there is no pop on load. */
   image: string;
-  /** Background loop, slide 1 only. Omitted means an image slide. */
+  /** Background loop. Omitted means an image slide. */
   video?: string;
   alt: string;
   kicker: string;
   headline: string;
-  /** Word inside the headline that sweeps ivory to mint on hover. */
+  /** One word set in italic mint inside the headline. */
   highlight: string;
   /** One line. Deliberately short — see the client copy rules in NOTES.md. */
   line: string;
@@ -1276,10 +1276,13 @@ export type HeroSlide = {
 };
 
 /**
- * Home hero slider. The first slide is video; the rest are stills.
+ * Home hero slider. All three slides are video, so the hero never reads as a
+ * static banner.
  *
- * `heroImage` is intentionally left alone — `/about` still uses it for the
- * story row, so swapping the Home hero must not break that page.
+ * Videos are muted, looping and short; they carry mood, not information, so
+ * the stills behind them are dark enough (luma <= 135) for white text to hold
+ * contrast. `heroImage` is intentionally left alone — `/about` still uses it
+ * for the story row, so swapping the Home hero must not break that page.
  */
 export const heroSlides: HeroSlide[] = [
   {
@@ -1289,31 +1292,81 @@ export const heroSlides: HeroSlide[] = [
     alt: "Terraced highland fields seen from above",
     kicker: "Kathmandu Valley delivery",
     headline: "Organic grocery delivery in Kathmandu.",
-    highlight: "Kathmandu",
+    highlight: "Organic",
     line: "Harvested before dawn in Kavre, Jumla and Mustang, dispatched within three hours.",
     cta: { label: "Browse the Mart", href: "/mart", variant: "mint" },
   },
   {
-    kind: "image",
-    image: farmerBandImage,
-    alt: "Valley farmers at work after the morning harvest",
+    kind: "video",
+    image: "/images/hero-wok-poster.jpg",
+    video: "/videos/hero-wok.mp4",
+    alt: "A wok over a high flame, steam lifting off the pan",
+    kicker: "Local Organic Restaurant",
+    headline: "Hot meals in 30–45 minutes.",
+    highlight: "Hot",
+    line: "Momos, thalis and chai, cooked to order in the valley.",
+    cta: { label: "Order from the kitchen", href: "/restaurant", variant: "mint" },
+  },
+  {
+    kind: "video",
+    image: "/images/hero-market-poster.jpg",
+    video: "/videos/hero-market.mp4",
+    alt: "A market stall stacked with cucumbers, carrots and sweet potato",
     kicker: "Farm to Home",
     headline: "From our farmers to your home.",
     highlight: "farmers",
     line: "Three collectives across the valley and the high hills.",
     cta: { label: "Meet the farmers", href: "/farmers", variant: "ghost" },
   },
+];
+
+/**
+ * The weekly restock list on Home.
+ *
+ * Product ids resolve against the real catalogue, so every chip here is
+ * something the mart actually stocks and `Reorder all` adds genuine cart
+ * lines. Quantities are per week per household.
+ */
+export const WEEKLY_ESSENTIALS: { productId: string; qty: number }[] = [
+  { productId: "fresh-milk", qty: 3 },
+  { productId: "farm-eggs", qty: 1 },
+  { productId: "himali-basmati-rice", qty: 1 },
+  { productId: "tomatoes", qty: 1 },
+  { productId: "red-lentil", qty: 1 },
+];
+
+/** Quick-search chips under the Home search field. */
+export const SEARCH_HINT_CHIPS = ["milk", "rice", "spinach", "honey"];
+
+/**
+ * The three expandable trust cards.
+ *
+ * Two lines of body copy each, per the client copy rule. `zones` and `slots`
+ * are pulled from live data rather than restated, so the delivery card cannot
+ * drift from what checkout actually offers.
+ */
+export const trustCards: {
+  id: string;
+  title: string;
+  body: string;
+}[] = [
   {
-    kind: "image",
-    image: "/images/dish-chicken-momo.jpg",
-    alt: "Steamed chicken momos plated for service",
-    kicker: "Local Organic Restaurant",
-    headline: "Hot meals in 30–45 minutes.",
-    highlight: "minutes",
-    line: "Momos, thalis and chai, cooked to order.",
-    cta: { label: "Order from the kitchen", href: "/restaurant", variant: "mint" },
+    id: "sourcing",
+    title: "Where your food comes from",
+    body: "Farm-direct from three collectives. Every product names the household that grew it.",
+  },
+  {
+    id: "organic",
+    title: "What makes it organic",
+    body: "No synthetic pesticides, only certified partners. Certified lot numbers on every pack.",
+  },
+  {
+    id: "delivery",
+    title: "How delivery works",
+    body: "",
   },
 ];
+
 
 /** Farm to Home hero copy. Lives here so the page inlines no strings. */
 export const farmToHome = {

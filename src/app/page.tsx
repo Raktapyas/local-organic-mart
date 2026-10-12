@@ -4,7 +4,6 @@ import {
   ArrowRight,
   Camera,
   MapPin,
-  Search,
   ShieldCheck,
   Sparkles,
   Star,
@@ -27,6 +26,9 @@ import type { LucideIcon } from "lucide-react";
 
 import { CountdownChip } from "@/components/countdown-chip";
 import { HeroSlider } from "@/components/hero-slider";
+import { HomeSearch } from "@/components/home-search";
+import { TrustStack } from "@/components/trust-stack";
+import { WeeklyEssentials } from "@/components/weekly-essentials";
 import { DishCard } from "@/components/dish-card";
 import { ProductCard } from "@/components/product-card";
 import { SectionHeader } from "@/components/section-header";
@@ -49,6 +51,8 @@ import {
   farmerBandImage,
   offerProduct,
   offers,
+  paymentMethods,
+  products,
   restaurantBandImage,
   dealsCloseAt,
   type CategoryIconName,
@@ -84,34 +88,18 @@ export default function Home() {
 
       <main className="flex flex-1 flex-col">
         {/* Hero */}
-        <section className="relative isolate min-h-[calc(100svh-4rem)] overflow-hidden">
+        <section className="relative isolate h-[72svh] overflow-hidden md:min-h-[calc(100svh-4rem)] md:h-auto">
           {/* Slider sits behind at z-0 and paints the backgrounds + copy. */}
           <HeroSlider slides={heroSlides} />
 
           {/* Search floats above the slider, overlapping its lower third. */}
-          <div className="relative z-10 mx-auto flex min-h-[calc(100svh-4rem)] w-full max-w-7xl flex-col items-start justify-end px-6 pb-14">
-            <form
-              action="/search"
-              role="search"
-              className="flex w-full max-w-xl items-center gap-3 rounded-full border border-foreground/15 bg-background/60 p-2 pl-5 shadow-lg backdrop-blur-xl transition-colors focus-within:border-mint/50"
-            >
-              <Search className="size-4 shrink-0 text-muted-foreground" aria-hidden />
-              <input
-                type="search"
-                name="q"
-                aria-label="Search produce, pantry, and menus"
-                placeholder="Search produce, pantry, and menus"
-                className="h-9 min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
-              />
-              <Button type="submit" className="rounded-full px-5">
-                Search
-              </Button>
-            </form>
+          <div className="relative z-10 mx-auto flex h-[72svh] w-full max-w-7xl flex-col items-start justify-end px-6 pb-10 md:min-h-[calc(100svh-4rem)] md:h-auto md:pb-14">
+            <HomeSearch />
           </div>
         </section>
 
         {/* Category rail */}
-        <section className="mx-auto w-full max-w-7xl px-6 py-20">
+        <section className="mx-auto w-full max-w-7xl px-6 py-10 sm:py-20">
           <SectionHeader
             title="Shop by category"
             titleKey="sections.shopByCategory"
@@ -119,7 +107,7 @@ export default function Home() {
             sublineKey="sections.shopByCategorySub"
           />
 
-          <ul className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+          <ul className="mt-6 grid grid-cols-3 gap-3 sm:mt-6 sm:mt-10 sm:gap-4 lg:grid-cols-5">
             {categories.map((category) => {
               const Icon = categoryIcons[category.icon];
               return (
@@ -132,19 +120,20 @@ export default function Home() {
                       src={category.image}
                       alt=""
                       fill
-                      sizes="(min-width: 1024px) 20vw, (min-width: 640px) 33vw, 50vw"
+                      sizes="(min-width: 1024px) 20vw, (min-width: 640px) 33vw, 33vw"
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
-                    <div className="absolute inset-x-0 bottom-0 flex flex-col gap-1 p-4">
+                    <div className="absolute inset-x-0 bottom-0 flex flex-col gap-1 p-3 sm:p-4">
                       <Icon
                         className="size-4 text-mint transition-transform duration-300 group-hover:-translate-y-0.5"
                         aria-hidden
                       />
-                      <h3 className="font-heading text-base leading-tight">
+                      <h3 className="font-heading text-xs leading-tight sm:text-base">
                         {category.name}
                       </h3>
-                      <p className="mt-0.5 text-xs text-muted-foreground">
+                      {/* The note does not survive three columns on a phone. */}
+                      <p className="mt-0.5 hidden text-xs text-muted-foreground sm:block">
                         {category.note}
                       </p>
                     </div>
@@ -155,9 +144,20 @@ export default function Home() {
           </ul>
         </section>
 
+        {/* Weekly essentials */}
+        <section className="mx-auto w-full max-w-7xl px-6 py-10 sm:py-20">
+          <SectionHeader
+            title="Weekly essentials"
+            subline="The five things most Kathmandu households reorder every week."
+          />
+          <div className="mt-6 sm:mt-6 sm:mt-10">
+            <WeeklyEssentials products={products} />
+          </div>
+        </section>
+
         {/* Deals rail */}
         <section className="border-y border-foreground/10 bg-card">
-          <div className="mx-auto w-full max-w-7xl px-6 py-20">
+          <div className="mx-auto w-full max-w-7xl px-6 py-10 sm:py-20">
             <div className="flex flex-wrap items-end justify-between gap-6">
               <SectionHeader
                 title="This week's big deals"
@@ -176,7 +176,7 @@ export default function Home() {
               </div>
             </div>
 
-            <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <ul className="mt-6 grid grid-cols-2 gap-3 sm:mt-10 sm:gap-4 lg:grid-cols-4">
               {dealProducts.map((product) => (
                 <li key={product.id}>
                   <ProductCard product={product} />
@@ -187,7 +187,7 @@ export default function Home() {
         </section>
 
         {/* Baskets */}
-        <section className="mx-auto w-full max-w-7xl px-6 py-20">
+        <section className="mx-auto w-full max-w-7xl px-6 py-10 sm:py-20">
           <div className="flex flex-wrap items-end justify-between gap-6">
             <SectionHeader
               title="Baskets & bundles"
@@ -203,7 +203,7 @@ export default function Home() {
             </Button>
           </div>
 
-          <ul className="mt-10 grid gap-6 md:grid-cols-3">
+          <ul className="mt-6 sm:mt-10 grid gap-6 md:grid-cols-3">
             {baskets.slice(0, 3).map((basket) => (
               <li key={basket.id}>
                 <Card className="h-full">
@@ -314,7 +314,7 @@ export default function Home() {
         </section>
 
         {/* Farmer story band */}
-        <section className="mx-auto w-full max-w-7xl px-6 py-20">
+        <section className="mx-auto w-full max-w-7xl px-6 py-10 sm:py-20">
           <div className="flex flex-col gap-2">
             <span className="flex items-center gap-2 text-sm text-mint">
               <ShieldCheck className="size-4" aria-hidden />
@@ -329,7 +329,7 @@ export default function Home() {
             </p>
           </div>
 
-          <ul className="mt-10 grid gap-6 md:grid-cols-3">
+          <ul className="mt-6 sm:mt-10 grid gap-6 md:grid-cols-3">
             {farmers.map((farmer) => (
               <li key={farmer.id}>
                 <Card className="h-full">
@@ -350,7 +350,7 @@ export default function Home() {
             ))}
           </ul>
 
-          <div className="mt-10">
+          <div className="mt-6 sm:mt-10">
             <Button variant="outline" className="rounded-full" asChild>
               <Link href="/farmers">
                 Meet the farmers
@@ -361,7 +361,7 @@ export default function Home() {
         </section>
 
         {/* Membership */}
-        <section className="mx-auto w-full max-w-7xl px-6 pb-24">
+        <section className="mx-auto w-full max-w-7xl px-6 pb-10 sm:pb-24">
           <div className="relative overflow-hidden rounded-2xl border border-gold/30 bg-accent p-10 sm:p-14">
             <Image
               src={farmerBandImage}
@@ -393,6 +393,39 @@ export default function Home() {
               </div>
             </div>
           </div>
+        </section>
+
+        {/* Auto delivery band — warm brown is the reference's secondary accent */}
+        <section className="mx-auto w-full max-w-7xl px-6 py-10 sm:py-20">
+          <div className="flex flex-col items-start gap-5 rounded-2xl border border-[#3A2A1A] bg-[#3A2A1A]/40 p-6 sm:p-10">
+            <div className="flex flex-col gap-2">
+              <h2 className="font-heading text-2xl tracking-tight text-balance sm:text-3xl">
+                Milk, vegetables or fruit on repeat.
+              </h2>
+              <p className="max-w-lg text-sm text-sage">
+                Skip, pause or cancel anytime.
+              </p>
+            </div>
+            <Button className="rounded-full" asChild>
+              <Link href="/baskets#subscriptions">Set up a plan</Link>
+            </Button>
+          </div>
+        </section>
+
+        {/* Trust stack + payment chips */}
+        <section className="mx-auto w-full max-w-7xl px-6 pb-16 sm:pb-24">
+          <TrustStack />
+
+          <ul className="mt-6 sm:mt-10 flex flex-wrap items-center gap-2">
+            {paymentMethods.map((method) => (
+              <li
+                key={method}
+                className="rounded-full border border-foreground/10 px-3 py-1.5 text-xs text-muted-foreground"
+              >
+                {method}
+              </li>
+            ))}
+          </ul>
         </section>
       </main>
 

@@ -59,6 +59,7 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
     getServerSnapshot,
   );
   const pointerStart = useRef<number | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const count = slides.length;
   // Reduced motion pins the slider to the opening slide.
@@ -78,6 +79,22 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
     }, ADVANCE_MS);
     return () => window.clearInterval(id);
   }, [reduceMotion, paused, count]);
+
+  /*
+    Pause whenever the element is not the one on screen. Autoplay keeps its
+    own timer running when the slide is off-screen otherwise, and three
+    loops decoding at once is exactly the thing that makes a phone hot.
+  */
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (reduceMotion) {
+      video.pause();
+      return;
+    }
+    if (active === index) void video.play().catch(() => {});
+    else video.pause();
+  }, [active, index, reduceMotion, slide.video]);
 
   const { before, word, after } = headlineParts(slide.headline, slide.highlight);
 
@@ -126,12 +143,14 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
             }
           >
             {/*
-              The video mounts only on the client and only for the video
-              slide, so slides 2 and 3 never fetch it. preload="none" keeps it
-              off the critical path; the poster shows until it can play.
+              Videos mount only on the client. Slide one is the landing view,
+              so it preloads eagerly with its poster as the placeholder; the
+              rest sit at preload="none" and are fetched only once the
+              visitor reaches them.
             */}
             {slide.kind === "video" && slide.video && mounted ? (
               <video
+                ref={videoRef}
                 className="absolute inset-0 size-full object-cover"
                 src={slide.video}
                 poster={slide.image}
@@ -139,7 +158,7 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
                 muted
                 loop
                 playsInline
-                preload="none"
+                preload={active === 0 ? "auto" : "none"}
                 aria-hidden
                 tabIndex={-1}
               />
@@ -165,7 +184,7 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
       <AnimatePresence initial={false} mode="wait">
         <motion.div
           key={slide.headline}
-          className="relative mx-auto flex h-full w-full max-w-7xl flex-col items-start justify-center gap-6 px-6 py-28"
+          className="relative mx-auto flex h-full w-full max-w-7xl flex-col items-start justify-center gap-4 px-6 py-24 sm:gap-6 sm:py-28"
           initial={reduceMotion ? false : "hidden"}
           animate="visible"
           exit={reduceMotion ? undefined : "hidden"}
@@ -176,20 +195,25 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
           aria-live="polite"
         >
           <motion.span
-            className="inline-flex rounded-full border border-gold/60 bg-background/40 px-4 py-1.5 text-sm text-gold backdrop-blur-sm"
+            className="text-xs tracking-widest text-sage uppercase"
             variants={rise}
           >
             {slide.kicker}
           </motion.span>
 
           <motion.h1
-            className="group max-w-4xl text-[clamp(2.25rem,7vw,4.5rem)] leading-[1.02] tracking-tight text-balance"
+            className="max-w-4xl text-[2.75rem] leading-[0.95] tracking-tight text-balance sm:text-6xl sm:leading-[1.02] md:text-7xl"
             variants={rise}
           >
             {before}
             {word ? (
               <>
-                <span className="bg-gradient-to-r from-foreground to-mint bg-[length:0%_1px] bg-left-bottom bg-no-repeat transition-[background-size] duration-700 group-hover:bg-[length:100%_1px]">
+                {/*
+                  One accent word per slide. The shadow is not decoration: the
+                  video behind is unpredictable, and a soft black cast keeps
+                  mint legible over a bright flame as well as a dark field.
+                */}
+                <span className="font-heading text-mint italic [text-shadow:0_2px_12px_rgba(0,0,0,0.4)]">
                   {word}
                 </span>
                 {after}
