@@ -9,6 +9,7 @@ import {
   paymentMethods,
   siteName,
 } from "@/lib/data";
+import { NewsletterSignup } from "@/components/newsletter-signup";
 import { useLang } from "@/lib/use-lang";
 
 export function SiteFooter() {
@@ -17,7 +18,12 @@ export function SiteFooter() {
   return (
     <footer className="border-t border-foreground/10 bg-card">
       <div className="mx-auto w-full max-w-7xl px-6 py-16">
-        <div className="grid gap-12 lg:grid-cols-4">
+        {/* Newsletter sits above the link columns, as the reference does. */}
+        <div className="border-b border-foreground/10 pb-10">
+          <NewsletterSignup />
+        </div>
+
+        <div className="mt-10 grid gap-12 lg:grid-cols-4">
           <div className="flex flex-col gap-4">
             <Link
               href="/"

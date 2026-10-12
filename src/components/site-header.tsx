@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import {
-  ChevronDown,
   Leaf,
   Search,
   ShoppingBag,
@@ -12,8 +11,9 @@ import {
 } from "lucide-react";
 
 import { CartBadge } from "@/components/cart-badge";
+import { MegaMenu } from "@/components/mega-menu";
 import { LanguageToggle } from "@/components/language-toggle";
-import { categories, navLinks } from "@/lib/data";
+import { navLinks } from "@/lib/data";
 import { useLang } from "@/lib/use-lang";
 
 /**
@@ -40,40 +40,7 @@ export function SiteHeader() {
       <div className="relative mx-auto flex h-16 w-full max-w-7xl items-center gap-6 px-6">
         {/* Left nav */}
         <nav aria-label="Primary" className="flex items-center gap-5">
-          <div className="group relative">
-            <Link
-              href={martLink.href}
-              className="flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:text-foreground"
-            >
-              {martLink.labelKey ? t(martLink.labelKey) : martLink.label}
-              <ChevronDown
-                className="size-3.5 transition-transform duration-200 group-hover:rotate-180"
-                aria-hidden
-              />
-            </Link>
-
-            <div className="invisible absolute left-0 top-full z-50 pt-4 opacity-0 transition-[opacity,visibility] duration-200 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
-              <div className="w-[34rem] rounded-xl border border-foreground/10 bg-card p-5 shadow-2xl">
-                <ul className="grid grid-cols-2 gap-x-6 gap-y-1">
-                  {categories.map((category) => (
-                    <li key={category.id}>
-                      <Link
-                        href={category.href}
-                        className="flex flex-col rounded-lg px-3 py-2 transition-colors hover:bg-foreground/5"
-                      >
-                        <span className="text-sm text-foreground">
-                          {category.name}
-                        </span>
-                        <span className="text-xs text-muted-foreground">
-                          {category.note}
-                        </span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
+          <MegaMenu martHref={martLink.href} />
 
           {plainLinks.map((link) => (
             <Link

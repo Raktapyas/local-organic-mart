@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import type { Variants } from "framer-motion";
-import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -15,16 +15,6 @@ const ADVANCE_MS = 6500;
 /** Ken-burns travel. Slow enough to read as motion, not a zoom gimmick. */
 const KEN_BURNS_S = 7.5;
 const STAGGER_S = 0.07;
-
-/**
- * Client-only flag, using the same idiom as `CartBadge` and
- * `OrderConfirmation`: the server snapshot is "not mounted", the client one
- * always is. Keeps the video out of the prerendered shell without a
- * setState-in-effect.
- */
-const subscribeToNothing = () => () => {};
-const getClientSnapshot = () => true;
-const getServerSnapshot = () => false;
 
 /** Splits a headline around the highlight word so it can be styled alone. */
 function headlineParts(headline: string, highlight: string) {
@@ -53,11 +43,6 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
   const reduceMotion = useReducedMotion();
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
-  const mounted = useSyncExternalStore(
-    subscribeToNothing,
-    getClientSnapshot,
-    getServerSnapshot,
-  );
   const pointerStart = useRef<number | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
@@ -143,18 +128,24 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
             }
           >
             {/*
-              Videos mount only on the client. Slide one is the landing view,
-              so it preloads eagerly with its poster as the placeholder; the
-              rest sit at preload="none" and are fetched only once the
-              visitor reaches them.
+              The `<video>` element itself renders server-side — it is not
+              gated behind a client-only mount check. A video with a `poster`
+              and no decoded frame displays that poster natively, so the
+              prerendered shell is never blank, and gating on mount would mean
+              shipping an `<img>` slide background in the server HTML for
+              every visitor until hydration finished. Posters are loading
+              placeholders, not slides.
+
+              Slide one is the landing view so it preloads eagerly; the rest
+              sit at preload="none" and are fetched only when reached.
             */}
-            {slide.kind === "video" && slide.video && mounted ? (
+            {slide.video ? (
               <video
                 ref={videoRef}
                 className="absolute inset-0 size-full object-cover"
                 src={slide.video}
                 poster={slide.image}
-                autoPlay
+                autoPlay={!reduceMotion}
                 muted
                 loop
                 playsInline

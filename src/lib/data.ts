@@ -1396,6 +1396,35 @@ export const BANNERS: {
   },
 ];
 
+/**
+ * Story-card duo on Home.
+ *
+ * `/farm-to-home` does not exist as a route — the farmers page is `/farmers`,
+ * which is where "Farm to Home" navigation points everywhere else too.
+ */
+export const STORY_CARDS: {
+  title: string;
+  body: string;
+  cta: string;
+  href: string;
+  image: string;
+}[] = [
+  {
+    title: "Organic vs Ordinary",
+    body: "Grown without synthetic pesticides, checked before it reaches your kitchen.",
+    cta: "How we source",
+    href: "/farmers",
+    image: farmerBandImage,
+  },
+  {
+    title: "Our Story",
+    body: "Three collectives across the valley and the high hills, delivering farm-direct.",
+    cta: "Read our story",
+    href: "/about",
+    image: "/images/farmer-kavre.jpg",
+  },
+];
+
 /** Quick-search chips under the Home search field. */
 export const SEARCH_HINT_CHIPS = ["milk", "rice", "spinach", "honey"];
 

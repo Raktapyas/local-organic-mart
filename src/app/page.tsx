@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowRight,
-  Camera,
   MapPin,
   ShieldCheck,
   Sparkles,
@@ -10,27 +9,16 @@ import {
   Truck,
 } from "lucide-react";
 
-import {
-  Apple,
-  Beef,
-  CandlestickChart,
-  FlaskConical,
-  Globe2,
-  Milk,
-  Package,
-  Sprout,
-  UtensilsCrossed,
-  Wheat,
-} from "lucide-react";
-import type { LucideIcon } from "lucide-react";
-
 import { CountdownChip } from "@/components/countdown-chip";
 import { HeroSlider } from "@/components/hero-slider";
 import { HomeSearch } from "@/components/home-search";
 import { TrustStack } from "@/components/trust-stack";
+import { StoryCards } from "@/components/story-cards";
 import { TrustStrip } from "@/components/trust-strip";
 import { WeeklyEssentials } from "@/components/weekly-essentials";
 import { BannerTrio } from "@/components/banner-trio";
+import { BestsellersRail } from "@/components/bestsellers-rail";
+import { categoryIcons } from "@/components/category-icons";
 import { DishCard } from "@/components/dish-card";
 import { ProductCard } from "@/components/product-card";
 import { SectionHeader } from "@/components/section-header";
@@ -50,29 +38,14 @@ import {
   dishes,
   farmers,
   heroSlides,
-  farmerBandImage,
   offerProduct,
   offers,
   paymentMethods,
   products,
   restaurantBandImage,
   dealsCloseAt,
-  type CategoryIconName,
   type Product,
 } from "@/lib/data";
-
-const categoryIcons: Record<CategoryIconName, LucideIcon> = {
-  sprout: Sprout,
-  apple: Apple,
-  milk: Milk,
-  flask: FlaskConical,
-  wheat: Wheat,
-  beef: Beef,
-  candlestick: CandlestickChart,
-  package: Package,
-  globe: Globe2,
-  utensils: UtensilsCrossed,
-};
 
 /** Deal lines resolved against the product table, discounted lines only. */
 const dealProducts = offers
@@ -150,8 +123,11 @@ export default function Home() {
           </ul>
         </section>
 
-        {/* Weekly essentials */}
-        <section className="mx-auto w-full max-w-7xl px-6 py-10 sm:py-20">
+        {/* Weekly essentials — `id` is the target for the mega menu */}
+        <section
+          id="weekly"
+          className="mx-auto w-full max-w-7xl scroll-mt-24 px-6 py-10 sm:py-20"
+        >
           <SectionHeader
             title="Weekly essentials"
             subline="The five things most Kathmandu households reorder every week."
@@ -160,6 +136,9 @@ export default function Home() {
             <WeeklyEssentials products={products} />
           </div>
         </section>
+
+        {/* Bestsellers — tabbed rail, above the deals section */}
+        <BestsellersRail />
 
         {/* Deals rail */}
         <section className="border-y border-foreground/10 bg-card">
@@ -173,12 +152,6 @@ export default function Home() {
               />
               <div className="flex items-center gap-4">
                 <CountdownChip closesAt={dealsCloseAt} />
-                <Button variant="outline" className="rounded-full" asChild>
-                  <Link href="/offers">
-                    See all
-                    <ArrowRight className="size-4" aria-hidden />
-                  </Link>
-                </Button>
               </div>
             </div>
 
@@ -189,25 +162,23 @@ export default function Home() {
                 </li>
               ))}
             </ul>
+
+            <div className="mt-8 flex justify-center">
+              <Button className="rounded-full" asChild>
+                <Link href="/offers">See all deals</Link>
+              </Button>
+            </div>
           </div>
         </section>
 
         {/* Baskets */}
         <section className="mx-auto w-full max-w-7xl px-6 py-10 sm:py-20">
-          <div className="flex flex-wrap items-end justify-between gap-6">
-            <SectionHeader
-              title="Baskets & bundles"
-              titleKey="sections.baskets"
-              subline="Curated weekly farm boxes, calibrated for Kathmandu households."
-              sublineKey="sections.basketsSub"
-            />
-            <Button variant="outline" className="rounded-full" asChild>
-              <Link href="/baskets">
-                See all
-                <ArrowRight className="size-4" aria-hidden />
-              </Link>
-            </Button>
-          </div>
+          <SectionHeader
+            title="Baskets & bundles"
+            titleKey="sections.baskets"
+            subline="Curated weekly farm boxes, calibrated for Kathmandu households."
+            sublineKey="sections.basketsSub"
+          />
 
           <ul className="mt-6 sm:mt-10 grid gap-6 md:grid-cols-3">
             {baskets.slice(0, 3).map((basket) => (
@@ -258,7 +229,16 @@ export default function Home() {
               </li>
             ))}
           </ul>
+
+          <div className="mt-8 flex justify-center">
+            <Button className="rounded-full" asChild>
+              <Link href="/baskets">See all baskets</Link>
+            </Button>
+          </div>
         </section>
+
+        {/* Story cards */}
+        <StoryCards />
 
         {/* Restaurant split band */}
         <section className="border-y border-foreground/10">
@@ -366,36 +346,43 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Membership */}
+        {/* Membership — photo card with the panel overlapping it, reference style */}
         <section className="mx-auto w-full max-w-7xl px-6 pb-10 sm:pb-24">
-          <div className="relative overflow-hidden rounded-2xl border border-gold/30 bg-accent p-10 sm:p-14">
-            <Image
-              src={farmerBandImage}
-              alt=""
-              aria-hidden
-              fill
-              sizes="100vw"
-              className="object-cover opacity-20"
-            />
-            <div className="relative flex flex-col items-start gap-6 lg:flex-row lg:items-center lg:justify-between">
-              <div className="flex flex-col gap-3">
-                <span className="flex items-center gap-2 text-sm text-gold">
-                  <Star className="size-4" aria-hidden />
-                  Membership
-                </span>
-                <h2 className="max-w-lg text-3xl tracking-tight text-balance">
-                  Membership &mdash; 10% off, reward points, and early access to
-                  every deal.
-                </h2>
-              </div>
-              <div className="flex shrink-0 flex-col gap-3 sm:flex-row sm:items-center">
-                <Button className="rounded-full" asChild>
-                  <Link href="/membership">Join membership</Link>
-                </Button>
-                <span className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <Camera className="size-3.5" aria-hidden />
-                  Member pricing unlocks at checkout
-                </span>
+          <div className="relative">
+            <div className="relative aspect-16/9 overflow-hidden rounded-2xl sm:aspect-21/9">
+              <Image
+                src="/images/farmer-highlands.jpg"
+                alt=""
+                aria-hidden
+                fill
+                sizes="100vw"
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-background/70 via-background/20 to-transparent" />
+            </div>
+
+            {/* Gold-bordered panel sitting over the photo's lower left. */}
+            <div className="relative -mt-10 ml-4 mr-4 rounded-2xl border border-gold/40 bg-card/95 p-6 backdrop-blur-sm sm:-mt-16 sm:ml-8 sm:max-w-xl sm:p-10">
+              <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+                <div className="flex flex-col gap-3">
+                  <span className="flex items-center gap-2 text-sm text-gold">
+                    <Star className="size-4" aria-hidden />
+                    Membership
+                  </span>
+                  <h2 className="max-w-lg text-2xl tracking-tight text-balance sm:text-3xl">
+                    Membership &mdash; 10% off, reward points, and early access to
+                    every deal.
+                  </h2>
+                </div>
+                <div className="flex shrink-0 flex-col gap-3 sm:flex-row sm:items-center">
+                  <Button className="rounded-full" asChild>
+                    <Link href="/membership">Join membership</Link>
+                  </Button>
+                  <span className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <Star className="size-3.5" aria-hidden />
+                    Member pricing unlocks at checkout
+                  </span>
+                </div>
               </div>
             </div>
           </div>

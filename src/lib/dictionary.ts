@@ -35,6 +35,7 @@ const en = {
       ctaSecondary: "See our farmers",
     },
     sections: {
+      bestsellers: "Bestsellers",
       shopByCategory: "Shop by category",
       shopByCategorySub: "Ten departments, filled from the morning harvest.",
       bigDeals: "This week's big deals",
@@ -107,6 +108,7 @@ const ne: typeof en = {
       ctaSecondary: "हाम्रा किसान",
     },
     sections: {
+      bestsellers: "धेरैजसो बिक्री",
       shopByCategory: "श्रेणी अनुसार किन्नुहोस्",
       shopByCategorySub: "दश वटा विभाग, बिहानको बालीबाट भरिएका।",
       bigDeals: "यो हप्ताका ठूला सौदा",
