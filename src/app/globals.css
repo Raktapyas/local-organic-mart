@@ -7,9 +7,14 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-inter);
-  --font-serif: var(--font-fraunces);
-  --font-heading: var(--font-fraunces);
+  /*
+   * Devanagari sits behind the Latin faces rather than beside them. Fraunces
+   * and Inter have no Devanagari glyphs, so the browser walks the list and
+   * lands on Tiro / Noto for those codepoints only. Latin text is unaffected.
+   */
+  --font-sans: var(--font-inter), var(--font-devanagari-sans), sans-serif;
+  --font-serif: var(--font-fraunces), var(--font-devanagari-serif), serif;
+  --font-heading: var(--font-fraunces), var(--font-devanagari-serif), serif;
   --font-mono: var(--font-geist-mono);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -110,7 +115,7 @@
   h4,
   h5,
   h6 {
-    font-family: var(--font-fraunces), serif;
+    font-family: var(--font-fraunces), var(--font-devanagari-serif), serif;
   }
 }
 /* ------------------------------------------------------------------ */
@@ -156,4 +161,26 @@
   .ticker-dupe {
     display: none;
   }
+}
+
+/*
+ * When the document declares Nepali, headings lead with the Devanagari serif
+ * instead of falling through to it.
+ *
+ * The fallback chain in `--font-heading` already renders Devanagari in Tiro —
+ * this is not required for legibility. The difference is that a mixed
+ * heading ("बास्केटहरू · Baskets") currently starts in Fraunces and switches
+ * partway through, which reads as a change of font mid-sentence. When Nepali
+ * is the document language, Tiro leads so the whole heading is one voice.
+ * `HtmlLangSync` keeps `lang` in step with the persisted preference.
+ */
+html[lang="ne"] h1,
+html[lang="ne"] h2,
+html[lang="ne"] h3,
+html[lang="ne"] h4,
+html[lang="ne"] h5,
+html[lang="ne"] h6,
+html[lang="ne"] .font-heading,
+html[lang="ne"] .font-serif {
+  font-family: var(--font-devanagari-serif), serif;
 }

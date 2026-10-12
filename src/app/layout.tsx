@@ -1,5 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Geist_Mono, Inter } from "next/font/google";
+import {
+  Fraunces,
+  Geist_Mono,
+  Inter,
+  Noto_Sans_Devanagari,
+  Tiro_Devanagari_Hindi,
+} from "next/font/google";
 import { Suspense } from "react";
 import "./globals.css";
 
@@ -27,6 +33,32 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+/*
+ * Devanagari companions for the Latin brand fonts.
+ *
+ * Fraunces and Inter carry no Devanagari glyphs, so every Nepali string was
+ * silently falling through to whatever the OS picked — the same name rendered
+ * in a different face on a card than in a heading. These sit behind the
+ * Latin fonts in the stack: Latin text still resolves to Fraunces/Inter, and
+ * Devanagari falls through to these.
+ *
+ * `next/font` self-hosts both at build time, so there is no request to Google
+ * at runtime. Tiro is a 400-only serif that carries Fraunces' voice; Noto
+ * Sans pairs with Inter, which is the body font here.
+ */
+const tiroDevanagari = Tiro_Devanagari_Hindi({
+  variable: "--font-devanagari-serif",
+  weight: "400",
+  subsets: ["devanagari", "latin"],
+  display: "swap",
+});
+
+const notoDevanagari = Noto_Sans_Devanagari({
+  variable: "--font-devanagari-sans",
+  subsets: ["devanagari", "latin"],
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "Local Organic Mart",
   description:
@@ -42,7 +74,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${fraunces.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${inter.variable} ${fraunces.variable} ${geistMono.variable} ${tiroDevanagari.variable} ${notoDevanagari.variable} h-full antialiased`}
     >
       {/*
         Both headers live here, not in the pages. Pages used to render their
