@@ -5,7 +5,6 @@ import { ArrowRight, BadgeCheck, MapPin } from "lucide-react";
 
 import { KnowYourProduct } from "@/components/know-your-product";
 import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -26,7 +25,6 @@ export const metadata: Metadata = {
 export default function FarmersPage() {
   return (
     <>
-      <SiteHeader />
 
       <main className="flex flex-1 flex-col">
         {/* Hero */}

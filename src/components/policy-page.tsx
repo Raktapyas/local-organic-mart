@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 
 import { SectionHeader } from "@/components/section-header";
 import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
 
 export interface PolicySection {
   heading: string;
@@ -25,8 +24,6 @@ export function PolicyPage({
 }) {
   return (
     <>
-      <SiteHeader />
-
       <main className="mx-auto w-full max-w-3xl flex-1 px-6 py-20">
         <SectionHeader as="h1" title={title} subline={subline} />
 

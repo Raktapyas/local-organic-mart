@@ -3,7 +3,6 @@ import Link from "next/link";
 import { Compass } from "lucide-react";
 
 import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
 import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
@@ -19,7 +18,6 @@ export const metadata: Metadata = {
 export default function NotFound() {
   return (
     <>
-      <SiteHeader />
 
       <main className="mx-auto w-full max-w-7xl flex-1 px-6 py-12 pb-24">
         <div className="flex flex-col items-center gap-6 py-20 text-center sm:py-28">

@@ -3,7 +3,6 @@ import { Check, Clock } from "lucide-react";
 
 import { SectionHeader } from "@/components/section-header";
 import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
 import { deliveryZones, paymentMethods } from "@/lib/data";
 
 export const metadata: Metadata = {
@@ -15,7 +14,6 @@ export const metadata: Metadata = {
 export default function DeliveryZonesPage() {
   return (
     <>
-      <SiteHeader />
 
       <main className="mx-auto w-full max-w-3xl flex-1 px-6 py-20">
         <SectionHeader

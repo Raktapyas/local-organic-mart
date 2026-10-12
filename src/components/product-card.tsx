@@ -1,6 +1,8 @@
 import Image from "next/image";
 import { Heart, Plus } from "lucide-react";
 
+import { T } from "@/components/translated";
+
 import { AddToCartButton } from "@/components/add-to-cart-button";
 import { PhotoFallback } from "@/components/photo-fallback";
 import { Button } from "@/components/ui/button";
@@ -61,7 +63,7 @@ export function ProductCard({ product }: { product: Product }) {
           )}
           {product.season && (
             <span className="rounded-full border border-border bg-background/80 px-2 py-0.5 text-[11px] text-muted-foreground backdrop-blur-sm">
-              In season: {product.season}
+              <T k="badges.inSeason" />: {product.season}
             </span>
           )}
         </div>

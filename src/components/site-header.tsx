@@ -1,10 +1,16 @@
+"use client";
+
 import Link from "next/link";
 import { Leaf, Search, ShoppingBag } from "lucide-react";
 
 import { CartBadge } from "@/components/cart-badge";
+import { LanguageToggle } from "@/components/language-toggle";
 import { navLinks, siteName } from "@/lib/data";
+import { useLang } from "@/lib/use-lang";
 
 export function SiteHeader() {
+  const { t } = useLang();
+
   return (
     <header className="sticky top-0 z-50 hidden border-b border-foreground/10 bg-background/70 backdrop-blur-xl backdrop-saturate-150 lg:block">
       <div className="mx-auto flex h-16 w-full max-w-7xl items-center gap-6 px-6">
@@ -13,7 +19,9 @@ export function SiteHeader() {
           className="flex shrink-0 items-center gap-2 text-foreground transition-opacity hover:opacity-80"
         >
           <Leaf className="size-5 text-mint" aria-hidden />
-          <span className="font-heading text-lg tracking-tight">{siteName}</span>
+          <span className="font-heading text-lg tracking-tight">
+            {siteName}
+          </span>
         </Link>
 
         <nav aria-label="Primary" className="hidden lg:block">
@@ -24,7 +32,7 @@ export function SiteHeader() {
                   href={link.href}
                   className="text-sm text-muted-foreground transition-colors hover:text-foreground"
                 >
-                  {link.label}
+                  {link.labelKey ? t(link.labelKey) : link.label}
                 </Link>
               </li>
             ))}
@@ -46,9 +54,8 @@ export function SiteHeader() {
             />
           </form>
 
-          <span className="rounded-full border border-foreground/10 px-3 py-1.5 text-xs text-muted-foreground">
-            नेपाली
-          </span>
+          <LanguageToggle />
+
           <span className="rounded-full border border-foreground/10 px-3 py-1.5 text-xs text-muted-foreground">
             NPR
           </span>

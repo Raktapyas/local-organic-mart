@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 
 import { CartBadge } from "@/components/cart-badge";
+import { LanguageToggle } from "@/components/language-toggle";
 import {
   Sheet,
   SheetClose,
@@ -20,19 +21,21 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { contact, contactChannels, navLinks, siteName } from "@/lib/data";
+import { useLang } from "@/lib/use-lang";
 
 const iconButton =
   "inline-flex size-9 items-center justify-center rounded-full border border-foreground/10 transition-colors hover:border-mint/40 hover:text-mint";
 
 /**
  * Mobile-only header (below `lg`). The desktop header in `site-header.tsx`
- * is untouched and simply hidden at these widths.
+ * is untouched apart from being hidden at these widths, and carries its own
+ * copy of the same language toggle.
  *
- * TODO: i18n — नेपाली / NPR are static rows, not a working locale switcher.
  * TODO: real notifications + chat API — the popover only deep-links out to
  * the messaging apps; nothing is fetched or stored.
  */
 export function MobileHeader() {
+  const { t } = useLang();
   const [chatOpen, setChatOpen] = useState(false);
   const popoverRef = useRef<HTMLDivElement>(null);
 
@@ -85,7 +88,7 @@ export function MobileHeader() {
                           href={link.href}
                           className="block py-3 text-sm transition-colors hover:text-mint"
                         >
-                          {link.label}
+                          {link.labelKey ? t(link.labelKey) : link.label}
                         </Link>
                       </SheetClose>
                     </li>
@@ -100,7 +103,7 @@ export function MobileHeader() {
                       href="/account"
                       className="block text-sm transition-colors hover:text-mint"
                     >
-                      My Organic Home
+                      {t("nav.myHome")}
                     </Link>
                   </SheetClose>
                 </li>
@@ -110,7 +113,7 @@ export function MobileHeader() {
                       href="/track-order"
                       className="block text-sm transition-colors hover:text-mint"
                     >
-                      Track Order
+                      {t("nav.trackOrder")}
                     </Link>
                   </SheetClose>
                 </li>
@@ -124,16 +127,17 @@ export function MobileHeader() {
                     aria-disabled="true"
                     className="block text-sm text-muted-foreground/50"
                   >
-                    Help &amp; support
+                    {t("nav.help")}
                   </span>
                 </li>
               </ul>
 
-              {/* TODO: i18n — static until a locale switcher exists. */}
-              <ul className="mt-8 flex flex-col gap-3 text-xs text-muted-foreground">
-                <li>नेपाली</li>
-                <li>NPR</li>
-              </ul>
+              <div className="mt-8 flex items-center gap-2">
+                <LanguageToggle className="w-full justify-center py-2.5" />
+              </div>
+              <p className="mt-3 text-xs text-muted-foreground">
+                NPR
+              </p>
 
               <div className="mt-8 border-t border-foreground/10 pt-6 text-xs text-muted-foreground">
                 <a

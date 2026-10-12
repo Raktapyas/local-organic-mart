@@ -13,12 +13,14 @@ import {
   paymentMethods,
 } from "@/lib/data";
 import { useOrderStore } from "@/lib/order-store";
+import { useLang } from "@/lib/use-lang";
 
 const npr = new Intl.NumberFormat("en-NP");
 
 const STEPS = ["Address", "Delivery", "Payment"] as const;
 
 export function CheckoutFlow() {
+  const { t } = useLang();
   const router = useRouter();
   const lines = useCartStore((state) => state.lines);
   const placeOrder = useOrderStore((state) => state.placeOrder);
@@ -180,7 +182,7 @@ export function CheckoutFlow() {
               router.push(`/order/${order.id}`);
             }}
           >
-            Place order &middot; Rs {npr.format(total)}
+            {t("buttons.placeOrder")} &middot; Rs {npr.format(total)}
           </Button>
 
           <p className="text-center text-xs text-muted-foreground">

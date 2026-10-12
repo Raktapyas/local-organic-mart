@@ -1,3 +1,5 @@
+import type { DictPath } from "@/lib/use-lang";
+
 /**
  * Single source of truth for all site content.
  *
@@ -1178,15 +1180,22 @@ export function offerProduct(offer: Offer): Product | undefined {
 export interface NavLink {
   label: string;
   href: string;
+  /**
+   * Dictionary key for the English label above. Components render `t(label)`
+   * instead of `label` when this is present, so the label stays the
+   * server-rendered English and Nepali is a lookup rather than a second
+   * source of truth.
+   */
+  labelKey?: DictPath;
 }
 
 export const navLinks: NavLink[] = [
-  { label: "Home", href: "/" },
-  { label: "Mart", href: "/mart" },
-  { label: "Restaurant", href: "/restaurant" },
-  { label: "Offers", href: "/offers" },
-  { label: "Farm to Home", href: "/farmers" },
-  { label: "Membership", href: "/membership" },
+  { label: "Home", href: "/", labelKey: "nav.home" },
+  { label: "Mart", href: "/mart", labelKey: "nav.mart" },
+  { label: "Restaurant", href: "/restaurant", labelKey: "nav.restaurant" },
+  { label: "Offers", href: "/offers", labelKey: "nav.offers" },
+  { label: "Farm to Home", href: "/farmers", labelKey: "nav.farmers" },
+  { label: "Membership", href: "/membership", labelKey: "nav.membership" },
 ];
 
 export const siteName = "Local Organic Mart";
@@ -1429,9 +1438,14 @@ export const paymentMethods = ["eSewa", "Khalti", "Fonepay QR", "Cash on Deliver
 
 /** Four link columns; the brand column is rendered separately. */
 /** Shop links are derived from `categories` so the two can never drift. */
-export const footerColumns: { title: string; links: NavLink[] }[] = [
+export const footerColumns: {
+  title: string;
+  titleKey?: DictPath;
+  links: NavLink[];
+}[] = [
   {
     title: "Shop",
+    titleKey: "nav.shop",
     links: categories.map((category) => ({
       label: category.name,
       href: category.href,
@@ -1439,6 +1453,7 @@ export const footerColumns: { title: string; links: NavLink[] }[] = [
   },
   {
     title: "Company",
+    titleKey: "nav.explore",
     links: [
       { label: "Farm to Home", href: "/farmers" },
       { label: "Our Story", href: "/about" },
@@ -1447,6 +1462,7 @@ export const footerColumns: { title: string; links: NavLink[] }[] = [
   },
   {
     title: "Support",
+    titleKey: "nav.contact",
     links: [
       { label: "Track Order", href: "/track-order" },
       { label: "Delivery Zones", href: "/delivery-zones" },

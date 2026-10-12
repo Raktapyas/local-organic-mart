@@ -2,7 +2,6 @@ import { Suspense } from "react";
 
 import { OrderConfirmation } from "@/components/order-confirmation";
 import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
 
 export const metadata = {
   title: "Order confirmed — Local Organic Mart",
@@ -17,7 +16,6 @@ export const metadata = {
 export default function OrderPage() {
   return (
     <>
-      <SiteHeader />
 
       <main className="mx-auto w-full max-w-7xl flex-1 px-6 py-12 pb-24">
         <Suspense

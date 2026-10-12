@@ -6,7 +6,6 @@ import { ComboCard } from "@/components/combo-card";
 import { CountdownChip } from "@/components/countdown-chip";
 import { ProductCard } from "@/components/product-card";
 import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
 import { Button } from "@/components/ui/button";
 import {
   comboBundles,
@@ -31,7 +30,6 @@ export default function OffersPage() {
 
   return (
     <>
-      <SiteHeader />
 
       <main className="flex flex-1 flex-col">
         {/* Hero */}

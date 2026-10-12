@@ -12,7 +12,6 @@ import {
 import type { LucideIcon } from "lucide-react";
 
 import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
 import {
   Accordion,
   AccordionContent,
@@ -47,7 +46,6 @@ const npr = new Intl.NumberFormat("en-NP");
 export default function MembershipPage() {
   return (
     <>
-      <SiteHeader />
 
       <main className="flex flex-1 flex-col">
         {/* Hero */}

@@ -7,15 +7,16 @@ import { PhotoFallback } from "@/components/photo-fallback";
 import { QuantityStepper } from "@/components/quantity-stepper";
 import { Button } from "@/components/ui/button";
 import { cartTotals, useCartStore, type CartLine } from "@/lib/cart-store";
+import { type DictPath, useLang } from "@/lib/use-lang";
 import { DELIVERY_FEE_FLAT, paymentMethods } from "@/lib/data";
 
 const npr = new Intl.NumberFormat("en-NP");
 
 const GROUPS = [
-  { kind: "product" as const, title: "Grocery" },
-  { kind: "dish" as const, title: "Restaurant" },
-  { kind: "basket" as const, title: "Baskets & gifts" },
-];
+  { kind: "product" as const, key: "cart.grocery" },
+  { kind: "dish" as const, key: "cart.restaurantGroup" },
+  { kind: "basket" as const, key: "cart.basketsGroup" },
+] satisfies { kind: CartLine["kind"]; key: DictPath }[];
 
 /** Where a line's thumbnail links back to, by kind. */
 function lineHref(line: CartLine) {
@@ -28,6 +29,7 @@ function lineHref(line: CartLine) {
 function BagRow({ line }: { line: CartLine }) {
   const setQty = useCartStore((state) => state.setQty);
   const removeLine = useCartStore((state) => state.removeLine);
+  const { t } = useLang();
 
   return (
     <li className="flex gap-4 py-6 first:pt-0 last:pb-0">
@@ -88,7 +90,7 @@ function BagRow({ line }: { line: CartLine }) {
             onClick={() => removeLine(line.id)}
             className="text-xs text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
           >
-            Remove
+            {t("buttons.remove")}
           </button>
         </div>
       </div>
@@ -100,6 +102,8 @@ export function BagView() {
   const lines = useCartStore((state) => state.lines);
   const clear = useCartStore((state) => state.clear);
 
+  const { t } = useLang();
+
   const food = lines.filter((line) => line.kind === "product");
   const dishes = lines.filter((line) => line.kind === "dish");
   const giftBaskets = lines.filter((line) => line.kind === "basket");
@@ -110,7 +114,7 @@ export function BagView() {
   if (isEmpty) {
     return (
       <div className="flex flex-col items-center gap-4 py-24 text-center">
-        <h1 className="font-heading text-3xl tracking-tight">Your bag is empty.</h1>
+        <h1 className="font-heading text-3xl tracking-tight">{t("cart.empty")}</h1>
         <p className="max-w-sm text-sm text-sage">
           Nothing here yet. Browse the mart for produce, pantry, and foraged
           goods.
@@ -135,7 +139,7 @@ export function BagView() {
           if (groupLines.length === 0) return null;
           return (
             <section key={group.kind}>
-              <h2 className="font-heading text-sm tracking-tight">{group.title}</h2>
+              <h2 className="font-heading text-sm tracking-tight">{t(group.key)}</h2>
               <ul className="mt-4 divide-y divide-border border-b border-border">
                 {groupLines.map((line) => (
                   <BagRow key={line.id} line={line} />
@@ -157,17 +161,17 @@ export function BagView() {
       <aside className="lg:sticky lg:top-24 lg:self-start">
         <div className="flex flex-col gap-4 rounded-xl border border-border bg-card p-6">
           <div className="flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">Subtotal</span>
+            <span className="text-muted-foreground">{t("cart.subtotal")}</span>
             <span>Rs {npr.format(itemSubtotal)}</span>
           </div>
           <div className="flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">Delivery</span>
+            <span className="text-muted-foreground">{t("cart.delivery")}</span>
             <span>Rs {npr.format(DELIVERY_FEE_FLAT)}</span>
           </div>
 
           <div className="border-t border-border pt-4">
             <div className="flex items-center justify-between">
-              <span className="font-heading text-lg">Total</span>
+              <span className="font-heading text-lg">{t("cart.total")}</span>
               <span className="font-heading text-2xl">Rs {npr.format(total)}</span>
             </div>
           </div>
@@ -184,7 +188,9 @@ export function BagView() {
           </ul>
 
           <Button className="h-12 w-full rounded-full" asChild>
-            <Link href="/checkout">Checkout &middot; Rs {npr.format(total)}</Link>
+            <Link href="/checkout">
+              {t("buttons.checkout")} &middot; Rs {npr.format(total)}
+            </Link>
           </Button>
         </div>
       </aside>

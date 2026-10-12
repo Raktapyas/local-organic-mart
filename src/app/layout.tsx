@@ -5,7 +5,9 @@ import "./globals.css";
 
 import { BottomNav } from "@/components/bottom-nav";
 import { FloatingContact } from "@/components/floating-contact";
+import { HtmlLangSync } from "@/components/html-lang-sync";
 import { MobileHeader } from "@/components/mobile-header";
+import { SiteHeader } from "@/components/site-header";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -42,16 +44,20 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${inter.variable} ${fraunces.variable} ${geistMono.variable} h-full antialiased`}
     >
       {/*
-        The mobile shell lives here rather than in each page: pages bring
-        their own `SiteHeader`, which is hidden below `lg`, so a
-        page-local `MobileHeader` would be the only consistent placement
-        across all 19 routes.
+        Both headers live here, not in the pages. Pages used to render their
+        own `SiteHeader`, which meant a page that forgot it silently shipped
+        with no navigation — the two policy pages did exactly that, because
+        theirs lived inside the shared `PolicyPage` component where a grep of
+        `src/app` could not see them. Owning the header in the layout makes
+        "every route has a header" structural instead of a convention.
 
         Bottom padding clears the fixed tab bar (4rem + home indicator) on
         mobile only; `lg:pb-0` leaves desktop spacing untouched.
       */}
       <body className="flex min-h-full flex-col pb-[calc(4rem+env(safe-area-inset-bottom))] lg:pb-0">
+        <HtmlLangSync />
         <MobileHeader />
+        <SiteHeader />
         {children}
         {/*
           `BottomNav` reads the pathname to light the active tab, and with

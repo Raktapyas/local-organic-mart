@@ -3,7 +3,6 @@ import { Suspense } from "react";
 
 import { AccountHome } from "@/components/account-home";
 import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
 
 export const metadata: Metadata = {
   title: "My Organic Home — Local Organic Mart",
@@ -13,7 +12,6 @@ export const metadata: Metadata = {
 export default function AccountPage() {
   return (
     <>
-      <SiteHeader />
 
       <main className="mx-auto w-full max-w-5xl flex-1 px-6 py-12 pb-24">
         <Suspense

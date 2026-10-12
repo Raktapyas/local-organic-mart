@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 
 import { MartView } from "@/components/mart-view";
 import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
 import { categoryBySlug, martCategories } from "@/lib/data";
 
 /**
@@ -49,7 +48,6 @@ export default async function MartCategoryPage({
 
   return (
     <>
-      <SiteHeader />
 
       <main className="flex flex-1 flex-col">
         <MartView

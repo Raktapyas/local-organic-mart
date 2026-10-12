@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { BasketCard } from "@/components/basket-card";
 import { SectionHeader } from "@/components/section-header";
 import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
 import { SubscriptionRows } from "@/components/subscription-rows";
 import { baskets, subscriptionPlans } from "@/lib/data";
 
@@ -23,7 +22,6 @@ export default function BasketsPage() {
 
   return (
     <>
-      <SiteHeader />
 
       <main className="flex flex-1 flex-col">
         <section className="mx-auto w-full max-w-7xl px-6 pt-16 pb-10">

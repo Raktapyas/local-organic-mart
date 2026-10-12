@@ -12,7 +12,6 @@ import {
 } from "lucide-react";
 
 import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
 import { Button } from "@/components/ui/button";
 import { WhatsAppEnquiry } from "@/components/whatsapp-enquiry";
 import {
@@ -45,7 +44,6 @@ const mapsHref =
 export default function AboutPage() {
   return (
     <>
-      <SiteHeader />
 
       <main className="flex flex-1 flex-col">
         {/* Hero */}

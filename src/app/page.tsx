@@ -31,7 +31,6 @@ import { DishCard } from "@/components/dish-card";
 import { ProductCard } from "@/components/product-card";
 import { SectionHeader } from "@/components/section-header";
 import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -82,7 +81,6 @@ const npr = new Intl.NumberFormat("en-NP");
 export default function Home() {
   return (
     <>
-      <SiteHeader />
 
       <main className="flex flex-1 flex-col">
         {/* Hero */}
@@ -116,7 +114,9 @@ export default function Home() {
         <section className="mx-auto w-full max-w-7xl px-6 py-20">
           <SectionHeader
             title="Shop by category"
+            titleKey="sections.shopByCategory"
             subline="Ten departments, filled from the morning harvest."
+            sublineKey="sections.shopByCategorySub"
           />
 
           <ul className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
@@ -161,7 +161,9 @@ export default function Home() {
             <div className="flex flex-wrap items-end justify-between gap-6">
               <SectionHeader
                 title="This week's big deals"
+                titleKey="sections.bigDeals"
                 subline="Small allocations from this week's harvest."
+                sublineKey="sections.bigDealsSub"
               />
               <div className="flex items-center gap-4">
                 <CountdownChip closesAt={dealsCloseAt} />
@@ -189,7 +191,9 @@ export default function Home() {
           <div className="flex flex-wrap items-end justify-between gap-6">
             <SectionHeader
               title="Baskets & bundles"
+              titleKey="sections.baskets"
               subline="Curated weekly farm boxes, calibrated for Kathmandu households."
+              sublineKey="sections.basketsSub"
             />
             <Button variant="outline" className="rounded-full" asChild>
               <Link href="/baskets">

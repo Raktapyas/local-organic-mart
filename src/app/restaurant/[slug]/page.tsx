@@ -8,7 +8,6 @@ import { DishCard } from "@/components/dish-card";
 import { DishCustomizer } from "@/components/dish-customizer";
 import { SectionHeader } from "@/components/section-header";
 import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
 import { dishes, dishBySlug, type Dish } from "@/lib/data";
 
 const npr = new Intl.NumberFormat("en-NP");
@@ -78,7 +77,6 @@ export default async function DishPage({
 
   return (
     <>
-      <SiteHeader />
 
       <main className="flex flex-1 flex-col">
         <div className="mx-auto w-full max-w-7xl px-6 pt-8 pb-6">

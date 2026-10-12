@@ -17,7 +17,6 @@ import { ProductCard } from "@/components/product-card";
 import { ProductPurchase } from "@/components/product-purchase";
 import { SectionHeader } from "@/components/section-header";
 import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   discountPercent,
@@ -104,7 +103,6 @@ export default async function ProductPage({
 
   return (
     <>
-      <SiteHeader />
 
       <main className="flex flex-1 flex-col">
         <div className="mx-auto w-full max-w-7xl px-6 pt-8 pb-6">

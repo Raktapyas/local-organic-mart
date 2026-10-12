@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 
 import { SectionHeader } from "@/components/section-header";
 import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
 import { TrackOrderLookup } from "@/components/track-order-lookup";
 
 export const metadata: Metadata = {
@@ -13,7 +12,6 @@ export const metadata: Metadata = {
 export default function TrackOrderPage() {
   return (
     <>
-      <SiteHeader />
 
       <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-6 py-20">
         <SectionHeader

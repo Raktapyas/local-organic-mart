@@ -4,6 +4,7 @@ import { Clock, Flame } from "lucide-react";
 
 import { AddToCartButton } from "@/components/add-to-cart-button";
 import { Button } from "@/components/ui/button";
+import { T } from "@/components/translated";
 import { spicePreset, type Dish, type Spice } from "@/lib/data";
 
 const npr = new Intl.NumberFormat("en-NP");
@@ -110,7 +111,7 @@ export function DishCard({
                 customizations: [spicePreset(dish)],
               }}
             >
-              Add
+              <T k="buttons.add" />
             </AddToCartButton>
           </div>
         </div>

@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { Leaf, Mail, MapPin, Phone } from "lucide-react";
 
@@ -7,8 +9,11 @@ import {
   paymentMethods,
   siteName,
 } from "@/lib/data";
+import { useLang } from "@/lib/use-lang";
 
 export function SiteFooter() {
+  const { t } = useLang();
+
   return (
     <footer className="border-t border-foreground/10 bg-card">
       <div className="mx-auto w-full max-w-7xl px-6 py-16">
@@ -49,7 +54,7 @@ export function SiteFooter() {
           {footerColumns.map((column) => (
             <nav key={column.title} aria-label={column.title}>
               <h2 className="font-heading text-sm font-medium text-foreground">
-                {column.title}
+                {column.titleKey ? t(column.titleKey) : column.title}
               </h2>
               <ul className="mt-4 flex flex-col gap-2.5">
                 {column.links.map((link) => (

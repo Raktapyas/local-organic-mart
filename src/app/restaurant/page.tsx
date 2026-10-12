@@ -5,7 +5,6 @@ import { ArrowRight } from "lucide-react";
 import { DishFilterGrid } from "@/components/dish-filter-grid";
 import { SectionHeader } from "@/components/section-header";
 import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
 import { Button } from "@/components/ui/button";
 import { dishes, restaurantBandImage } from "@/lib/data";
 
@@ -17,7 +16,6 @@ const ETA_CHIPS = [
 export default function RestaurantPage() {
   return (
     <>
-      <SiteHeader />
 
       <main className="flex flex-1 flex-col">
         {/* Hero band */}

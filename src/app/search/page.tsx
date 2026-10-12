@@ -7,7 +7,6 @@ import { DishCard } from "@/components/dish-card";
 import { ProductCard } from "@/components/product-card";
 import { SectionHeader } from "@/components/section-header";
 import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
 import { searchCatalogue, searchSuggestions } from "@/lib/data";
 
 export const metadata: Metadata = {
@@ -32,7 +31,6 @@ export default function SearchPage({
 }) {
   return (
     <>
-      <SiteHeader />
 
       <main className="flex flex-1 flex-col">
         <section className="mx-auto w-full max-w-7xl px-6 pt-12 pb-8">
