@@ -3,6 +3,7 @@ import { Fraunces, Geist_Mono, Inter } from "next/font/google";
 import { Suspense } from "react";
 import "./globals.css";
 
+import { AnnouncementTicker } from "@/components/announcement-ticker";
 import { BottomNav } from "@/components/bottom-nav";
 import { FloatingContact } from "@/components/floating-contact";
 import { HtmlLangSync } from "@/components/html-lang-sync";
@@ -56,6 +57,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       */}
       <body className="flex min-h-full flex-col pb-[calc(4rem+env(safe-area-inset-bottom))] lg:pb-0">
         <HtmlLangSync />
+        {/* Not sticky: it scrolls away and the headers stick beneath it. */}
+        <AnnouncementTicker />
         <MobileHeader />
         <SiteHeader />
         {children}

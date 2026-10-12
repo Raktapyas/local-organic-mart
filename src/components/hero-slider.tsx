@@ -228,7 +228,10 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
             {slide.line}
           </motion.p>
 
-          <motion.div variants={rise}>
+          <motion.div
+            className="flex flex-wrap items-center gap-3"
+            variants={rise}
+          >
             <Button
               asChild
               className={
@@ -246,6 +249,17 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
                 />
               </Link>
             </Button>
+
+            {/* Second route out, only when the slide defines one. */}
+            {slide.cta2 ? (
+              <Button
+                asChild
+                variant="outline"
+                className="h-12 rounded-full border-foreground/25 px-8 backdrop-blur-sm hover:border-mint/50"
+              >
+                <Link href={slide.cta2.href}>{slide.cta2.label}</Link>
+              </Button>
+            ) : null}
           </motion.div>
         </motion.div>
       </AnimatePresence>

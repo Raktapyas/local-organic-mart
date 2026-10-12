@@ -28,7 +28,9 @@ import { CountdownChip } from "@/components/countdown-chip";
 import { HeroSlider } from "@/components/hero-slider";
 import { HomeSearch } from "@/components/home-search";
 import { TrustStack } from "@/components/trust-stack";
+import { TrustStrip } from "@/components/trust-strip";
 import { WeeklyEssentials } from "@/components/weekly-essentials";
+import { BannerTrio } from "@/components/banner-trio";
 import { DishCard } from "@/components/dish-card";
 import { ProductCard } from "@/components/product-card";
 import { SectionHeader } from "@/components/section-header";
@@ -97,6 +99,10 @@ export default function Home() {
             <HomeSearch />
           </div>
         </section>
+
+        {/* Trust strip, then the three banners — both directly under the hero */}
+        <TrustStrip />
+        <BannerTrio />
 
         {/* Category rail */}
         <section className="mx-auto w-full max-w-7xl px-6 py-10 sm:py-20">

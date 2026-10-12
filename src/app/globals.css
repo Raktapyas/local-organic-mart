@@ -113,3 +113,47 @@
     font-family: var(--font-fraunces), serif;
   }
 }
+/* ------------------------------------------------------------------ */
+/* Announcement ticker                                                 */
+/*                                                                     */
+/* The track holds the item list twice and slides exactly half its     */
+/* width, so copy two lands precisely where copy one began — that is   */
+/* what makes the loop seamless. `w-max` lets the track exceed its     */
+/* container so the overflow is genuine rather than clipped text.      */
+/* ------------------------------------------------------------------ */
+
+@keyframes ticker-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.ticker-track {
+  animation: ticker-scroll 30s linear infinite;
+}
+
+/* Pausing on hover is the difference between a marquee you can read and
+   one you cannot. */
+.ticker-track:hover {
+  animation-play-state: paused;
+}
+
+/*
+ * Reduced motion: no scrolling at all. The duplicate copy is dropped and
+ * the single remaining set is centred, which is what the reference shows —
+ * a static announcement rather than a frozen half-scrolled frame.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track {
+    animation: none;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .ticker-dupe {
+    display: none;
+  }
+}

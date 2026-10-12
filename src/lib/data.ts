@@ -1193,6 +1193,7 @@ export const navLinks: NavLink[] = [
   { label: "Home", href: "/", labelKey: "nav.home" },
   { label: "Mart", href: "/mart", labelKey: "nav.mart" },
   { label: "Restaurant", href: "/restaurant", labelKey: "nav.restaurant" },
+  { label: "Baskets", href: "/baskets", labelKey: "nav.baskets" },
   { label: "Offers", href: "/offers", labelKey: "nav.offers" },
   { label: "Farm to Home", href: "/farmers", labelKey: "nav.farmers" },
   { label: "Membership", href: "/membership", labelKey: "nav.membership" },
@@ -1273,6 +1274,11 @@ export type HeroSlide = {
   /** One line. Deliberately short — see the client copy rules in NOTES.md. */
   line: string;
   cta: { label: string; href: string; variant: "mint" | "ghost" };
+  /**
+   * Second, quieter route out of the slide. Optional — when absent the
+   * renderer shows the primary CTA alone rather than inventing a second one.
+   */
+  cta2?: { label: string; href: string };
 };
 
 /**
@@ -1295,6 +1301,7 @@ export const heroSlides: HeroSlide[] = [
     highlight: "Organic",
     line: "Harvested before dawn in Kavre, Jumla and Mustang, dispatched within three hours.",
     cta: { label: "Browse the Mart", href: "/mart", variant: "mint" },
+    cta2: { label: "This week's deals", href: "/offers" },
   },
   {
     kind: "video",
@@ -1306,6 +1313,7 @@ export const heroSlides: HeroSlide[] = [
     highlight: "Hot",
     line: "Momos, thalis and chai, cooked to order in the valley.",
     cta: { label: "Order from the kitchen", href: "/restaurant", variant: "mint" },
+    cta2: { label: "See today's deals", href: "/offers" },
   },
   {
     kind: "video",
@@ -1317,6 +1325,7 @@ export const heroSlides: HeroSlide[] = [
     highlight: "farmers",
     line: "Three collectives across the valley and the high hills.",
     cta: { label: "Meet the farmers", href: "/farmers", variant: "ghost" },
+    cta2: { label: "Shop by category", href: "/mart" },
   },
 ];
 
@@ -1333,6 +1342,58 @@ export const WEEKLY_ESSENTIALS: { productId: string; qty: number }[] = [
   { productId: "himali-basmati-rice", qty: 1 },
   { productId: "tomatoes", qty: 1 },
   { productId: "red-lentil", qty: 1 },
+];
+
+/**
+ * Announcement ticker copy.
+ *
+ * Every line is grounded in data that already exists: the delivery estimate
+ * is `deliveryZones[0]`, the COD line matches `paymentMethods`, and the deals
+ * line says "every week" because `dealsCloseAt` describes a weekly
+ * allocation — there is no day-of-week claim anywhere in this file, so
+ * naming one would be inventing it.
+ */
+export const ANNOUNCEMENTS: string[] = [
+  "45–60 min delivery inside Ring Road",
+  "Farm-direct from Kavre, Jumla & the valley",
+  "Cash on Delivery available",
+  "Fresh deals every week",
+  "Nationwide shipping",
+];
+
+/** Hairline trust strip under the Home hero. */
+export const TRUST_STRIP: { icon: "clock" | "sprout" | "pin" | "leaf"; text: string }[] = [
+  { icon: "clock", text: "45–60 min inside Ring Road" },
+  { icon: "sprout", text: "100% farm-direct sourcing" },
+  { icon: "pin", text: "Origin on every product" },
+  { icon: "leaf", text: "Organic lines across the mart" },
+];
+
+/** Three equal photo banners, in the reference's SHOP ALL / SHELLFISH / SMOKED shape. */
+export const BANNERS: {
+  label: string;
+  href: string;
+  image: string;
+  alt: string;
+}[] = [
+  {
+    label: "Shop the Mart",
+    href: "/mart",
+    image: "/images/category-produce.jpg",
+    alt: "",
+  },
+  {
+    label: "Restaurant",
+    href: "/restaurant",
+    image: "/images/dal-bhat.jpg",
+    alt: "",
+  },
+  {
+    label: "Baskets & Gifts",
+    href: "/baskets",
+    image: "/images/basket-dashain.jpg",
+    alt: "",
+  },
 ];
 
 /** Quick-search chips under the Home search field. */
