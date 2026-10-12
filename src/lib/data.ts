@@ -1789,6 +1789,39 @@ const categoryMembership: Record<string, ProductCategory[]> = {
   global: ["Foraged"],
 };
 
+/**
+ * Departments the membership markdown applies to.
+ *
+ * `membershipBenefits` scopes it to "pantry, dairy and farm provisions", so
+ * this is that sentence made executable rather than a discount on everything.
+ */
+const MEMBER_DISCOUNT_DEPARTMENTS = ["dairy", "pantry", "local"];
+
+/** 10% off, as stated on the membership page. */
+export const MEMBER_DISCOUNT_RATE = 0.1;
+
+/*
+ * Precomputed once. `categoryMembership` maps department -> product category;
+ * this needs the reverse question ("does this product qualify?"), and walking
+ * 21 products against three departments on every card render would be wasteful.
+ */
+const memberEligibleCategories = new Set(
+  MEMBER_DISCOUNT_DEPARTMENTS.flatMap(
+    (slug) => categoryMembership[slug] ?? [],
+  ),
+);
+
+/**
+ * Member price for a product, or null when membership does not apply to it.
+ *
+ * Rounded to the nearest rupee, because a member price of Rs 116.70 is not a
+ * price anyone can pay.
+ */
+export function memberPrice(product: Product): number | null {
+  if (!memberEligibleCategories.has(product.category)) return null;
+  return Math.round(product.price * (1 - MEMBER_DISCOUNT_RATE));
+}
+
 /** Resolve a `/mart/[category]` slug. */
 export function categoryBySlug(
   slug: string,

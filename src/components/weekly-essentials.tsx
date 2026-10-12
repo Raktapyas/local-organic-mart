@@ -45,12 +45,12 @@ export function WeeklyEssentials({ products }: { products: Product[] }) {
   }
 
   return (
-    <div className="rounded-xl border border-border bg-card p-5 sm:p-6">
-      <ul className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap items-center gap-3 rounded-xl border border-border bg-card px-4 py-3">
+      <ul className="flex flex-1 flex-wrap items-center gap-2">
         {items.map(({ entry, product }) => (
           <li
             key={product.id}
-            className="flex items-baseline gap-1.5 rounded-full border border-foreground/10 px-3 py-1.5 text-xs"
+            className="flex items-baseline gap-1.5 rounded-full border border-foreground/10 px-2.5 py-1 text-[11px]"
           >
             <span className="text-foreground">
               {entry.qty > 1 ? `${entry.qty}× ` : ""}
@@ -63,7 +63,7 @@ export function WeeklyEssentials({ products }: { products: Product[] }) {
         ))}
       </ul>
 
-      <Button className="mt-5 rounded-full" onClick={reorderAll}>
+      <Button size="sm" className="ml-auto rounded-full" onClick={reorderAll}>
         {added ? (
           <>
             <Check className="size-4" aria-hidden />

@@ -6,13 +6,14 @@ import { T } from "@/components/translated";
 import { AddToCartButton } from "@/components/add-to-cart-button";
 import { PhotoFallback } from "@/components/photo-fallback";
 import { Button } from "@/components/ui/button";
-import { discountPercent, type Product } from "@/lib/data";
+import { discountPercent, memberPrice, type Product } from "@/lib/data";
 
 const npr = new Intl.NumberFormat("en-NP");
 
 export function ProductCard({ product }: { product: Product }) {
   const off = discountPercent(product);
   const sold = product.outOfStock;
+  const member = memberPrice(product);
 
   return (
     <article
@@ -22,13 +23,13 @@ export function ProductCard({ product }: { product: Product }) {
           : "group flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-colors hover:border-mint/35"
       }
     >
-      <div className="relative aspect-square w-full overflow-hidden bg-muted">
+      <div className="relative aspect-square w-full overflow-hidden rounded-t-xl bg-muted">
         {product.image ? (
         <Image
           src={product.image}
           alt={product.name}
           fill
-          sizes="(min-width: 1280px) 22vw, (min-width: 768px) 30vw, (min-width: 640px) 45vw, 92vw"
+          sizes="(min-width: 1280px) 18vw, (min-width: 768px) 30vw, (min-width: 640px) 45vw, 46vw"
           className={
             sold
               ? "object-cover grayscale"
@@ -69,30 +70,31 @@ export function ProductCard({ product }: { product: Product }) {
         </div>
       </div>
 
-      <div className="flex flex-1 flex-col justify-between gap-3 p-4">
+      <div className="flex flex-1 flex-col justify-between gap-2 p-3">
         <div>
-          <span className="text-[10px] tracking-wider text-sage uppercase">
+          <span className="block text-[10px] leading-tight tracking-wider text-sage uppercase">
             {product.badge}
           </span>
-          <h3 className="mt-0.5 font-heading text-base font-normal transition-colors group-hover:text-mint">
+          <h3 className="mt-1 font-heading text-sm leading-tight font-normal transition-colors group-hover:text-mint">
             {product.name}
           </h3>
-          <p className="text-xs text-muted-foreground">
+          <p className="mt-0.5 text-[11px] leading-tight text-muted-foreground">
             {product.nepaliName} &middot; {product.unit}
           </p>
         </div>
 
-        <div className="flex items-center justify-between border-t border-border pt-3">
-          <span className="flex items-baseline gap-1.5">
-            <span className="text-sm font-semibold">
-              Rs {npr.format(product.price)}
-            </span>
-            {product.oldPrice && (
-              <span className="text-xs text-muted-foreground line-through">
-                Rs {npr.format(product.oldPrice)}
+        <div>
+          <div className="flex items-center justify-between border-t border-border pt-2">
+            <span className="flex items-baseline gap-1.5">
+              <span className="text-sm font-semibold">
+                Rs {npr.format(product.price)}
               </span>
-            )}
-          </span>
+              {product.oldPrice && (
+                <span className="text-xs text-muted-foreground line-through">
+                  Rs {npr.format(product.oldPrice)}
+                </span>
+              )}
+            </span>
 
           {sold ? (
             <Button size="sm" variant="outline" className="rounded-full">
@@ -116,6 +118,18 @@ export function ProductCard({ product }: { product: Product }) {
               <Plus className="size-4" aria-hidden />
             </AddToCartButton>
           )}
+          </div>
+
+          {/*
+            The member row is the point of showing membership on a product
+            card: 10% off the price already on screen, on the products the
+            membership page actually covers. Quiet gold, one line, no badge.
+          */}
+          {member !== null ? (
+            <p className="mt-1 text-[11px] leading-tight text-gold">
+              Members Rs {npr.format(member)}
+            </p>
+          ) : null}
         </div>
       </div>
     </article>

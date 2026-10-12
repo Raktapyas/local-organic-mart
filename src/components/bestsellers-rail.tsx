@@ -25,8 +25,14 @@ const TABS = [
   { id: "herbs", label: "Herbs" },
 ] as const;
 
-export function BestsellersRail() {
+export function BestsellersRail({
+  /** Ids already on the adjacent Deals rail. */
+  excludeIds = [],
+}: {
+  excludeIds?: string[];
+}) {
   const [tab, setTab] = useState<string>("all");
+  const excluded = new Set(excludeIds);
 
   /*
     The catalogue is 21 lines across ten departments, so no department holds
@@ -35,8 +41,17 @@ export function BestsellersRail() {
     actually holds and centres it. Four columns is what it reaches when the
     data supports it.
   */
+  /*
+    The Deals rail sits directly below this one, and the catalogue happens to
+    declare all four discounted items first — so an unfiltered "All" tab
+    rendered an identical set twice. `excludeIds` keeps the two rails
+    disjoint. Per-category tabs are left unfiltered: departments hold two to
+    four products each, so excluding there would empty them out.
+  */
   const list =
-    tab === "all" ? products.slice(0, 4) : productsInCategory(tab).slice(0, 4);
+    tab === "all"
+      ? products.filter((p) => !excluded.has(p.id)).slice(0, 4)
+      : productsInCategory(tab).slice(0, 4);
 
   return (
     <section className="mx-auto w-full max-w-7xl px-6 py-10 sm:py-20">

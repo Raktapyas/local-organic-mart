@@ -33,7 +33,7 @@ export function TrustStack() {
                 aria-expanded={isOpen}
                 aria-controls={`trust-panel-${card.id}`}
                 onClick={() => setOpen(isOpen ? null : card.id)}
-                className="flex w-full items-center justify-between gap-4 py-5 text-left"
+                className="flex w-full items-center justify-between gap-4 py-3 text-left"
               >
                 <span className="font-heading text-base sm:text-lg">
                   {card.title}
