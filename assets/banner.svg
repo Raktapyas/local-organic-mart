@@ -4,59 +4,109 @@
     .frame { fill: #070b08; stroke: #c6a15b; stroke-opacity: 0.22; }
     .rule { stroke: #c6a15b; stroke-opacity: 0.45; }
 
-    /* crest: square draws itself, leaf fades in behind it */
-    .crest { stroke: #c6a15b; stroke-opacity: 0.55; fill: none; stroke-dasharray: 240; stroke-dashoffset: 240; animation: draw 1s ease-out 0.25s forwards, glow 6s ease-in-out 2s infinite; }
-    .leaf { fill: #c6a15b; opacity: 0; animation: fade 0.7s ease-out 0.95s forwards; }
-    .vein { stroke: #070b08; stroke-width: 1.2; fill: none; opacity: 0; animation: fade 0.7s ease-out 1.15s forwards; }
-
     .word { fill: #f4f0e6; font-family: Georgia, "Iowan Old Style", "Times New Roman", serif; font-size: 54px; letter-spacing: 7px; }
     .kicker { fill: #c6a15b; fill-opacity: 0.85; font-family: Georgia, "Iowan Old Style", "Times New Roman", serif; font-size: 12px; letter-spacing: 9px; }
 
-    .rise { opacity: 0; animation: rise 0.9s cubic-bezier(0.22, 0.9, 0.3, 1) forwards; }
-    .d1 { animation-delay: 1.05s; }
-    .d2 { animation-delay: 1.35s; }
-    .d3 { animation-delay: 1.6s; }
+    /*
+      One 10s cycle: build (0–3.1s), hold (3.1–9.3s), fade out (9.3–9.7s),
+      reset while hidden, replay. Every element is keyed to the same timeline
+      so the sequence can't drift, and each resets only after the stage has
+      faded — the loop restarts from the empty frame, not from a visible snap.
+    */
+    .stage { animation: stageCycle 10s linear infinite; }
+    .crest { stroke: #c6a15b; stroke-opacity: 0.55; fill: none; stroke-dasharray: 240; animation: crestDraw 10s infinite, crestGlow 6s ease-in-out infinite; }
+    .leaf { fill: #c6a15b; opacity: 0; animation: leafIn 10s cubic-bezier(0.22, 0.9, 0.3, 1) infinite; }
+    .vein { stroke: #070b08; stroke-width: 1.2; fill: none; opacity: 0; animation: veinIn 10s cubic-bezier(0.22, 0.9, 0.3, 1) infinite; }
 
-    .grow { transform: scaleX(0); animation: grow 0.8s ease-out 1.45s forwards; }
-    .grow-l { transform-origin: 470px 0; }
-    .grow-r { transform-origin: 730px 0; }
+    .word { opacity: 0; animation: wordIn 10s cubic-bezier(0.22, 0.9, 0.3, 1) infinite; }
+    .kicker { opacity: 0; animation: kickerIn 10s cubic-bezier(0.22, 0.9, 0.3, 1) infinite; }
+    .rule { transform: scaleX(0); animation: growIn 10s cubic-bezier(0.22, 0.9, 0.3, 1) infinite; }
 
-    @keyframes draw { to { stroke-dashoffset: 0; } }
-    @keyframes grow { to { transform: scaleX(1); } }
-    @keyframes rise { from { opacity: 0; transform: translateY(9px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes fade { to { opacity: 1; } }
-    @keyframes glow {
+    /* the last line lands a beat after the first */
+    .note { animation-name: noteIn; }
+    .rule.note { animation-name: ruleNoteIn; }
+
+    @keyframes stageCycle {
+      0%, 93% { opacity: 1; }
+      97%, 100% { opacity: 0; }
+    }
+    @keyframes crestDraw {
+      0% { stroke-dashoffset: 240; animation-timing-function: ease-out; }
+      11%, 97% { stroke-dashoffset: 0; }
+      97.5%, 100% { stroke-dashoffset: 240; }
+    }
+    @keyframes crestGlow {
       0%, 100% { stroke-opacity: 0.55; }
       50% { stroke-opacity: 0.9; }
     }
+    @keyframes leafIn {
+      0%, 10% { opacity: 0; }
+      16%, 97% { opacity: 1; }
+      97.5%, 100% { opacity: 0; }
+    }
+    @keyframes veinIn {
+      0%, 13% { opacity: 0; }
+      19%, 97% { opacity: 1; }
+      97.5%, 100% { opacity: 0; }
+    }
+    @keyframes wordIn {
+      0%, 12% { opacity: 0; transform: translateY(9px); }
+      19%, 97% { opacity: 1; transform: translateY(0); }
+      97.5%, 100% { opacity: 0; transform: translateY(9px); }
+    }
+    @keyframes growIn {
+      0%, 18% { transform: scaleX(0); }
+      23%, 97% { transform: scaleX(1); }
+      97.5%, 100% { transform: scaleX(0); }
+    }
+    @keyframes kickerIn {
+      0%, 22% { opacity: 0; }
+      28%, 97% { opacity: 1; }
+      97.5%, 100% { opacity: 0; }
+    }
+    @keyframes noteIn {
+      0%, 25% { opacity: 0; }
+      31%, 97% { opacity: 1; }
+      97.5%, 100% { opacity: 0; }
+    }
+    @keyframes ruleNoteIn {
+      0%, 24% { transform: scaleX(0); }
+      30%, 97% { transform: scaleX(1); }
+      97.5%, 100% { transform: scaleX(0); }
+    }
 
     @media (prefers-reduced-motion: reduce) {
-      .crest, .leaf, .vein, .rise, .grow { animation: none; opacity: 1; transform: none; }
+      .stage, .crest, .leaf, .vein, .word, .kicker, .rule { animation: none; }
+      .stage { opacity: 1; }
+      .leaf, .vein, .word, .kicker { opacity: 1; transform: none; }
       .crest { stroke-dashoffset: 0; }
+      .rule { transform: none; }
     }
   </style>
 
   <rect class="frame" x="16.5" y="16.5" width="1167" height="267" />
 
-  <!-- crest -->
-  <g transform="rotate(45 600 74)">
-    <rect class="crest" x="578" y="52" width="44" height="44" />
+  <g class="stage">
+    <!-- crest -->
+    <g transform="rotate(45 600 74)">
+      <rect class="crest" x="578" y="52" width="44" height="44" />
+    </g>
+    <g transform="rotate(-45 600 74)">
+      <path class="leaf" d="M600 60c9 7 9 21 0 28-9-7-9-21 0-28z" />
+      <path class="vein" d="M600 90v5" />
+    </g>
+
+    <!-- wordmark -->
+    <text class="word" x="600" y="168" text-anchor="middle">LOCAL ORGANIC MART</text>
+
+    <!-- rule + kicker -->
+    <line class="rule" x1="290" y1="202" x2="440" y2="202" style="transform-origin: 440px 202px" />
+    <line class="rule" x1="760" y1="202" x2="910" y2="202" style="transform-origin: 760px 202px" />
+    <text class="kicker" x="600" y="206" text-anchor="middle">KATHMANDU VALLEY</text>
+
+    <!-- rule + footnote -->
+    <line class="rule note" x1="380" y1="240" x2="500" y2="240" style="transform-origin: 500px 240px; stroke-opacity: 0.18" />
+    <line class="rule note" x1="700" y1="240" x2="820" y2="240" style="transform-origin: 700px 240px; stroke-opacity: 0.18" />
+    <text class="kicker note" x="600" y="244" text-anchor="middle" fill-opacity="0.7" style="font-size: 10px; letter-spacing: 6px;">FARM TO HOME</text>
   </g>
-  <g transform="rotate(-45 600 74)">
-    <path class="leaf" d="M600 60c9 7 9 21 0 28-9-7-9-21 0-28z" />
-    <path class="vein" d="M600 90v5" />
-  </g>
-
-  <!-- wordmark -->
-  <text class="word rise d1" x="600" y="168" text-anchor="middle">LOCAL ORGANIC MART</text>
-
-  <!-- rule + kicker -->
-  <line class="rule grow grow-l" x1="290" y1="202" x2="440" y2="202" />
-  <line class="rule grow grow-r" x1="760" y1="202" x2="910" y2="202" />
-  <text class="kicker rise d2" x="600" y="206" text-anchor="middle">KATHMANDU VALLEY</text>
-
-  <!-- rule + footnote -->
-  <line class="rule grow grow-l" x1="380" y1="240" x2="500" y2="240" style="stroke-opacity: 0.18" />
-  <line class="rule grow grow-r" x1="700" y1="240" x2="820" y2="240" style="stroke-opacity: 0.18" />
-  <text class="kicker rise d3" x="600" y="244" text-anchor="middle" fill-opacity="0.7" style="font-size: 10px; letter-spacing: 6px;">FARM TO HOME</text>
 </svg>
