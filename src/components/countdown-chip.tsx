@@ -44,14 +44,14 @@ export function CountdownChip({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-2 rounded-full border border-coral/30 bg-coral/12 px-3 py-1 text-sm text-coral",
+        "inline-flex items-center gap-2.5 border border-foreground/12 px-3 py-2 text-[10px] tracking-[0.16em] text-ash uppercase",
         className,
       )}
     >
-      <Clock className="size-4" aria-hidden />
+      <Clock className="size-3.5 text-gold/70" aria-hidden />
       <span>{label}</span>
       {remaining !== null && (
-        <span className="tabular-nums">{formatRemaining(remaining)}</span>
+        <span className="tabular text-ivory">{formatRemaining(remaining)}</span>
       )}
     </span>
   );

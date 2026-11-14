@@ -74,7 +74,7 @@ export function MartView({
               name="q"
               aria-label="Search the mart"
               placeholder="Search provisions, farms, or harvest dates"
-              className="h-11 w-full rounded-full border border-input bg-card/70 pl-11 pr-4 text-sm outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-mint focus-visible:ring-3 focus-visible:ring-ring/40"
+              className="h-11 w-full rounded-[2px] border border-input bg-card/70 pl-11 pr-4 text-sm outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-mint focus-visible:ring-3 focus-visible:ring-ring/40"
             />
           </form>
 
@@ -86,8 +86,8 @@ export function MartView({
                   aria-current={categoryId ? undefined : "page"}
                   className={
                     categoryId
-                      ? "inline-flex h-9 shrink-0 items-center rounded-full border border-border px-4 text-sm text-muted-foreground transition-colors hover:border-mint/35 hover:text-foreground"
-                      : "inline-flex h-9 shrink-0 items-center rounded-full bg-mint px-4 text-sm font-medium text-primary-foreground"
+                      ? "inline-flex h-9 shrink-0 items-center rounded-[2px] border border-border px-4 text-sm text-muted-foreground transition-colors hover:border-mint/35 hover:text-foreground"
+                      : "inline-flex h-9 shrink-0 items-center rounded-[2px] bg-mint px-4 text-sm font-medium text-primary-foreground"
                   }
                 >
                   All
@@ -102,8 +102,8 @@ export function MartView({
                       aria-current={isActive ? "page" : undefined}
                       className={
                         isActive
-                          ? "inline-flex h-9 shrink-0 items-center rounded-full bg-mint px-4 text-sm font-medium text-primary-foreground"
-                          : "inline-flex h-9 shrink-0 items-center rounded-full border border-border px-4 text-sm text-muted-foreground transition-colors hover:border-mint/35 hover:text-foreground"
+                          ? "inline-flex h-9 shrink-0 items-center rounded-[2px] bg-mint px-4 text-sm font-medium text-primary-foreground"
+                          : "inline-flex h-9 shrink-0 items-center rounded-[2px] border border-border px-4 text-sm text-muted-foreground transition-colors hover:border-mint/35 hover:text-foreground"
                       }
                     >
                       {category.name}
@@ -141,7 +141,7 @@ export function MartView({
                 {filterAttributes.map((attribute) => (
                   <label
                     key={attribute.id}
-                    className="cursor-pointer rounded-full border border-border px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:border-mint/35 has-checked:border-mint has-checked:bg-mint/12 has-checked:text-mint"
+                    className="cursor-pointer rounded-[2px] border border-border px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:border-mint/35 has-checked:border-mint has-checked:bg-mint/12 has-checked:text-mint"
                   >
                     <input
                       type="checkbox"
@@ -167,7 +167,7 @@ export function MartView({
                         name="category"
                         value={category.name}
                         defaultChecked={category.id === categoryId}
-                        className="size-4 shrink-0 rounded border-input accent-mint"
+                        className="size-3.5 shrink-0 appearance-none border border-foreground/25 bg-transparent transition-colors checked:border-gold checked:bg-gold"
                       />
                       {category.name}
                     </label>
@@ -191,7 +191,7 @@ export function MartView({
                   min={0}
                   max={priceCeiling}
                   defaultValue={priceCeiling}
-                  className="w-full accent-[#8FE3B0]"
+                  className="w-full accent-gold"
                 />
               </label>
               <div className="mt-2 flex justify-between text-xs text-muted-foreground">
@@ -208,7 +208,7 @@ export function MartView({
                 {provenanceMarks.map((mark) => (
                   <li
                     key={mark.id}
-                    className="flex items-center justify-between gap-2 rounded-md border border-border bg-card/50 px-3 py-2 text-xs text-muted-foreground"
+                    className="flex items-center justify-between gap-2 rounded-[2px] border border-border bg-card/50 px-3 py-2 text-xs text-muted-foreground"
                   >
                     {mark.label}
                     <BadgeCheck className="size-4 shrink-0 text-sage" aria-hidden />
@@ -237,7 +237,7 @@ export function MartView({
                 <select
                   id="sort"
                   name="sort"
-                  className="appearance-none rounded-full border border-border bg-card py-2 pr-9 pl-4 text-xs text-foreground outline-none transition-colors focus:border-mint"
+                  className="appearance-none rounded-[2px] border border-border bg-card py-2 pr-9 pl-4 text-xs text-foreground outline-none transition-colors focus:border-mint"
                 >
                   {sortOptions.map((option) => (
                     <option key={option}>{option}</option>
@@ -262,13 +262,13 @@ export function MartView({
               </ul>
 
               <div className="flex flex-col items-center gap-3 pt-4">
-                <Button variant="outline" className="rounded-full px-8">
+                <Button variant="outline" className="rounded-[2px] px-8">
                   Load more
                 </Button>
               </div>
             </>
           ) : (
-            <div className="flex flex-col items-center gap-4 rounded-xl border border-border bg-card/40 px-6 py-20 text-center">
+            <div className="flex flex-col items-center gap-4 rounded-[2px] border border-border bg-card/40 px-6 py-20 text-center">
               <h3 className="font-heading text-xl tracking-tight">
                 Nothing here yet.
               </h3>
@@ -277,7 +277,7 @@ export function MartView({
                   ? `No ${categoryName.toLowerCase()} lines are in the mart at the moment. The rest of the harvest is on the shelves.`
                   : "No products match these filters."}
               </p>
-              <Button className="mt-2 rounded-full" asChild>
+              <Button className="mt-2 rounded-[2px]" asChild>
                 <Link href="/mart">Browse everything</Link>
               </Button>
             </div>

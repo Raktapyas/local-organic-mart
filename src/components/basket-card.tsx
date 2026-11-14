@@ -37,7 +37,7 @@ export function BasketCard({
 
   return (
     <div
-      className={`group relative flex min-h-72 flex-col justify-end overflow-hidden rounded-xl border ${
+      className={`group relative flex min-h-72 flex-col justify-end overflow-hidden rounded-[2px] border ${
         accent === "gold" ? "border-gold/40" : "border-border"
       }`}
     >
@@ -49,13 +49,13 @@ export function BasketCard({
         className="object-cover transition-transform duration-700 group-hover:scale-105"
       />
       {/* Scrim carries the contrast; the card stays one short block of copy. */}
-      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-background/20" />
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/90 to-background/45" />
 
       <div className="relative flex flex-col gap-3 p-6">
         <div>
           <p
-            className={`text-[10px] tracking-wider uppercase ${
-              accent === "gold" ? "text-gold" : "text-sage"
+            className={`text-[9.5px] tracking-[0.24em] uppercase ${
+              accent === "gold" ? "text-gold" : "text-ash"
             }`}
           >
             {basket.tag}
@@ -74,7 +74,12 @@ export function BasketCard({
         </p>
 
         <Button
-          className="w-fit rounded-full px-5"
+          variant={accent === "gold" ? "default" : "outline"}
+          className={
+            accent === "gold"
+              ? "w-fit rounded-[2px] px-5 text-[10px] tracking-[0.18em] uppercase"
+              : "w-fit rounded-[2px] border-gold/35 px-5 text-[10px] tracking-[0.18em] text-gold uppercase hover:border-gold hover:bg-gold hover:text-ink"
+          }
           onClick={() => {
             addItem({
               kind: "basket",

@@ -34,7 +34,7 @@ export function QuantityStepper({
   return (
     <div
       className={cn(
-        "flex h-12 w-32 shrink-0 items-center justify-between rounded-xl border border-border bg-card px-3",
+        "flex h-12 w-32 shrink-0 items-center justify-between rounded-[2px] border border-border bg-card px-3",
         className,
       )}
     >

@@ -33,7 +33,7 @@ export function ComboCard({
   const bundleLabel = dishes.map((dish) => dish.name).join(" + ");
 
   return (
-    <div className="flex h-full flex-col gap-4 rounded-xl border border-border bg-card p-6">
+    <div className="flex h-full flex-col gap-4 rounded-[2px] border border-border bg-card p-6">
       <div>
         <h3 className="font-heading text-lg leading-tight">{bundleLabel}</h3>
         <p className="mt-1 text-xs text-sage">Save Rs {saving}</p>
@@ -67,7 +67,7 @@ export function ComboCard({
         </p>
 
         <Button
-          className="h-10 rounded-full px-5"
+          className="h-10 rounded-[2px] px-5"
           onClick={() => {
             // The saving is taken off the second line so the bag totals match
             // the price advertised here. The combo note rides along as a

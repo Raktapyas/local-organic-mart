@@ -86,7 +86,7 @@ export default function AboutPage() {
             </ul>
           </div>
 
-          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-muted">
+          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[2px] bg-muted">
             <Image
               src={heroImage}
               alt="Terraced highland fields above the Kathmandu valley at dawn"
@@ -105,9 +105,9 @@ export default function AboutPage() {
               return (
                 <li
                   key={value.title}
-                  className="flex flex-col gap-3 rounded-xl border border-border bg-card/40 p-6"
+                  className="flex flex-col gap-3 rounded-[2px] border border-border bg-card/40 p-6"
                 >
-                  <span className="inline-flex size-9 items-center justify-center rounded-full border border-gold/40 text-gold">
+                  <span className="inline-flex size-9 items-center justify-center rounded-[2px] border border-gold/40 text-gold">
                     <Icon className="size-4" aria-hidden />
                   </span>
                   <h3 className="font-heading text-base leading-tight">
@@ -155,13 +155,13 @@ export default function AboutPage() {
 
             <Button
               variant="outline"
-              className="w-fit rounded-full px-6"
+              className="w-fit rounded-[2px] px-6"
               asChild
             >
               <Link href={mapsHref}>Find our store on Google Maps</Link>
             </Button>
 
-            <div className="rounded-xl border border-border bg-card/40 p-5">
+            <div className="rounded-[2px] border border-border bg-card/40 p-5">
               <h3 className="text-xs tracking-wider text-sage uppercase">
                 Valley dispatch radius
               </h3>

@@ -53,11 +53,17 @@ export function BottomNav() {
               <Link
                 href={tab.href}
                 aria-current={active ? "page" : undefined}
-                className={`flex flex-col items-center gap-1 py-2.5 text-[11px] transition-colors ${
-                  active ? "text-mint" : "text-muted-foreground"
+                className={`relative flex flex-col items-center gap-1.5 py-2.5 text-[9px] tracking-[0.14em] uppercase transition-colors ${
+                  active ? "text-gold" : "text-ash/70"
                 }`}
               >
-                <Icon className="size-5" aria-hidden />
+                <span
+                  aria-hidden
+                  className={`absolute inset-x-4 top-0 h-px transition-colors ${
+                    active ? "bg-gold/70" : "bg-transparent"
+                  }`}
+                />
+                <Icon className="size-[18px]" aria-hidden />
                 <span>{tab.label}</span>
               </Link>
             </li>

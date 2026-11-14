@@ -50,7 +50,7 @@ export default function MembershipPage() {
       <main className="flex flex-1 flex-col">
         {/* Hero */}
         <section className="mx-auto flex w-full max-w-3xl flex-col items-center gap-6 px-6 pt-20 pb-16 text-center">
-          <span className="inline-flex size-12 items-center justify-center rounded-full border border-gold/40 bg-gold/10 text-gold">
+          <span className="inline-flex size-12 items-center justify-center rounded-[2px] border border-gold/40 bg-gold/10 text-gold">
             <Sparkles className="size-6" aria-hidden />
           </span>
           <h1 className="text-4xl tracking-tight text-balance sm:text-5xl md:text-6xl">
@@ -78,9 +78,9 @@ export default function MembershipPage() {
               return (
                 <li
                   key={benefit.title}
-                  className="flex flex-col gap-3 rounded-xl border border-border bg-card/40 p-6"
+                  className="flex flex-col gap-3 rounded-[2px] border border-border bg-card/40 p-6"
                 >
-                  <span className="inline-flex size-9 items-center justify-center rounded-full border border-gold/40 text-gold">
+                  <span className="inline-flex size-9 items-center justify-center rounded-[2px] border border-gold/40 text-gold">
                     <Icon className="size-4" aria-hidden />
                   </span>
                   <h3 className="font-heading text-base leading-tight">
@@ -97,7 +97,7 @@ export default function MembershipPage() {
         <section className="mx-auto w-full max-w-3xl px-6 pb-20">
           {/* TODO: the membership API owns pricing, activation and billing.
               Both figures below are static until then. */}
-          <div className="flex flex-col items-center gap-6 rounded-2xl border border-gold/40 bg-card p-8 text-center sm:p-10">
+          <div className="flex flex-col items-center gap-6 rounded-[2px] border border-gold/40 bg-card p-8 text-center sm:p-10">
             <div>
               <h2 className="font-heading text-2xl tracking-tight">
                 {membershipPlan.name}
@@ -121,7 +121,7 @@ export default function MembershipPage() {
               ))}
             </ul>
 
-            <Button className="h-12 w-full rounded-full px-8 bg-gold text-background hover:bg-gold/90">
+            <Button className="h-12 w-full rounded-[2px] px-8 bg-gold text-background hover:bg-gold/90">
               Join membership
             </Button>
 

@@ -1258,6 +1258,9 @@ export const subscriptionPlans: SubscriptionPlan[] = [
 export const heroImage = "/images/hero-farm.jpg";
 export const restaurantBandImage = "/images/restaurant-band.jpg";
 export const farmerBandImage = "/images/farmers-band.jpg";
+/* The dark room shot reads as an empty panel at half-width; the home kitchen
+   band uses a lit thali instead, so the food carries the section. */
+export const kitchenBandImage = "/images/kitchen-thali.jpg";
 
 export type HeroSlide = {
   /** All Home slides are video; `image` remains valid for image slides. */
@@ -1424,9 +1427,6 @@ export const STORY_CARDS: {
     image: "/images/farmer-kavre.jpg",
   },
 ];
-
-/** Quick-search chips under the Home search field. */
-export const SEARCH_HINT_CHIPS = ["milk", "rice", "spinach", "honey"];
 
 /**
  * The three expandable trust cards.

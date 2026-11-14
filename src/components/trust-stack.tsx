@@ -21,26 +21,31 @@ export function TrustStack() {
   const [open, setOpen] = useState<string | null>(null);
 
   return (
-    <div className="flex flex-col">
-      {trustCards.map((card) => {
+    <div className="flex flex-col border-t border-foreground/[0.08]">
+      {trustCards.map((card, index) => {
         const isOpen = open === card.id;
 
         return (
-          <div key={card.id} className="border-t border-border last:border-b">
+          <div key={card.id} className="border-b border-foreground/[0.08]">
             <h3>
               <button
                 type="button"
                 aria-expanded={isOpen}
                 aria-controls={`trust-panel-${card.id}`}
                 onClick={() => setOpen(isOpen ? null : card.id)}
-                className="flex w-full items-center justify-between gap-4 py-3 text-left"
+                className="group flex w-full items-center justify-between gap-4 py-5 text-left"
               >
-                <span className="font-heading text-base sm:text-lg">
-                  {card.title}
+                <span className="flex items-baseline gap-5">
+                  <span className="tabular text-[9px] tracking-[0.24em] text-gold/60">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span className="font-heading text-lg leading-tight text-ivory transition-colors duration-200 group-hover:text-gold sm:text-xl">
+                    {card.title}
+                  </span>
                 </span>
                 <ChevronDown
-                  className={`size-4 shrink-0 text-muted-foreground transition-transform duration-300 ${
-                    isOpen ? "rotate-180" : ""
+                  className={`size-4 shrink-0 text-ash transition-transform duration-300 ${
+                    isOpen ? "rotate-180 text-gold" : ""
                   }`}
                   aria-hidden
                 />
@@ -81,32 +86,29 @@ function TrustBody({
 }) {
   if (cardId !== "delivery") {
     return (
-      <p className="pb-5 text-sm leading-relaxed text-muted-foreground">
+      <p className="max-w-xl pb-6 pl-[3.15rem] text-sm leading-relaxed text-ash">
         {fallback}
       </p>
     );
   }
 
   return (
-    <div className="pb-5 text-sm text-muted-foreground">
-      <p className="leading-relaxed">
+    <div className="pb-6 pl-[3.15rem] text-sm text-ash">
+      <p className="max-w-xl leading-relaxed">
         Inside the ring road in an hour, beyond it by courier. Pick a slot at
         checkout.
       </p>
-      <ul className="mt-3 flex flex-wrap gap-2">
+      <ul className="mt-4 flex flex-wrap gap-px border border-foreground/[0.08] bg-foreground/[0.08]">
         {deliveryZones.slice(0, 3).map((zone) => (
-          <li
-            key={zone.area}
-            className="rounded-full border border-foreground/10 px-3 py-1 text-xs"
-          >
-            {zone.area} · {zone.estimate}
+          <li key={zone.area} className="bg-background px-3 py-1.5 text-[11px]">
+            {zone.area} &middot; {zone.estimate}
           </li>
         ))}
       </ul>
-      <p className="mt-3 flex flex-wrap items-center gap-1.5 text-xs">
-        <span>Slots:</span>
+      <p className="mt-4 flex flex-wrap items-center gap-3 text-[10px] tracking-[0.16em] uppercase">
+        <span className="text-gold/70">Slots</span>
         {DELIVERY_SLOTS.map((slot) => (
-          <span key={slot.id} className="text-foreground">
+          <span key={slot.id} className="text-bone/70">
             {slot.label}
           </span>
         ))}

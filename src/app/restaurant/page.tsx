@@ -20,7 +20,7 @@ export default function RestaurantPage() {
       <main className="flex flex-1 flex-col">
         {/* Hero band */}
         <section className="mx-auto w-full max-w-7xl px-6 pt-8">
-          <div className="relative isolate flex min-h-[22rem] items-end overflow-hidden rounded-2xl border border-border">
+          <div className="relative isolate flex min-h-[22rem] items-end overflow-hidden rounded-[2px] border border-border">
             <Image
               src={restaurantBandImage}
               alt="A brass thali of Nepali dishes set for a feast"
@@ -45,12 +45,12 @@ export default function RestaurantPage() {
                 {ETA_CHIPS.map((chip) => (
                   <span
                     key={chip}
-                    className="rounded-full border border-border bg-background/70 px-3 py-1.5 text-xs text-muted-foreground backdrop-blur-sm"
+                    className="rounded-[2px] border border-border bg-background/70 px-3 py-1.5 text-xs text-muted-foreground backdrop-blur-sm"
                   >
                     {chip}
                   </span>
                 ))}
-                <span className="rounded-full border border-gold/40 bg-background/70 px-3 py-1.5 text-xs text-gold backdrop-blur-sm">
+                <span className="rounded-[2px] border border-gold/40 bg-background/70 px-3 py-1.5 text-xs text-gold backdrop-blur-sm">
                   Kathmandu Valley only
                 </span>
               </div>
@@ -72,7 +72,7 @@ export default function RestaurantPage() {
 
         {/* CTA */}
         <section className="mx-auto w-full max-w-7xl px-6 pb-24">
-          <div className="flex flex-col items-start gap-6 rounded-2xl border border-border bg-card p-10 sm:p-14">
+          <div className="flex flex-col items-start gap-6 rounded-[2px] border border-border bg-card p-10 sm:p-14">
             <div className="flex flex-col gap-3">
               <h2 className="max-w-xl text-3xl tracking-tight text-balance">
                 Dine with us, or have it delivered hot.
@@ -82,7 +82,7 @@ export default function RestaurantPage() {
                 Ring Road in 30&ndash;45 minutes.
               </p>
             </div>
-            <Button className="rounded-full" asChild>
+            <Button className="rounded-[2px]" asChild>
               <Link href="/mart">
                 Browse the mart
                 <ArrowRight className="size-4" aria-hidden />

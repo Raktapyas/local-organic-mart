@@ -83,7 +83,7 @@ async function SearchResults({ searchParams }: { searchParams: SearchParams }) {
           defaultValue={query}
           aria-label="Search the mart"
           placeholder="Search provisions, dishes, or harvest dates"
-          className="h-11 w-full rounded-full border border-input bg-card/70 pl-11 pr-4 text-sm outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-mint focus-visible:ring-3 focus-visible:ring-ring/40"
+          className="h-11 w-full rounded-[2px] border border-input bg-card/70 pl-11 pr-4 text-sm outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-mint focus-visible:ring-3 focus-visible:ring-ring/40"
         />
       </form>
 
@@ -149,8 +149,8 @@ function SearchResultsBody({
 
 function EmptyState({ hasQuery }: { hasQuery: boolean }) {
   return (
-    <div className="flex flex-col items-center gap-5 rounded-xl border border-border bg-card/40 px-6 py-20 text-center">
-      <span className="inline-flex size-11 items-center justify-center rounded-full border border-border text-sage">
+    <div className="flex flex-col items-center gap-5 rounded-[2px] border border-border bg-card/40 px-6 py-20 text-center">
+      <span className="inline-flex size-11 items-center justify-center rounded-[2px] border border-border text-sage">
         <SearchX className="size-5" aria-hidden />
       </span>
       <h2 className="font-heading text-2xl tracking-tight">
@@ -167,7 +167,7 @@ function EmptyState({ hasQuery }: { hasQuery: boolean }) {
           <li key={suggestion}>
             <Link
               href={`/search?q=${suggestion}`}
-              className="inline-flex rounded-full border border-border px-4 py-1.5 text-sm capitalize text-muted-foreground transition-colors hover:border-mint/40 hover:text-mint"
+              className="inline-flex rounded-[2px] border border-border px-4 py-1.5 text-sm capitalize text-muted-foreground transition-colors hover:border-mint/40 hover:text-mint"
             >
               {suggestion}
             </Link>
@@ -183,10 +183,10 @@ function SearchSkeleton() {
   return (
     <div className="flex flex-col gap-8" aria-hidden>
       <div className="flex flex-col gap-3">
-        <div className="h-9 w-64 rounded-md bg-muted" />
-        <div className="h-4 w-80 rounded-md bg-muted" />
+        <div className="h-9 w-64 rounded-[2px] bg-muted" />
+        <div className="h-4 w-80 rounded-[2px] bg-muted" />
       </div>
-      <div className="h-11 w-full max-w-xl rounded-full bg-muted" />
+      <div className="h-11 w-full max-w-xl rounded-[2px] bg-muted" />
     </div>
   );
 }

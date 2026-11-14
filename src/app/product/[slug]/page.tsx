@@ -128,7 +128,7 @@ export default async function ProductPage({
         <section className="mx-auto grid w-full max-w-7xl gap-10 px-6 pb-16 lg:grid-cols-2">
           {/* Gallery */}
           <div className="flex flex-col gap-4">
-            <div className="relative aspect-square overflow-hidden rounded-xl border border-border">
+            <div className="relative aspect-square overflow-hidden rounded-[2px] border border-border">
               {frames[0] ? (
                 <Image
                   src={frames[0]}
@@ -150,7 +150,7 @@ export default async function ProductPage({
                 {thumbs.map((src) => (
                   <li
                     key={src}
-                    className="relative aspect-square overflow-hidden rounded-lg border border-border"
+                    className="relative aspect-square overflow-hidden rounded-[2px] border border-border"
                   >
                     <Image
                       src={src}
@@ -170,13 +170,13 @@ export default async function ProductPage({
             {(product.flags.organic || product.flags.local) && (
               <div className="flex flex-wrap gap-2">
                 {product.flags.organic && (
-                  <span className="inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-card px-3 py-1 text-xs text-gold">
+                  <span className="inline-flex items-center gap-1.5 rounded-[2px] border border-gold/40 bg-card px-3 py-1 text-xs text-gold">
                     <Leaf className="size-3.5" aria-hidden />
                     Organic
                   </span>
                 )}
                 {product.flags.local && (
-                  <span className="inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-card px-3 py-1 text-xs text-gold">
+                  <span className="inline-flex items-center gap-1.5 rounded-[2px] border border-gold/40 bg-card px-3 py-1 text-xs text-gold">
                     <MapPin className="size-3.5" aria-hidden />
                     Local
                   </span>
@@ -201,7 +201,7 @@ export default async function ProductPage({
                 </span>
               )}
               {off !== null && (
-                <span className="rounded-full border border-coral/30 bg-coral/12 px-2 py-0.5 text-xs font-semibold text-coral">
+                <span className="rounded-[2px] border border-coral/30 bg-coral/12 px-2 py-0.5 text-xs font-semibold text-coral">
                   &minus;{off}%
                 </span>
               )}
@@ -209,7 +209,7 @@ export default async function ProductPage({
 
             <p className="mt-6 text-sm leading-relaxed">{product.desc}</p>
 
-            <dl className="mt-6 divide-y divide-border overflow-hidden rounded-xl border border-border bg-card">
+            <dl className="mt-6 divide-y divide-border overflow-hidden rounded-[2px] border border-border bg-card">
               <div className="flex items-center gap-3 px-4 py-3">
                 <CalendarDays className="size-4 shrink-0 text-mint" aria-hidden />
                 <dt className="sr-only">Harvest</dt>
@@ -240,8 +240,8 @@ export default async function ProductPage({
                       <span
                         className={
                           index === 0
-                            ? "block rounded-xl border border-mint bg-card px-3 py-2.5 text-left"
-                            : "block rounded-xl border border-border bg-card px-3 py-2.5 text-left"
+                            ? "block rounded-[2px] border border-mint bg-card px-3 py-2.5 text-left"
+                            : "block rounded-[2px] border border-border bg-card px-3 py-2.5 text-left"
                         }
                       >
                         <span
@@ -297,7 +297,7 @@ export default async function ProductPage({
 
             <TabsContent value="traceability" className="pt-6">
               <dl className="grid gap-4 sm:grid-cols-3">
-                <div className="rounded-xl border border-border bg-card p-4">
+                <div className="rounded-[2px] border border-border bg-card p-4">
                   <dt className="text-xs tracking-wider text-sage uppercase">
                     Harvest
                   </dt>
@@ -305,13 +305,13 @@ export default async function ProductPage({
                     {product.harvestedOn} &middot; {product.region}
                   </dd>
                 </div>
-                <div className="rounded-xl border border-border bg-card p-4">
+                <div className="rounded-[2px] border border-border bg-card p-4">
                   <dt className="text-xs tracking-wider text-sage uppercase">
                     Batch
                   </dt>
                   <dd className="mt-1 text-sm">#{product.batch}</dd>
                 </div>
-                <div className="rounded-xl border border-border bg-card p-4">
+                <div className="rounded-[2px] border border-border bg-card p-4">
                   <dt className="text-xs tracking-wider text-sage uppercase">
                     Freshness
                   </dt>
@@ -326,7 +326,7 @@ export default async function ProductPage({
                   {product.reviews.map((review) => (
                     <li
                       key={review.id}
-                      className="rounded-xl border border-border bg-card p-4"
+                      className="rounded-[2px] border border-border bg-card p-4"
                     >
                       <div className="flex items-center justify-between gap-3">
                         <span className="text-sm">

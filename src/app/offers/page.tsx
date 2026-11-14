@@ -34,7 +34,7 @@ export default function OffersPage() {
       <main className="flex flex-1 flex-col">
         {/* Hero */}
         <section className="mx-auto w-full max-w-7xl px-6 pt-12 pb-8">
-          <div className="relative isolate overflow-hidden rounded-2xl border border-border bg-card px-6 py-16 sm:px-12">
+          <div className="relative isolate overflow-hidden rounded-[2px] border border-border bg-card px-6 py-16 sm:px-12">
             <div className="flex flex-col items-start gap-5">
               <CountdownChip
                 closesAt={dealsCloseAt}
@@ -77,8 +77,8 @@ export default function OffersPage() {
 
         {/* Member band */}
         <section className="mx-auto w-full max-w-7xl px-6 pb-20">
-          <div className="flex flex-col items-start gap-5 rounded-2xl border border-gold/40 bg-card px-6 py-12 sm:px-12">
-            <span className="inline-flex size-11 items-center justify-center rounded-full border border-gold/40 text-gold">
+          <div className="flex flex-col items-start gap-5 rounded-[2px] border border-gold/40 bg-card px-6 py-12 sm:px-12">
+            <span className="inline-flex size-11 items-center justify-center rounded-[2px] border border-gold/40 text-gold">
               <Lock className="size-5" aria-hidden />
             </span>
             <h2 className="max-w-xl text-2xl tracking-tight sm:text-3xl">
@@ -90,7 +90,7 @@ export default function OffersPage() {
             </p>
             <Button
               variant="outline"
-              className="rounded-full border-gold/50 px-8 text-gold hover:bg-gold/10 hover:text-gold"
+              className="rounded-[2px] border-gold/50 px-8 text-gold hover:bg-gold/10 hover:text-gold"
               asChild
             >
               <Link href="/membership">

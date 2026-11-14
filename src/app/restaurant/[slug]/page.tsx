@@ -105,7 +105,7 @@ export default async function DishPage({
         <section className="mx-auto grid w-full max-w-7xl gap-10 px-6 pb-16 lg:grid-cols-2">
           {/* Gallery */}
           <div className="flex flex-col gap-4">
-            <div className="relative aspect-4/3 overflow-hidden rounded-xl border border-border">
+            <div className="relative aspect-4/3 overflow-hidden rounded-[2px] border border-border">
               <Image
                 src={frames[0]}
                 alt={dish.name}
@@ -120,7 +120,7 @@ export default async function DishPage({
                 {thumbs.map((src) => (
                   <li
                     key={src}
-                    className="relative aspect-4/3 overflow-hidden rounded-lg border border-border"
+                    className="relative aspect-4/3 overflow-hidden rounded-[2px] border border-border"
                   >
                     <Image
                       src={src}
@@ -155,11 +155,11 @@ export default async function DishPage({
 
             {/* Meta chips */}
             <ul className="flex flex-wrap items-center gap-2">
-              <li className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-xs text-muted-foreground">
+              <li className="inline-flex items-center gap-1.5 rounded-[2px] border border-border px-3 py-1 text-xs text-muted-foreground">
                 <Clock className="size-3.5" aria-hidden />
                 Prep: {dish.prepTime}
               </li>
-              <li className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-xs text-muted-foreground">
+              <li className="inline-flex items-center gap-1.5 rounded-[2px] border border-border px-3 py-1 text-xs text-muted-foreground">
                 {dish.spice}
                 {flames > 0 && (
                   <span className="flex items-center gap-0.5">
@@ -169,7 +169,7 @@ export default async function DishPage({
                   </span>
                 )}
               </li>
-              <li className="rounded-full border border-border px-3 py-1 text-xs text-muted-foreground">
+              <li className="rounded-[2px] border border-border px-3 py-1 text-xs text-muted-foreground">
                 {dish.diet}
               </li>
             </ul>

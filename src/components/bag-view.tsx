@@ -35,7 +35,7 @@ function BagRow({ line }: { line: CartLine }) {
     <li className="flex gap-4 py-6 first:pt-0 last:pb-0">
       <Link
         href={lineHref(line)}
-        className="relative size-20 shrink-0 overflow-hidden rounded-lg border border-border"
+        className="relative size-20 shrink-0 overflow-hidden rounded-[2px] border border-border"
       >
         {line.image ? (
           <Image src={line.image} alt="" fill sizes="80px" className="object-cover" />
@@ -71,7 +71,7 @@ function BagRow({ line }: { line: CartLine }) {
             {line.customizations.map((option) => (
               <li
                 key={option}
-                className="rounded-full border border-border px-2 py-0.5 text-[11px] text-sage"
+                className="rounded-[2px] border border-border px-2 py-0.5 text-[11px] text-sage"
               >
                 {option}
               </li>
@@ -119,7 +119,7 @@ export function BagView() {
           Nothing here yet. Browse the mart for produce, pantry, and foraged
           goods.
         </p>
-        <Button className="mt-2 rounded-full" asChild>
+        <Button className="mt-2 rounded-[2px]" asChild>
           <Link href="/mart">Browse the Mart</Link>
         </Button>
       </div>
@@ -159,7 +159,7 @@ export function BagView() {
       </div>
 
       <aside className="lg:sticky lg:top-24 lg:self-start">
-        <div className="flex flex-col gap-4 rounded-xl border border-border bg-card p-6">
+        <div className="flex flex-col gap-4 rounded-[2px] border border-border bg-card p-6">
           <div className="flex items-center justify-between text-sm">
             <span className="text-muted-foreground">{t("cart.subtotal")}</span>
             <span>Rs {npr.format(itemSubtotal)}</span>
@@ -180,14 +180,14 @@ export function BagView() {
             {paymentMethods.map((method) => (
               <li
                 key={method}
-                className="rounded-full border border-foreground/10 px-2.5 py-1 text-[11px] text-muted-foreground"
+                className="rounded-[2px] border border-foreground/10 px-2.5 py-1 text-[11px] text-muted-foreground"
               >
                 {method}
               </li>
             ))}
           </ul>
 
-          <Button className="h-12 w-full rounded-full" asChild>
+          <Button className="h-12 w-full rounded-[2px]" asChild>
             <Link href="/checkout">
               {t("buttons.checkout")} &middot; Rs {npr.format(total)}
             </Link>

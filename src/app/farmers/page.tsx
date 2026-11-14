@@ -112,7 +112,7 @@ export default function FarmersPage() {
               return (
                 <li
                   key={farmer.id}
-                  className="flex flex-col overflow-hidden rounded-xl border border-border bg-card"
+                  className="flex flex-col overflow-hidden rounded-[2px] border border-border bg-card"
                 >
                   <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted">
                     <Image
@@ -160,7 +160,7 @@ export default function FarmersPage() {
                         <li key={chip.id}>
                           <Link
                             href={chip.href}
-                            className="inline-flex items-center rounded-full border border-border px-3 py-1 text-xs text-muted-foreground transition-colors hover:border-mint/40 hover:text-mint"
+                            className="inline-flex items-center rounded-[2px] border border-border px-3 py-1 text-xs text-muted-foreground transition-colors hover:border-mint/40 hover:text-mint"
                           >
                             {chip.name}
                           </Link>
@@ -186,7 +186,7 @@ export default function FarmersPage() {
         </section>
 
         <section className="mx-auto w-full max-w-7xl px-6 pb-24">
-          <Button variant="outline" className="rounded-full px-8" asChild>
+          <Button variant="outline" className="rounded-[2px] px-8" asChild>
             <Link href="/mart">
               Shop the harvest
               <ArrowRight className="size-4" aria-hidden />

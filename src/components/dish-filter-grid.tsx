@@ -40,8 +40,8 @@ export function DishFilterGrid({ dishes }: { dishes: Dish[] }) {
                   onClick={() => setActive(filter.id)}
                   className={
                     isActive
-                      ? "inline-flex h-10 shrink-0 items-center rounded-full bg-mint px-5 text-sm font-medium text-primary-foreground transition-transform duration-150 active:scale-95"
-                      : "inline-flex h-10 shrink-0 items-center rounded-full border border-border bg-card px-5 text-sm text-muted-foreground transition-colors duration-200 hover:border-mint/35 hover:text-foreground"
+                      ? "inline-flex h-10 shrink-0 items-center rounded-[2px] bg-mint px-5 text-sm font-medium text-primary-foreground transition-transform duration-150 active:scale-95"
+                      : "inline-flex h-10 shrink-0 items-center rounded-[2px] border border-border bg-card px-5 text-sm text-muted-foreground transition-colors duration-200 hover:border-mint/35 hover:text-foreground"
                   }
                 >
                   {filter.label}

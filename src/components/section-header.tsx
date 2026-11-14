@@ -6,10 +6,11 @@ import type { DictPath } from "@/lib/use-lang";
 /**
  * Section heading.
  *
- * The subline sits inline to the right of the title on the same baseline
- * rather than stacked beneath it. Stacking cost a whole line of vertical
- * rhythm per section, which is most of what made Home read as an editorial
- * gallery rather than a shop.
+ * Three registers, in this order: a gold micro-label that names the band of
+ * the page, the heading itself in the display serif at a light weight, and a
+ * short line of provenance on the same baseline to the right. The hairline
+ * under the label is what gives consecutive sections a shared rhythm — without
+ * it the page reads as a stack of unrelated blocks.
  *
  * `title` stays required: it is the English copy the server renders and what
  * search engines index. `titleKey` only decides what a Nepali reader sees
@@ -20,6 +21,7 @@ export function SectionHeader({
   subline,
   titleKey,
   sublineKey,
+  eyebrow,
   aside,
   as: Heading = "h2",
 }: {
@@ -27,22 +29,34 @@ export function SectionHeader({
   subline?: string;
   titleKey?: DictPath;
   sublineKey?: DictPath;
+  eyebrow?: string;
   aside?: ReactNode;
   as?: "h1" | "h2";
 }) {
   return (
-    <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
-      <Heading className="font-heading text-2xl tracking-tight">
-        {titleKey ? <T k={titleKey} /> : title}
-      </Heading>
+    <div className="flex flex-col gap-4">
+      {eyebrow ? (
+        <div className="flex items-center gap-4">
+          <span className="eyebrow shrink-0">{eyebrow}</span>
+          <span aria-hidden className="rule-fade flex-1" />
+        </div>
+      ) : null}
 
-      {(sublineKey || subline) && (
-        <p className="text-xs text-sage">
-          {sublineKey ? <T k={sublineKey} /> : subline}
-        </p>
-      )}
+      <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-3">
+        <Heading className="text-[clamp(1.65rem,2.6vw,2.4rem)] leading-[1.05] font-light tracking-[-0.025em] text-ivory">
+          {titleKey ? <T k={titleKey} /> : title}
+        </Heading>
 
-      {aside}
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+          {(sublineKey || subline) && (
+            <p className="max-w-sm text-xs leading-relaxed text-ash">
+              {sublineKey ? <T k={sublineKey} /> : subline}
+            </p>
+          )}
+
+          {aside}
+        </div>
+      </div>
     </div>
   );
 }

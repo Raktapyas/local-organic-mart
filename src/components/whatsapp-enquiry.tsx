@@ -46,7 +46,7 @@ export function WhatsAppEnquiry({
   }
 
   const field =
-    "h-11 w-full rounded-full border border-input bg-card/70 px-5 text-sm outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-mint focus-visible:ring-3 focus-visible:ring-ring/40";
+    "h-11 w-full rounded-[2px] border border-input bg-card/70 px-5 text-sm outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-mint focus-visible:ring-3 focus-visible:ring-ring/40";
 
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-4">
@@ -93,7 +93,7 @@ export function WhatsAppEnquiry({
         />
       </div>
 
-      <Button type="submit" className="h-11 w-full rounded-full">
+      <Button type="submit" className="h-11 w-full rounded-[2px]">
         <MessageCircle className="size-4" aria-hidden />
         Send on WhatsApp
       </Button>

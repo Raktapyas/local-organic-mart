@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 export function OrderNotFound() {
   return (
     <div className="flex flex-col items-center gap-6 py-16 text-center">
-      <span className="inline-flex size-12 items-center justify-center rounded-full bg-mint text-primary-foreground">
+      <span className="inline-flex size-12 items-center justify-center rounded-[2px] bg-mint text-primary-foreground">
         <Info className="size-6" aria-hidden />
       </span>
       <h2 className="text-3xl tracking-tight sm:text-4xl">Order not found.</h2>
@@ -20,7 +20,7 @@ export function OrderNotFound() {
         Demo orders live for this session only. Place a new order to see live
         tracking.
       </p>
-      <Button className="h-12 rounded-full px-8" asChild>
+      <Button className="h-12 rounded-[2px] px-8" asChild>
         <Link href="/mart">Browse the Mart</Link>
       </Button>
     </div>

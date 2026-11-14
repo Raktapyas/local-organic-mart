@@ -45,7 +45,7 @@ export default function DeliveryZonesPage() {
             {paymentMethods.map((method) => (
               <li
                 key={method}
-                className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-1.5 text-sm text-muted-foreground"
+                className="inline-flex items-center gap-2 rounded-[2px] border border-border px-4 py-1.5 text-sm text-muted-foreground"
               >
                 <Check className="size-3.5 text-mint" aria-hidden />
                 {method}

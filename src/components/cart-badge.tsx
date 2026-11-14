@@ -30,7 +30,7 @@ export function CartBadge() {
   if (count === 0) return null;
 
   return (
-    <span className="absolute -right-1 -top-1 inline-flex min-w-4 items-center justify-center rounded-full bg-mint px-1 text-[10px] font-semibold text-primary-foreground">
+    <span className="absolute -right-1 -top-1 inline-flex min-w-4 items-center justify-center rounded-[2px] bg-mint px-1 text-[10px] font-semibold text-primary-foreground">
       {count}
     </span>
   );

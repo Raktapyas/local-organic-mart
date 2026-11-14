@@ -1,37 +1,51 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 
 import { BANNERS } from "@/lib/data";
 
 /**
- * Three equal photo banners, following the reference's
- * SHOP ALL / SHELLFISH / SMOKED shape: a photo tile, a dark scrim, and one
- * centred pill. The labels carry the meaning and the photography carries the
- * mood, so there is no copy block competing with the image.
+ * Three photo plates, edge to edge.
+ *
+ * The reference shape (a centred pill floating on a photo) is the most
+ * template-looking element on the page. Here the label sits on the baseline
+ * with a gold rule and an arrow, and the plates are divided by the same
+ * hairline the category grid uses — so the bands read as one publication.
  */
 export function BannerTrio() {
   return (
-    <section className="mx-auto w-full max-w-7xl px-6 py-10 sm:py-20">
-      <ul className="grid gap-4 sm:grid-cols-3">
-        {BANNERS.map((banner) => (
-          <li key={banner.href}>
+    <section className="border-b border-foreground/[0.06]">
+      <ul className="grid gap-px bg-foreground/[0.07] sm:grid-cols-3">
+        {BANNERS.map((banner, index) => (
+          <li key={banner.href} className="bg-background">
             <Link
               href={banner.href}
-              className="group relative block aspect-4/3 overflow-hidden rounded-xl ring-1 ring-foreground/10 transition-all hover:ring-mint/35"
+              className="group relative flex aspect-4/3 flex-col justify-end overflow-hidden p-6 lg:p-8"
             >
               <Image
                 src={banner.image}
                 alt={banner.alt}
                 fill
                 sizes="(min-width: 640px) 33vw, 100vw"
-                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                className="object-cover opacity-75 transition-all duration-[900ms] group-hover:scale-[1.04] group-hover:opacity-90"
               />
-              <div className="absolute inset-0 bg-background/45 transition-colors duration-700 group-hover:bg-background/35" />
+              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-background/10" />
 
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="rounded-full bg-foreground px-7 py-3 text-sm font-medium text-background transition-transform duration-300 group-hover:-translate-y-1">
-                  {banner.label}
-                </span>
+              <div className="relative flex items-end justify-between gap-4">
+                <div className="flex flex-col gap-2">
+                  <span className="tabular text-[9px] tracking-[0.24em] text-gold/70">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span className="rule-fade w-16" aria-hidden />
+                  <span className="font-heading text-2xl leading-none tracking-[-0.01em] text-ivory lg:text-[1.75rem]">
+                    {banner.label}
+                  </span>
+                </div>
+
+                <ArrowUpRight
+                  className="size-4 text-ivory/60 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-gold"
+                  aria-hidden
+                />
               </div>
             </Link>
           </li>

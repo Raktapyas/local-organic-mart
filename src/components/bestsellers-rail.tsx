@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 import { ProductCard } from "@/components/product-card";
 import { T } from "@/components/translated";
@@ -16,6 +17,10 @@ import { products, productsInCategory } from "@/lib/data";
  *
  * The rail is deliberately a client island: only the tab strip and the four
  * visible cards hydrate, not the rest of Home.
+ *
+ * Presentation: the tab strip is a hairline row of labels with a gold
+ * underline on the active one. Pills would have made the strip the loudest
+ * thing in the band, which is the opposite of what a register should do.
  */
 const TABS = [
   { id: "all", label: "All" },
@@ -35,13 +40,6 @@ export function BestsellersRail({
   const excluded = new Set(excludeIds);
 
   /*
-    The catalogue is 21 lines across ten departments, so no department holds
-    four products — dairy has two. A fixed four-column grid would therefore
-    leave dead slots on most tabs, so the rail lays out whatever the tab
-    actually holds and centres it. Four columns is what it reaches when the
-    data supports it.
-  */
-  /*
     The Deals rail sits directly below this one, and the catalogue happens to
     declare all four discounted items first — so an unfiltered "All" tab
     rendered an identical set twice. `excludeIds` keeps the two rails
@@ -54,55 +52,76 @@ export function BestsellersRail({
       : productsInCategory(tab).slice(0, 4);
 
   return (
-    <section className="mx-auto w-full max-w-7xl px-6 py-10 sm:py-20">
-      <h2 className="font-heading text-3xl tracking-tight">
-        <T k="sections.bestsellers" />
-      </h2>
+    <section className="border-b border-foreground/[0.06]">
+      <div className="mx-auto w-full max-w-[88rem] px-6 py-16 lg:px-10 lg:py-24">
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center gap-4">
+            <span className="eyebrow shrink-0">The register</span>
+            <span aria-hidden className="rule-fade flex-1" />
+          </div>
 
-      <div
-        role="tablist"
-        aria-label="Bestseller departments"
-        className="mt-6 flex flex-wrap gap-2"
-      >
-        {TABS.map((entry) => {
-          const active = tab === entry.id;
-          return (
-            <button
-              key={entry.id}
-              type="button"
-              role="tab"
-              aria-selected={active}
-              onClick={() => setTab(entry.id)}
-              className={
-                active
-                  ? "rounded-full bg-mint px-4 py-2 text-sm text-primary-foreground transition-colors"
-                  : "rounded-full border border-foreground/10 px-4 py-2 text-sm text-muted-foreground transition-colors hover:border-mint/40 hover:text-mint"
-              }
-            >
-              {entry.label}
-            </button>
-          );
-        })}
-      </div>
+          <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
+            <h2 className="text-[clamp(1.65rem,2.6vw,2.4rem)] leading-[1.05] font-light tracking-[-0.025em] text-ivory">
+              <T k="sections.bestsellers" />
+            </h2>
+            <p className="max-w-sm text-xs leading-relaxed text-ash">
+              Ranked by what leaves the cold store fastest.
+            </p>
+          </div>
+        </div>
 
-      <ul className="mt-8 flex flex-wrap justify-center gap-4">
-        {list.map((product) => (
-          <li
-            key={product.id}
-            className="w-[calc(50%-0.5rem)] sm:w-[calc(33.333%-0.667rem)] lg:w-[calc(25%-0.75rem)]"
-          >
-            <ProductCard product={product} />
-          </li>
-        ))}
-      </ul>
-
-      <div className="mt-8 flex justify-center">
-        <Link
-          href="/mart"
-          className="rounded-full bg-mint px-7 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+        <div
+          role="tablist"
+          aria-label="Bestseller departments"
+          className="mt-10 flex flex-wrap gap-x-7 gap-y-2 border-b border-foreground/[0.08]"
         >
-          Shop all bestsellers
-        </Link>
+          {TABS.map((entry) => {
+            const active = tab === entry.id;
+            return (
+              <button
+                key={entry.id}
+                type="button"
+                role="tab"
+                aria-selected={active}
+                onClick={() => setTab(entry.id)}
+                className={`relative -mb-px pb-3 text-[10px] tracking-[0.2em] uppercase transition-colors duration-200 ${
+                  active
+                    ? "text-gold"
+                    : "text-ash/70 hover:text-ivory"
+                }`}
+              >
+                {entry.label}
+                <span
+                  aria-hidden
+                  className={`absolute inset-x-0 -bottom-px h-px bg-gold transition-transform duration-300 ${
+                    active ? "scale-x-100" : "scale-x-0"
+                  }`}
+                />
+              </button>
+            );
+          })}
+        </div>
+
+        <ul className="mt-10 grid grid-cols-2 gap-x-5 gap-y-10 lg:grid-cols-4">
+          {list.map((product) => (
+            <li key={product.id}>
+              <ProductCard product={product} />
+            </li>
+          ))}
+        </ul>
+
+        <div className="mt-14 flex justify-center">
+          <Link
+            href="/mart"
+            className="group inline-flex h-11 items-center gap-2 border border-foreground/15 px-7 text-[10.5px] tracking-[0.2em] text-ivory uppercase transition-colors duration-200 hover:border-gold/60 hover:text-gold"
+          >
+            Shop all bestsellers
+            <ArrowRight
+              className="size-3.5 transition-transform duration-300 group-hover:translate-x-1"
+              aria-hidden
+            />
+          </Link>
+        </div>
       </div>
     </section>
   );

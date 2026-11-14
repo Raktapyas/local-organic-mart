@@ -28,11 +28,11 @@ const getClientSnapshot = () => true;
 const getServerSnapshot = () => false;
 
 const chip =
-  "flex items-center gap-2 rounded-full border border-foreground/10 px-4 py-2.5 text-sm transition-colors hover:border-mint/40 hover:text-mint";
+  "flex items-center gap-2 rounded-[2px] border border-foreground/10 px-4 py-2.5 text-sm transition-colors hover:border-mint/40 hover:text-mint";
 
 /** Non-action chip: no destination exists yet, so it must not look like one. */
 const inertChip =
-  "flex cursor-default items-center gap-2 rounded-full border border-foreground/10 px-4 py-2.5 text-sm text-muted-foreground opacity-60";
+  "flex cursor-default items-center gap-2 rounded-[2px] border border-foreground/10 px-4 py-2.5 text-sm text-muted-foreground opacity-60";
 
 /**
  * My Organic Home.
@@ -65,7 +65,7 @@ export function AccountHome() {
       <header className="flex flex-wrap items-center justify-between gap-4">
         <h1 className="font-heading text-3xl">My Organic Home</h1>
         {/* TODO: account API — the real balance comes from the account. */}
-        <span className="inline-flex items-center gap-1.5 rounded-full border border-foreground/10 px-3 py-1.5 text-xs text-muted-foreground">
+        <span className="inline-flex items-center gap-1.5 rounded-[2px] border border-foreground/10 px-3 py-1.5 text-xs text-muted-foreground">
           <Star className="size-3.5 text-gold" aria-hidden />
           0 points &middot; Guest
         </span>
@@ -156,7 +156,7 @@ export function AccountHome() {
       <section className="mt-14 grid gap-5 sm:grid-cols-2">
         <Link
           href="/membership"
-          className="rounded-xl border border-gold/40 p-6 transition-colors hover:border-gold/70"
+          className="rounded-[2px] border border-gold/40 p-6 transition-colors hover:border-gold/70"
         >
           <span className="inline-flex items-center gap-2 text-xs tracking-wider text-gold uppercase">
             <Sparkles className="size-3.5" aria-hidden />
@@ -168,25 +168,25 @@ export function AccountHome() {
           </p>
         </Link>
 
-        <div className="rounded-xl border border-foreground/10 p-6">
+        <div className="rounded-[2px] border border-foreground/10 p-6">
           <span className="inline-flex items-center gap-2 text-xs tracking-wider text-sage uppercase">
             <LifeBuoy className="size-3.5" aria-hidden />
             Help &amp; support
           </span>
           <div className="mt-4 flex flex-wrap gap-3">
-            <Button variant="outline" className="rounded-full" asChild>
+            <Button variant="outline" className="rounded-[2px]" asChild>
               <a href={contactChannels.whatsapp}>
                 <MessageCircle className="size-4" aria-hidden />
                 WhatsApp
               </a>
             </Button>
-            <Button variant="outline" className="rounded-full" asChild>
+            <Button variant="outline" className="rounded-[2px]" asChild>
               <a href={contactChannels.viber}>
                 <MessageCircle className="size-4" aria-hidden />
                 Viber
               </a>
             </Button>
-            <Button variant="outline" className="rounded-full" asChild>
+            <Button variant="outline" className="rounded-[2px]" asChild>
               <a href={contactChannels.call}>
                 <Phone className="size-4" aria-hidden />
                 Call us

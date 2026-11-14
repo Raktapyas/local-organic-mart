@@ -44,7 +44,7 @@ export function DishCustomizer({ dish }: { dish: Dish }) {
   return (
     <div className="flex flex-col gap-4">
       {/* Portion */}
-      <fieldset className="rounded-xl border border-border bg-card p-5">
+      <fieldset className="rounded-[2px] border border-border bg-card p-5">
         <legend className="px-1 text-sm">Portion</legend>
         <div className="mt-3 grid grid-cols-2 gap-3">
           {dish.portions.map((option) => {
@@ -54,8 +54,8 @@ export function DishCustomizer({ dish }: { dish: Dish }) {
                 key={option.id}
                 className={
                   selected
-                    ? "flex cursor-pointer items-center justify-between rounded-lg border border-mint bg-mint/10 p-3.5"
-                    : "flex cursor-pointer items-center justify-between rounded-lg border border-border p-3.5 transition-colors hover:border-mint/35"
+                    ? "flex cursor-pointer items-center justify-between rounded-[2px] border border-mint bg-mint/10 p-3.5"
+                    : "flex cursor-pointer items-center justify-between rounded-[2px] border border-border p-3.5 transition-colors hover:border-mint/35"
                 }
               >
                 <input
@@ -72,7 +72,7 @@ export function DishCustomizer({ dish }: { dish: Dish }) {
                     className={
                       selected
                         ? "flex size-4 items-center justify-center rounded-full border border-mint"
-                        : "flex size-4 items-center justify-center rounded-full border border-border"
+                        : "flex size-4 items-center justify-center rounded-full border border-foreground/30"
                     }
                   >
                     {selected && <span className="size-2 rounded-full bg-mint" />}
@@ -91,7 +91,7 @@ export function DishCustomizer({ dish }: { dish: Dish }) {
       </fieldset>
 
       {/* Spice level */}
-      <fieldset className="rounded-xl border border-border bg-card p-5">
+      <fieldset className="rounded-[2px] border border-border bg-card p-5">
         <legend className="px-1 text-sm">Spice level</legend>
         <div className="mt-3 grid grid-cols-3 gap-2.5">
           {spiceLevels.map((level) => {
@@ -101,8 +101,8 @@ export function DishCustomizer({ dish }: { dish: Dish }) {
                 key={level.id}
                 className={
                   selected
-                    ? "flex cursor-pointer items-center justify-center rounded-lg border border-mint bg-mint/10 p-3 text-sm text-mint"
-                    : "flex cursor-pointer items-center justify-center rounded-lg border border-border p-3 text-sm text-muted-foreground transition-colors hover:border-mint/35 hover:text-foreground"
+                    ? "flex cursor-pointer items-center justify-center rounded-[2px] border border-mint bg-mint/10 p-3 text-sm text-mint"
+                    : "flex cursor-pointer items-center justify-center rounded-[2px] border border-border p-3 text-sm text-muted-foreground transition-colors hover:border-mint/35 hover:text-foreground"
                 }
               >
                 <input
@@ -121,7 +121,7 @@ export function DishCustomizer({ dish }: { dish: Dish }) {
       </fieldset>
 
       {/* Add-ons */}
-      <fieldset className="rounded-xl border border-border bg-card p-5">
+      <fieldset className="rounded-[2px] border border-border bg-card p-5">
         <legend className="px-1 text-sm">Add-ons</legend>
         <ul className="mt-3 flex flex-col gap-2.5">
           {dish.addons.map((addon) => {
@@ -142,8 +142,8 @@ export function DishCustomizer({ dish }: { dish: Dish }) {
                       aria-hidden
                       className={
                         checked
-                          ? "flex size-4 items-center justify-center rounded border-mint bg-mint text-primary-foreground"
-                          : "flex size-4 items-center justify-center rounded border-border"
+                          ? "flex size-4 items-center justify-center rounded border border-gold bg-gold text-ink"
+                          : "flex size-4 items-center justify-center rounded border border-foreground/30"
                       }
                     >
                       {checked && <Check className="size-3" />}
@@ -169,7 +169,7 @@ export function DishCustomizer({ dish }: { dish: Dish }) {
       </div>
 
       <Button
-        className="h-12 w-full rounded-full"
+        className="h-12 w-full rounded-[2px] text-[10.5px] tracking-[0.2em] uppercase"
         // TODO: server-side recalc — the client total is a preview only. The API
         // owns pricing, portion availability, and the authoritative line total.
         onClick={() =>

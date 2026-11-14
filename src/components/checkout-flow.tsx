@@ -40,7 +40,7 @@ export function CheckoutFlow() {
         <p className="max-w-sm text-sm text-sage">
           Your bag is empty, so there is nothing to pay for yet.
         </p>
-        <Button className="mt-2 rounded-full" asChild>
+        <Button className="mt-2 rounded-[2px]" asChild>
           <Link href="/bag">Return to bag</Link>
         </Button>
       </div>
@@ -57,7 +57,7 @@ export function CheckoutFlow() {
         <ol className="flex items-center gap-2 border-b border-border pb-5">
           {STEPS.map((step, index) => (
             <li key={step} className="flex items-center gap-2">
-              <span className="inline-flex size-6 items-center justify-center rounded-full bg-mint text-[11px] font-semibold text-primary-foreground">
+              <span className="inline-flex size-6 items-center justify-center rounded-[2px] bg-mint text-[11px] font-semibold text-primary-foreground">
                 {index + 1}
               </span>
               <span className="text-sm text-mint">{step}</span>
@@ -86,7 +86,7 @@ export function CheckoutFlow() {
               </li>
             ))}
           </ul>
-          <Button variant="ghost" size="sm" className="w-fit rounded-full">
+          <Button variant="ghost" size="sm" className="w-fit rounded-[2px]">
             <Plus className="size-4" aria-hidden />
             Add new address
           </Button>
@@ -107,8 +107,8 @@ export function CheckoutFlow() {
                   onClick={() => setSlot(option.id)}
                   className={
                     option.id === slot
-                      ? "h-10 rounded-full bg-mint px-5 text-sm font-medium text-primary-foreground"
-                      : "h-10 rounded-full border border-border bg-card px-5 text-sm text-muted-foreground transition-colors hover:border-mint/35 hover:text-foreground"
+                      ? "h-10 rounded-[2px] bg-mint px-5 text-sm font-medium text-primary-foreground"
+                      : "h-10 rounded-[2px] border border-border bg-card px-5 text-sm text-muted-foreground transition-colors hover:border-mint/35 hover:text-foreground"
                   }
                 >
                   {option.label}
@@ -140,7 +140,7 @@ export function CheckoutFlow() {
 
       {/* Summary */}
       <aside className="lg:sticky lg:top-24 lg:self-start">
-        <div className="flex flex-col gap-4 rounded-xl border border-border bg-card p-6">
+        <div className="flex flex-col gap-4 rounded-[2px] border border-border bg-card p-6">
           <h2 className="font-heading text-lg">Summary</h2>
 
           <ul className="flex flex-col gap-2 border-y border-border py-4">
@@ -170,7 +170,7 @@ export function CheckoutFlow() {
           </div>
 
           <Button
-            className="h-12 w-full rounded-full"
+            className="h-12 w-full rounded-[2px]"
             onClick={() => {
               const order = placeOrder({
                 lines,
@@ -213,8 +213,8 @@ function OptionCard({
       onClick={onSelect}
       className={
         selected
-          ? "flex w-full items-center justify-between gap-3 rounded-xl border border-mint bg-mint/10 p-4 text-left"
-          : "flex w-full items-center justify-between gap-3 rounded-xl border border-border p-4 text-left transition-colors hover:border-mint/35"
+          ? "flex w-full items-center justify-between gap-3 rounded-[2px] border border-mint bg-mint/10 p-4 text-left"
+          : "flex w-full items-center justify-between gap-3 rounded-[2px] border border-border p-4 text-left transition-colors hover:border-mint/35"
       }
     >
       <span className="flex flex-col gap-0.5">
@@ -227,8 +227,8 @@ function OptionCard({
         aria-hidden
         className={
           selected
-            ? "flex size-5 shrink-0 items-center justify-center rounded-full bg-mint text-primary-foreground"
-            : "flex size-5 shrink-0 items-center justify-center rounded-full border border-border"
+            ? "flex size-5 shrink-0 items-center justify-center rounded-[2px] bg-mint text-primary-foreground"
+            : "flex size-5 shrink-0 items-center justify-center rounded-[2px] border border-border"
         }
       >
         {selected && <Check className="size-3" />}

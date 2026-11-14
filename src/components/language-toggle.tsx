@@ -23,7 +23,7 @@ export function LanguageToggle({ className = "" }: { className?: string }) {
       onClick={toggle}
       aria-label={lang === "en" ? "Switch to Nepali" : "Switch to English"}
       lang={other}
-      className={`inline-flex items-center gap-1.5 rounded-full border border-foreground/10 px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:border-mint/40 hover:text-mint ${className}`}
+      className={`inline-flex items-center gap-1.5 border border-foreground/10 px-2.5 py-1.5 text-[9.5px] tracking-[0.16em] text-ash uppercase transition-colors duration-200 hover:border-gold/50 hover:text-gold ${className}`}
     >
       <Languages className="size-3.5" aria-hidden />
       {otherLabel}

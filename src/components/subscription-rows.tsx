@@ -63,7 +63,7 @@ export function SubscriptionRows({
                     onChange={(event) =>
                       setFrequency(event.target.value as SubscriptionFrequency)
                     }
-                    className="h-9 appearance-none rounded-full border border-border bg-card py-1 pr-8 pl-4 text-xs text-foreground outline-none transition-colors focus-visible:border-mint"
+                    className="h-9 appearance-none rounded-[2px] border border-border bg-card py-1 pr-8 pl-4 text-xs text-foreground outline-none transition-colors focus-visible:border-mint"
                   >
                     {subscriptionFrequencies.map((option) => (
                       <option key={option}>{option}</option>
@@ -77,7 +77,7 @@ export function SubscriptionRows({
 
                 <Button
                   size="sm"
-                  className="rounded-full px-4"
+                  className="rounded-[2px] px-4"
                   onClick={() => {
                     addItem({
                       kind: "basket",

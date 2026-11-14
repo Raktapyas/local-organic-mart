@@ -26,6 +26,13 @@ const fraunces = Fraunces({
   variable: "--font-fraunces",
   subsets: ["latin"],
   display: "swap",
+  /*
+   * Fraunces carries optical sizing plus the SOFT and WONK axes. Pulling them
+   * in lets the display face soften at hero sizes instead of rendering the
+   * default "loud" instance — the difference between a serif that looks
+   * licensed and one that looks like the first Google result.
+   */
+  axes: ["opsz", "SOFT", "WONK"],
 });
 
 const geistMono = Geist_Mono({
@@ -65,9 +72,9 @@ export const metadata: Metadata = {
     "Organic grocery delivery in Kathmandu. Harvested in the valley and the high hills, dispatched within hours.",
 };
 
-/** Matches the shell's dark background so the mobile browser chrome agrees. */
+/** Matches the shell's ink background so the mobile browser chrome agrees. */
 export const viewport: Viewport = {
-  themeColor: "#0D1B12",
+  themeColor: "#070B08",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

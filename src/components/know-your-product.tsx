@@ -65,7 +65,7 @@ export function KnowYourProduct({ products }: { products: Product[] }) {
   const shown = revealed === selectedId ? product : undefined;
 
   return (
-    <div className="rounded-xl border border-border bg-card/50 p-6 sm:p-8">
+    <div className="rounded-[2px] border border-border bg-card/50 p-6 sm:p-8">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div className="flex flex-col gap-2">
           <h2 className="text-xs tracking-wider text-sage uppercase">
@@ -86,7 +86,7 @@ export function KnowYourProduct({ products }: { products: Product[] }) {
               id="trail-product"
               value={selectedId}
               onChange={(event) => setSelectedId(event.target.value)}
-              className="h-11 w-full appearance-none rounded-full border border-border bg-background py-2 pr-10 pl-4 text-sm text-foreground outline-none transition-colors focus-visible:border-mint sm:w-64"
+              className="h-11 w-full appearance-none rounded-[2px] border border-border bg-background py-2 pr-10 pl-4 text-sm text-foreground outline-none transition-colors focus-visible:border-mint sm:w-64"
             >
               {products.map((item) => (
                 <option key={item.id} value={item.id}>
@@ -101,7 +101,7 @@ export function KnowYourProduct({ products }: { products: Product[] }) {
           </div>
 
           <Button
-            className="h-11 rounded-full px-6"
+            className="h-11 rounded-[2px] px-6"
             onClick={() => setRevealed(selectedId)}
           >
             Show trail
@@ -116,7 +116,7 @@ export function KnowYourProduct({ products }: { products: Product[] }) {
             return (
               <li key={stop.label} className="relative flex flex-col gap-3">
                 <div className="flex items-center gap-3">
-                  <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-full border border-gold/50 bg-background text-gold">
+                  <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-[2px] border border-gold/50 bg-background text-gold">
                     <Icon className="size-4" aria-hidden />
                   </span>
                   {index < 4 ? (
@@ -142,7 +142,7 @@ export function KnowYourProduct({ products }: { products: Product[] }) {
           })}
         </ol>
       ) : (
-        <p className="mt-10 rounded-lg border border-dashed border-border px-6 py-10 text-center text-sm text-sage">
+        <p className="mt-10 rounded-[2px] border border-dashed border-border px-6 py-10 text-center text-sm text-sage">
           Choose a lot, then press Show trail to open its custody record.
         </p>
       )}

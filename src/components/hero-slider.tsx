@@ -167,15 +167,21 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
         </motion.div>
       </AnimatePresence>
 
-      {/* Scrims — dark DNA, unchanged from the static hero */}
-      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-background/40" />
-      <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/50 to-transparent" />
+      {/* Scrims: ink first, so the photography reads as a plate, not a wallpaper. */}
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-background/25" />
+      <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/45 to-transparent" />
+
+      {/* Hairline inset frame — the editorial "plate" edge. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-4 hidden border border-ivory/[0.09] lg:block"
+      />
 
       {/* Slide copy */}
       <AnimatePresence initial={false} mode="wait">
         <motion.div
           key={slide.headline}
-          className="relative mx-auto flex h-full w-full max-w-7xl flex-col items-start justify-center gap-4 px-6 py-24 sm:gap-6 sm:py-28"
+          className="relative mx-auto flex h-full w-full max-w-[88rem] flex-col justify-end px-6 pt-28 pb-24 sm:pb-24 lg:px-10 lg:pb-28"
           initial={reduceMotion ? false : "hidden"}
           animate="visible"
           exit={reduceMotion ? undefined : "hidden"}
@@ -185,80 +191,95 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
           }}
           aria-live="polite"
         >
-          <motion.span
-            className="text-xs tracking-widest text-sage uppercase"
-            variants={rise}
-          >
-            {slide.kicker}
-          </motion.span>
-
-          <motion.h1
-            className="max-w-4xl text-[2.75rem] leading-[0.95] tracking-tight text-balance sm:text-6xl sm:leading-[1.02] md:text-7xl"
-            variants={rise}
-          >
-            {before}
-            {word ? (
-              <>
-                {/*
-                  One accent word per slide. The shadow is not decoration: the
-                  video behind is unpredictable, and a soft black cast keeps
-                  mint legible over a bright flame as well as a dark field.
-                */}
-                <span className="font-heading text-mint italic [text-shadow:0_2px_12px_rgba(0,0,0,0.4)]">
-                  {word}
-                </span>
-                {after}
-              </>
-            ) : null}
-          </motion.h1>
-
-          <motion.p
-            className="max-w-lg text-base leading-relaxed text-sage"
-            variants={rise}
-          >
-            {slide.line}
-          </motion.p>
-
-          <motion.div
-            className="flex flex-wrap items-center gap-3"
-            variants={rise}
-          >
-            <Button
-              asChild
-              className={
-                slide.cta.variant === "ghost"
-                  ? "group h-12 rounded-full border-foreground/25 px-8 backdrop-blur-sm hover:border-mint/50"
-                  : "group h-12 rounded-full px-8"
-              }
-              variant={slide.cta.variant === "ghost" ? "outline" : "default"}
-            >
-              <Link href={slide.cta.href}>
-                {slide.cta.label}
-                <ArrowRight
-                  className="size-4 transition-transform duration-300 group-hover:translate-x-1"
-                  aria-hidden
-                />
-              </Link>
-            </Button>
-
-            {/* Second route out, only when the slide defines one. */}
-            {slide.cta2 ? (
-              <Button
-                asChild
-                variant="outline"
-                className="h-12 rounded-full border-foreground/25 px-8 backdrop-blur-sm hover:border-mint/50"
+          <div className="grid items-end gap-10 lg:grid-cols-12">
+            <div className="flex flex-col items-start gap-5 lg:col-span-8 lg:min-w-0">
+              <motion.span
+                className="flex items-center gap-3 text-[10px] tracking-[0.32em] text-gold uppercase"
+                variants={rise}
               >
-                <Link href={slide.cta2.href}>{slide.cta2.label}</Link>
-              </Button>
-            ) : null}
-          </motion.div>
+                <span aria-hidden className="size-1.5 rotate-45 bg-gold" />
+                {slide.kicker}
+              </motion.span>
+
+              <motion.h1
+                className="max-w-5xl text-[clamp(1.95rem,7.1vw,5.25rem)] leading-[0.95] font-light tracking-[-0.03em] text-ivory text-balance lg:leading-[0.94]"
+                variants={rise}
+              >
+                {before}
+                {word ? (
+                  <>
+                    {/*
+                      One accent word per slide, solid gold. A gradient or glow
+                      behind it reads as decoration; the metal itself is the
+                      accent and needs nothing else.
+                    */}
+                    <span className="font-heading text-gold italic">{word}</span>
+                    {after}
+                  </>
+                ) : null}
+              </motion.h1>
+
+              <motion.p
+                className="max-w-md text-[0.9rem] leading-relaxed text-bone/70"
+                variants={rise}
+              >
+                {slide.line}
+              </motion.p>
+
+              <motion.div
+                className="mt-2 flex flex-wrap items-center gap-3"
+                variants={rise}
+              >
+                <Button
+                  asChild
+                  className="h-11 rounded-none px-7 text-[10.5px] tracking-[0.2em] uppercase"
+                  variant={slide.cta.variant === "ghost" ? "outline" : "default"}
+                >
+                  <Link href={slide.cta.href}>
+                    {slide.cta.label}
+                    <ArrowRight
+                      className="size-3.5 transition-transform duration-300 group-hover:translate-x-1"
+                      aria-hidden
+                    />
+                  </Link>
+                </Button>
+
+                {/* Second route out, only when the slide defines one. */}
+                {slide.cta2 ? (
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="h-11 rounded-none border-ivory/20 px-7 text-[10.5px] tracking-[0.2em] uppercase hover:border-gold/60 hover:text-gold"
+                  >
+                    <Link href={slide.cta2.href}>{slide.cta2.label}</Link>
+                  </Button>
+                ) : null}
+              </motion.div>
+            </div>
+
+            {/* Right rail: issue number, provenance. Quiet, not decorative. */}
+            <motion.div
+              variants={rise}
+              className="hidden flex-col items-end gap-4 pb-6 lg:col-span-4 lg:flex"
+            >
+              <span className="tabular text-[11px] tracking-[0.3em] text-bone/55">
+                {String(active + 1).padStart(2, "0")} / {String(count).padStart(2, "0")}
+              </span>
+              <span aria-hidden className="h-px w-24 bg-gold/40" />
+              <p className="max-w-[15rem] text-right text-[10.5px] leading-relaxed tracking-[0.12em] text-bone/45 uppercase">
+                Harvested in the valley and the high hills, dispatched the same
+                morning.
+              </p>
+            </motion.div>
+          </div>
         </motion.div>
       </AnimatePresence>
 
       {/* Controls — hidden when reduced motion pins the slider */}
       {!reduceMotion && count > 1 && (
-        <div className="absolute inset-x-0 bottom-6 z-20 mx-auto flex max-w-7xl items-center justify-end gap-4 px-6">
-          <div className="flex items-center gap-2">
+        <div className="absolute inset-x-0 bottom-6 z-20 mx-auto flex max-w-[88rem] items-center justify-between px-6 lg:px-10">
+          {/* Numbered index instead of dots: reads as a catalogue, not a carousel. */}
+          <div className="flex items-center gap-4">
             {slides.map((item, dot) => (
               <button
                 key={item.headline}
@@ -266,31 +287,35 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
                 onClick={() => go(dot)}
                 aria-label={`Show slide ${dot + 1} of ${count}: ${item.kicker}`}
                 aria-current={dot === active}
-                className={
+                className={`tabular text-[10px] tracking-[0.24em] transition-colors duration-200 ${
                   dot === active
-                    ? "size-2 rounded-full bg-mint transition-all duration-300"
-                    : "size-2 rounded-full bg-foreground/30 transition-all duration-300 hover:bg-foreground/60"
-                }
-              />
+                    ? "text-gold"
+                    : "text-bone/35 hover:text-bone/70"
+                }`}
+              >
+                {String(dot + 1).padStart(2, "0")}
+              </button>
             ))}
           </div>
 
-          <div className="flex items-center gap-1">
+          {/* Arrows are a pointer affordance. On touch the numbered index is
+              enough — and the floating contact buttons sit in this corner. */}
+          <div className="hidden items-center gap-4 lg:flex">
             <button
               type="button"
               onClick={() => go(active - 1)}
               aria-label="Previous slide"
-              className="inline-flex size-8 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground"
+              className="inline-flex size-8 items-center justify-center border border-ivory/15 text-bone/60 transition-colors duration-200 hover:border-gold/50 hover:text-gold"
             >
-              <ChevronLeft className="size-4" aria-hidden />
+              <ChevronLeft className="size-3.5" aria-hidden />
             </button>
             <button
               type="button"
               onClick={() => go(active + 1)}
               aria-label="Next slide"
-              className="inline-flex size-8 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground"
+              className="inline-flex size-8 items-center justify-center border border-ivory/15 text-bone/60 transition-colors duration-200 hover:border-gold/50 hover:text-gold"
             >
-              <ChevronRight className="size-4" aria-hidden />
+              <ChevronRight className="size-3.5" aria-hidden />
             </button>
           </div>
         </div>

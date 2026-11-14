@@ -12,9 +12,13 @@ const npr = new Intl.NumberFormat("en-NP");
 /**
  * Weekly restock card.
  *
- * The ids come from the real catalogue, so every chip is something the mart
+ * The ids come from the real catalogue, so every row is something the mart
  * stocks and "Reorder all" pushes genuine `kind: "product"` lines into the
  * cart — quantities included, which is why the milk goes in as three.
+ *
+ * Laid out as a ledger: a label column, hairline-separated rows with the price
+ * aligned right, and one action. Chips were compact but read as tags, not as
+ * things you were about to buy again.
  */
 export function WeeklyEssentials({ products }: { products: Product[] }) {
   const addItem = useCartStore((state) => state.addItem);
@@ -45,33 +49,46 @@ export function WeeklyEssentials({ products }: { products: Product[] }) {
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-3 rounded-xl border border-border bg-card px-4 py-3">
-      <ul className="flex flex-1 flex-wrap items-center gap-2">
+    <div className="flex flex-col gap-7 border border-foreground/[0.08] bg-card/40 p-6 lg:flex-row lg:items-center lg:gap-12 lg:p-8">
+      <div className="flex shrink-0 flex-col gap-1.5 lg:max-w-[13rem]">
+        <span className="eyebrow">The usual</span>
+        <p className="text-xs leading-relaxed text-ash">
+          Last week&rsquo;s basket, ready to repeat.
+        </p>
+      </div>
+
+      <ul className="grid flex-1 gap-x-10 sm:grid-cols-2">
         {items.map(({ entry, product }) => (
           <li
             key={product.id}
-            className="flex items-baseline gap-1.5 rounded-full border border-foreground/10 px-2.5 py-1 text-[11px]"
+            className="flex items-baseline justify-between gap-3 border-b border-foreground/[0.07] py-2.5"
           >
-            <span className="text-foreground">
-              {entry.qty > 1 ? `${entry.qty}× ` : ""}
+            <span className="text-sm text-ivory">
+              {entry.qty > 1 ? (
+                <span className="tabular mr-1.5 text-gold/80">{entry.qty}×</span>
+              ) : null}
               {product.name}
             </span>
-            <span className="text-muted-foreground">
+            <span className="tabular text-xs text-ash">
               Rs {npr.format(product.price)}
             </span>
           </li>
         ))}
       </ul>
 
-      <Button size="sm" className="ml-auto rounded-full" onClick={reorderAll}>
+      <Button
+        size="sm"
+        className="h-10 shrink-0 px-5 text-[10px] tracking-[0.18em] uppercase"
+        onClick={reorderAll}
+      >
         {added ? (
           <>
-            <Check className="size-4" aria-hidden />
+            <Check className="size-3.5" aria-hidden />
             Added to bag
           </>
         ) : (
           <>
-            <RotateCcw className="size-4" aria-hidden />
+            <RotateCcw className="size-3.5" aria-hidden />
             Reorder all
           </>
         )}

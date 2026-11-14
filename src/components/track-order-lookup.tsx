@@ -53,9 +53,9 @@ export function TrackOrderLookup() {
             placeholder="LOM-1234"
             autoComplete="off"
             spellCheck={false}
-            className="h-11 min-w-0 flex-1 rounded-full border border-input bg-card/70 px-5 text-sm uppercase outline-none transition-colors placeholder:normal-case placeholder:text-muted-foreground focus-visible:border-mint focus-visible:ring-3 focus-visible:ring-ring/40"
+            className="h-11 min-w-0 flex-1 rounded-[2px] border border-input bg-card/70 px-5 text-sm uppercase outline-none transition-colors placeholder:normal-case placeholder:text-muted-foreground focus-visible:border-mint focus-visible:ring-3 focus-visible:ring-ring/40"
           />
-          <Button type="submit" className="h-11 shrink-0 rounded-full px-6">
+          <Button type="submit" className="h-11 shrink-0 rounded-[2px] px-6">
             Track
           </Button>
         </div>

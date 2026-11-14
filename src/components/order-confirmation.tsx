@@ -83,7 +83,7 @@ export function OrderConfirmation() {
     <div className="flex flex-col gap-10">
       {/* Header */}
       <header className="flex flex-col items-start gap-4">
-        <span className="inline-flex size-12 items-center justify-center rounded-full bg-mint text-primary-foreground">
+        <span className="inline-flex size-12 items-center justify-center rounded-[2px] bg-mint text-primary-foreground">
           <Check className="size-6" aria-hidden />
         </span>
         <h1 className="text-4xl tracking-tight sm:text-5xl">Order confirmed.</h1>
@@ -112,10 +112,10 @@ export function OrderConfirmation() {
                 <span
                   className={
                     done
-                      ? "inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-mint text-primary-foreground"
+                      ? "inline-flex size-8 shrink-0 items-center justify-center rounded-[2px] bg-mint text-primary-foreground"
                       : current
-                        ? "inline-flex size-8 shrink-0 items-center justify-center rounded-full border border-gold bg-card text-gold"
-                        : "inline-flex size-8 shrink-0 items-center justify-center rounded-full border border-border bg-card text-muted-foreground"
+                        ? "inline-flex size-8 shrink-0 items-center justify-center rounded-[2px] border border-gold bg-card text-gold"
+                        : "inline-flex size-8 shrink-0 items-center justify-center rounded-[2px] border border-border bg-card text-muted-foreground"
                   }
                 >
                   <Icon className="size-4" aria-hidden />
@@ -146,11 +146,11 @@ export function OrderConfirmation() {
 
       <div className="grid gap-6 md:grid-cols-2">
         {/* Rider */}
-        <div className="flex flex-col gap-5 rounded-xl border border-border bg-card p-6">
+        <div className="flex flex-col gap-5 rounded-[2px] border border-border bg-card p-6">
           <div className="flex items-center gap-3">
             <span
               aria-hidden
-              className="inline-flex size-11 items-center justify-center rounded-full bg-muted font-heading text-base text-sage"
+              className="inline-flex size-11 items-center justify-center rounded-[2px] bg-muted font-heading text-base text-sage"
             >
               {RIDER.name.slice(0, 1)}
             </span>
@@ -160,11 +160,11 @@ export function OrderConfirmation() {
             </span>
           </div>
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" className="rounded-full">
+            <Button variant="outline" size="sm" className="rounded-[2px]">
               <Phone className="size-4" aria-hidden />
               Call
             </Button>
-            <Button variant="outline" size="sm" className="rounded-full">
+            <Button variant="outline" size="sm" className="rounded-[2px]">
               <MessageCircle className="size-4" aria-hidden />
               WhatsApp
             </Button>
@@ -172,7 +172,7 @@ export function OrderConfirmation() {
         </div>
 
         {/* Snapshot */}
-        <div className="flex flex-col gap-4 rounded-xl border border-border bg-card p-6">
+        <div className="flex flex-col gap-4 rounded-[2px] border border-border bg-card p-6">
           <h2 className="font-heading text-lg">Order snapshot</h2>
           <ul className="flex flex-col gap-2 border-y border-border py-3">
             {lastOrder.lines.map((line) => (
@@ -197,7 +197,7 @@ export function OrderConfirmation() {
             </div>
             <div className="flex items-center justify-between gap-3">
               <dt className="text-muted-foreground">Payment</dt>
-              <dd className="rounded-full border border-foreground/10 px-2.5 py-1 text-xs">
+              <dd className="rounded-[2px] border border-foreground/10 px-2.5 py-1 text-xs">
                 {lastOrder.payment}
               </dd>
             </div>
@@ -213,7 +213,7 @@ export function OrderConfirmation() {
       </div>
 
       <div>
-        <Button variant="outline" className="rounded-full" asChild>
+        <Button variant="outline" className="rounded-[2px]" asChild>
           <Link href="/mart">Continue shopping</Link>
         </Button>
       </div>

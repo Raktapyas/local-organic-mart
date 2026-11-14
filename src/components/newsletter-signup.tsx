@@ -33,41 +33,46 @@ export function NewsletterSignup() {
   }
 
   return (
-    <div>
-      <h2 className="font-heading text-lg tracking-tight">
-        Subscribe to weekly deals
-      </h2>
-      <p className="mt-1 text-sm text-muted-foreground">
-        One message a week. Unsubscribe any time.
-      </p>
-
-      <form onSubmit={onSubmit} className="mt-4 flex flex-col gap-2 sm:flex-row">
-        <label htmlFor="newsletter-email" className="sr-only">
-          Email address
-        </label>
-        <input
-          id="newsletter-email"
-          type="email"
-          required
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          placeholder="you@example.com"
-          className="h-11 w-full rounded-full border border-input bg-background/60 px-5 text-sm outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-mint sm:max-w-xs"
-        />
-        <button
-          type="submit"
-          className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-mint px-5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
-        >
-          <Send className="size-4" aria-hidden />
-          Subscribe
-        </button>
-      </form>
-
-      {sent ? (
-        <p aria-live="polite" className="mt-2 text-xs text-sage">
-          Opening WhatsApp to finish your signup.
+    <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <span className="eyebrow">The letter</span>
+        <h2 className="mt-2 font-heading text-2xl leading-tight text-ivory">
+          Subscribe to weekly deals
+        </h2>
+        <p className="mt-1.5 text-sm text-ash">
+          One message a week. Unsubscribe any time.
         </p>
-      ) : null}
+      </div>
+
+      <div>
+        <form onSubmit={onSubmit} className="flex flex-col gap-2 sm:flex-row">
+          <label htmlFor="newsletter-email" className="sr-only">
+            Email address
+          </label>
+          <input
+            id="newsletter-email"
+            type="email"
+            required
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            placeholder="you@example.com"
+            className="h-11 w-full border border-foreground/12 bg-transparent px-4 text-sm text-ivory outline-none transition-colors placeholder:text-ash/50 focus-visible:border-gold/60 sm:w-64"
+          />
+          <button
+            type="submit"
+            className="inline-flex h-11 items-center justify-center gap-2 bg-gold px-6 text-[10px] font-medium tracking-[0.18em] text-ink uppercase transition-opacity duration-200 hover:opacity-85"
+          >
+            <Send className="size-3.5" aria-hidden />
+            Subscribe
+          </button>
+        </form>
+
+        {sent ? (
+          <p aria-live="polite" className="mt-2 text-[11px] text-ash">
+            Opening WhatsApp to finish your signup.
+          </p>
+        ) : null}
+      </div>
     </div>
   );
 }

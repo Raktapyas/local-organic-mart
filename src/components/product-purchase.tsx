@@ -38,12 +38,12 @@ export function ProductPurchase({
       </div>
 
       {product.outOfStock ? (
-        <Button variant="outline" className="h-12 w-full rounded-full">
+        <Button variant="outline" className="h-12 w-full rounded-[2px] text-[10.5px] tracking-[0.2em] uppercase">
           Notify me
         </Button>
       ) : (
         <Button
-          className="h-12 w-full rounded-full"
+          className="h-12 w-full rounded-[2px] text-[10.5px] tracking-[0.2em] uppercase"
           // TODO: server-side recalc — the client total is a preview only. The
           // API owns pricing, tier eligibility, and the authoritative total.
           onClick={() =>
