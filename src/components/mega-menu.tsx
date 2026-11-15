@@ -127,8 +127,10 @@ export function MegaMenu({ martHref }: { martHref: string }) {
         hovering.current = false;
         // Moving into the panel fires leave/enter in the same task; the panel
         // is a descendant, so treat that as still being inside.
-        const next = event.relatedTarget as Node | null;
-        if (next && event.currentTarget.contains(next)) return;
+        // `relatedTarget` is not always a Node — leaving the window hands back
+        // `window`, which `contains` rejects with a TypeError.
+        const next = event.relatedTarget;
+        if (next instanceof Node && event.currentTarget.contains(next)) return;
         close();
       }}
     >
