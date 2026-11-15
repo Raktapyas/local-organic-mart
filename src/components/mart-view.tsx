@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useMemo, useState } from "react";
 import {
   BadgeCheck,
   ChevronDown,
@@ -15,41 +18,112 @@ import {
   categories,
   dealsCloseAt,
   filterAttributes,
-  priceCeiling,
-  products,
-  productsInCategory,
   provenanceMarks,
   sortOptions,
   type Product,
 } from "@/lib/data";
+import {
+  applyMartFilters,
+  hasActiveFilters,
+  priceCeilingFor,
+  type MartCategoryFilter,
+  type MartFilterState,
+  type MartSort,
+} from "@/lib/mart-filters";
+
+/** Cards shown before "Load more" adds the next batch. */
+const PAGE_SIZE = 12;
+
+type ViewState = MartFilterState & { visible: number };
 
 export interface MartViewProps {
+  /** Products already scoped to the route — every item on `/mart`. */
+  items: Product[];
   /** Nav category id from `/mart/[category]`. Absent on `/mart`. */
   categoryId?: string;
-  /** Resolved products. Ignored when `categoryId` is set. */
-  items?: Product[];
   /** Category name, used as the h1 and in the result count. */
   categoryName?: string;
   /** Terroir note, used as the subline. */
   categoryNote?: string;
+  /** Sidebar department options. Omitted on a scoped department route. */
+  categoryFilters?: MartCategoryFilter[];
 }
 
 /**
  * Shared Mart body for `/mart` and `/mart/[category]`.
  *
  * The category pages are the same grid and the same sidebar with one filter
- * pre-applied: the matching pill is marked current, the matching sidebar
- * checkbox is checked, and the result count names the department. Everything
- * else — search, sort, price rail, provenance — is unchanged.
+ * pre-applied: the route scopes `items` before it reaches this component, the
+ * matching pill is marked current, and the result count names the department.
+ * Attribute, department, price and sort controls filter the list in place; the
+ * server only sends the catalogue, so every change is immediate.
  */
 export function MartView({
-  categoryId,
   items,
+  categoryId,
   categoryName,
   categoryNote,
+  categoryFilters,
 }: MartViewProps) {
-  const filtered = categoryId ? productsInCategory(categoryId) : products;
-  const list = categoryId ? filtered : (items ?? products);
+  const ceiling = useMemo(() => priceCeilingFor(items), [items]);
+
+  const [state, setState] = useState<ViewState>(() => ({
+    attributes: [],
+    categories: [],
+    maxPrice: priceCeilingFor(items),
+    sort: "Featured",
+    visible: PAGE_SIZE,
+  }));
+  const [filtersOpen, setFiltersOpen] = useState(false);
+
+  const list = useMemo(
+    () => applyMartFilters(items, state, categoryFilters),
+    [items, state, categoryFilters],
+  );
+  const visible = list.slice(0, state.visible);
+  const filtering = hasActiveFilters(state, ceiling);
+  const activeCount =
+    state.attributes.length +
+    state.categories.length +
+    (state.maxPrice < ceiling ? 1 : 0);
+
+  function toggleAttribute(id: string) {
+    setState((current) => ({
+      ...current,
+      attributes: current.attributes.includes(id)
+        ? current.attributes.filter((item) => item !== id)
+        : [...current.attributes, id],
+      visible: PAGE_SIZE,
+    }));
+  }
+
+  function toggleCategory(id: string) {
+    setState((current) => ({
+      ...current,
+      categories: current.categories.includes(id)
+        ? current.categories.filter((item) => item !== id)
+        : [...current.categories, id],
+      visible: PAGE_SIZE,
+    }));
+  }
+
+  function setMaxPrice(maxPrice: number) {
+    setState((current) => ({ ...current, maxPrice, visible: PAGE_SIZE }));
+  }
+
+  function setSort(sort: MartSort) {
+    setState((current) => ({ ...current, sort, visible: PAGE_SIZE }));
+  }
+
+  function clearAll() {
+    setState({
+      attributes: [],
+      categories: [],
+      maxPrice: ceiling,
+      sort: "Featured",
+      visible: PAGE_SIZE,
+    });
+  }
 
   return (
     <>
@@ -119,12 +193,41 @@ export function MartView({
       <section className="mx-auto grid w-full max-w-7xl gap-10 px-6 pb-20 lg:grid-cols-[280px_1fr]">
         <aside className="lg:sticky lg:top-24 lg:self-start">
           <div className="flex items-center justify-between">
-            <h2 className="flex items-center gap-2 font-heading text-base">
+            <h2 className="hidden items-center gap-2 font-heading text-base lg:flex">
               <SlidersHorizontal className="size-4 text-sage" aria-hidden />
               Filters
             </h2>
+
+            {/* Below `lg` the panel collapses so the grid is the first thing
+                on screen; the toggle carries the active-filter count. */}
             <button
               type="button"
+              onClick={() => setFiltersOpen((open) => !open)}
+              aria-expanded={filtersOpen}
+              aria-controls="mart-filters"
+              aria-label={
+                activeCount > 0 ? `Filters, ${activeCount} active` : "Filters"
+              }
+              className="flex items-center gap-2 font-heading text-base lg:hidden"
+            >
+              <SlidersHorizontal className="size-4 text-sage" aria-hidden />
+              Filters
+              {activeCount > 0 ? (
+                <span className="rounded-full bg-mint px-1.5 text-[10px] leading-4 text-primary-foreground">
+                  {activeCount}
+                </span>
+              ) : null}
+              <ChevronDown
+                className={`size-4 text-sage transition-transform ${
+                  filtersOpen ? "rotate-180" : ""
+                }`}
+                aria-hidden
+              />
+            </button>
+
+            <button
+              type="button"
+              onClick={clearAll}
               className="flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
             >
               <X className="size-3" aria-hidden />
@@ -132,7 +235,12 @@ export function MartView({
             </button>
           </div>
 
-          <div className="mt-6 flex flex-col gap-8">
+          <div
+            id="mart-filters"
+            className={`mt-6 flex-col gap-8 ${
+              filtersOpen ? "flex" : "hidden"
+            } lg:flex`}
+          >
             <fieldset>
               <legend className="text-xs tracking-wider text-sage uppercase">
                 Filter Attributes
@@ -146,6 +254,8 @@ export function MartView({
                     <input
                       type="checkbox"
                       name={attribute.id}
+                      checked={state.attributes.includes(attribute.id)}
+                      onChange={() => toggleAttribute(attribute.id)}
                       className="sr-only"
                     />
                     {attribute.label}
@@ -154,34 +264,37 @@ export function MartView({
               </div>
             </fieldset>
 
-            <fieldset>
-              <legend className="text-xs tracking-wider text-sage uppercase">
-                Categories
-              </legend>
-              <ul className="mt-3 flex flex-col gap-2.5">
-                {categories.map((category) => (
-                  <li key={category.id}>
-                    <label className="flex cursor-pointer items-center gap-2.5 text-sm text-muted-foreground transition-colors hover:text-foreground">
-                      <input
-                        type="checkbox"
-                        name="category"
-                        value={category.name}
-                        defaultChecked={category.id === categoryId}
-                        className="size-3.5 shrink-0 appearance-none border border-foreground/25 bg-transparent transition-colors checked:border-gold checked:bg-gold"
-                      />
-                      {category.name}
-                    </label>
-                  </li>
-                ))}
-              </ul>
-            </fieldset>
+            {categoryFilters && categoryFilters.length > 0 ? (
+              <fieldset>
+                <legend className="text-xs tracking-wider text-sage uppercase">
+                  Categories
+                </legend>
+                <ul className="mt-3 flex flex-col gap-2.5">
+                  {categoryFilters.map((category) => (
+                    <li key={category.id}>
+                      <label className="flex cursor-pointer items-center gap-2.5 text-sm text-muted-foreground transition-colors hover:text-foreground">
+                        <input
+                          type="checkbox"
+                          name="category"
+                          value={category.id}
+                          checked={state.categories.includes(category.id)}
+                          onChange={() => toggleCategory(category.id)}
+                          className="size-3.5 shrink-0 appearance-none border border-foreground/25 bg-transparent transition-colors checked:border-gold checked:bg-gold"
+                        />
+                        {category.name}
+                      </label>
+                    </li>
+                  ))}
+                </ul>
+              </fieldset>
+            ) : null}
 
             <fieldset>
               <legend className="text-xs tracking-wider text-sage uppercase">
                 Price Ceiling
               </legend>
               <p className="mt-3 font-heading text-lg">
-                Rs 0 &ndash; Rs {priceCeiling.toLocaleString("en-NP")}
+                Rs 0 &ndash; Rs {state.maxPrice.toLocaleString("en-NP")}
               </p>
               <label className="mt-3 block">
                 <span className="sr-only">Maximum price</span>
@@ -189,14 +302,16 @@ export function MartView({
                   type="range"
                   name="maxPrice"
                   min={0}
-                  max={priceCeiling}
-                  defaultValue={priceCeiling}
+                  max={ceiling}
+                  step={10}
+                  value={state.maxPrice}
+                  onChange={(event) => setMaxPrice(Number(event.target.value))}
                   className="w-full accent-gold"
                 />
               </label>
               <div className="mt-2 flex justify-between text-xs text-muted-foreground">
                 <span>Min: Rs 0</span>
-                <span>Max: Rs {priceCeiling.toLocaleString("en-NP")}</span>
+                <span>Max: Rs {ceiling.toLocaleString("en-NP")}</span>
               </div>
             </fieldset>
 
@@ -211,7 +326,10 @@ export function MartView({
                     className="flex items-center justify-between gap-2 rounded-[2px] border border-border bg-card/50 px-3 py-2 text-xs text-muted-foreground"
                   >
                     {mark.label}
-                    <BadgeCheck className="size-4 shrink-0 text-sage" aria-hidden />
+                    <BadgeCheck
+                      className="size-4 shrink-0 text-sage"
+                      aria-hidden
+                    />
                   </li>
                 ))}
               </ul>
@@ -221,7 +339,7 @@ export function MartView({
 
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-4 border-b border-border pb-4 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-[17px]">
+            <p className="text-[17px]" aria-live="polite">
               {categoryName ? `${categoryName} · ` : ""}
               {list.length} {list.length === 1 ? "product" : "products"}
             </p>
@@ -237,10 +355,14 @@ export function MartView({
                 <select
                   id="sort"
                   name="sort"
+                  value={state.sort}
+                  onChange={(event) => setSort(event.target.value as MartSort)}
                   className="appearance-none rounded-[2px] border border-border bg-card py-2 pr-9 pl-4 text-xs text-foreground outline-none transition-colors focus:border-mint"
                 >
                   {sortOptions.map((option) => (
-                    <option key={option}>{option}</option>
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
                   ))}
                 </select>
                 <ChevronDown
@@ -254,18 +376,33 @@ export function MartView({
           {list.length > 0 ? (
             <>
               <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-                {list.map((product) => (
+                {visible.map((product, index) => (
                   <li key={product.id}>
-                    <ProductCard product={product} />
+                    <ProductCard product={product} priority={index === 0} />
                   </li>
                 ))}
               </ul>
 
-              <div className="flex flex-col items-center gap-3 pt-4">
-                <Button variant="outline" className="rounded-[2px] px-8">
-                  Load more
-                </Button>
-              </div>
+              {list.length > state.visible ? (
+                <div className="flex flex-col items-center gap-3 pt-4">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="rounded-[2px] px-8"
+                    onClick={() =>
+                      setState((current) => ({
+                        ...current,
+                        visible: current.visible + PAGE_SIZE,
+                      }))
+                    }
+                  >
+                    Load more
+                  </Button>
+                  <p className="text-xs text-muted-foreground">
+                    Showing {visible.length} of {list.length}
+                  </p>
+                </div>
+              ) : null}
             </>
           ) : (
             <div className="flex flex-col items-center gap-4 rounded-[2px] border border-border bg-card/40 px-6 py-20 text-center">
@@ -273,13 +410,25 @@ export function MartView({
                 Nothing here yet.
               </h3>
               <p className="max-w-sm text-sm text-sage">
-                {categoryName
-                  ? `No ${categoryName.toLowerCase()} lines are in the mart at the moment. The rest of the harvest is on the shelves.`
-                  : "No products match these filters."}
+                {filtering
+                  ? "No products match these filters. Loosen one, or clear them all."
+                  : categoryName
+                    ? `No ${categoryName.toLowerCase()} lines are in the mart at the moment. The rest of the harvest is on the shelves.`
+                    : "No products are in the mart at the moment."}
               </p>
-              <Button className="mt-2 rounded-[2px]" asChild>
-                <Link href="/mart">Browse everything</Link>
-              </Button>
+              {filtering ? (
+                <Button
+                  type="button"
+                  className="mt-2 rounded-[2px]"
+                  onClick={clearAll}
+                >
+                  Clear filters
+                </Button>
+              ) : (
+                <Button className="mt-2 rounded-[2px]" asChild>
+                  <Link href="/mart">Browse everything</Link>
+                </Button>
+              )}
             </div>
           )}
         </div>

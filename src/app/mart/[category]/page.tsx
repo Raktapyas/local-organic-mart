@@ -4,7 +4,7 @@ import { Suspense } from "react";
 
 import { MartView } from "@/components/mart-view";
 import { SiteFooter } from "@/components/site-footer";
-import { categoryBySlug, martCategories } from "@/lib/data";
+import { categoryBySlug, martCategories, productsInCategory } from "@/lib/data";
 
 /**
  * `/mart/[category]` — one department of the Mart.
@@ -73,6 +73,7 @@ async function CategoryBody({
 
   return (
     <MartView
+      items={productsInCategory(category.id)}
       categoryId={category.id}
       categoryName={category.name}
       categoryNote={category.note}

@@ -16,7 +16,14 @@ const npr = new Intl.NumberFormat("en-NP");
  * here the only colour is a gold price and a single discount rule, so a rail of
  * five cards reads as a catalogue rather than a feed.
  */
-export function ProductCard({ product }: { product: Product }) {
+export function ProductCard({
+  product,
+  priority,
+}: {
+  product: Product;
+  /** Set on the first card of a grid so its photo is the LCP, not a late load. */
+  priority?: boolean;
+}) {
   const off = discountPercent(product);
   const sold = product.outOfStock;
   const member = memberPrice(product);
@@ -33,6 +40,7 @@ export function ProductCard({ product }: { product: Product }) {
             src={product.image}
             alt={product.name}
             fill
+            priority={priority}
             sizes="(min-width: 1280px) 18vw, (min-width: 768px) 30vw, (min-width: 640px) 45vw, 46vw"
             className={
               sold
