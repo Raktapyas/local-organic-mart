@@ -37,7 +37,7 @@ export function SiteFooter() {
   };
 
   return (
-    <footer className="border-t border-foreground/[0.08] bg-[#060a07]">
+    <footer className="border-t border-foreground/[0.08] bg-[#08130c]">
       <div className="mx-auto w-full max-w-[88rem] px-6 lg:px-10">
         {/* Newsletter band */}
         <div className="border-b border-foreground/[0.08] py-12 lg:py-14">

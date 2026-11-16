@@ -36,7 +36,7 @@ export function StoryCards() {
                 <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/10 to-transparent" />
 
                 {/* The overlapping panel is the only thing carrying copy. */}
-                <div className="relative border border-gold/25 bg-[#0a0f0c]/95 p-6 sm:max-w-sm sm:p-7">
+                <div className="relative border border-gold/25 bg-[#0a1710]/95 p-6 sm:max-w-sm sm:p-7">
                   <span className="tabular text-[9px] tracking-[0.24em] text-gold/70">
                     {String(index + 1).padStart(2, "0")}
                   </span>

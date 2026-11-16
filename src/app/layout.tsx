@@ -74,7 +74,7 @@ export const metadata: Metadata = {
 
 /** Matches the shell's ink background so the mobile browser chrome agrees. */
 export const viewport: Viewport = {
-  themeColor: "#070B08",
+  themeColor: "#0D1B12",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

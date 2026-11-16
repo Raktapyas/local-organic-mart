@@ -55,61 +55,65 @@
 }
 
 /*
- * Dark Royal palette.
+ * Forest palette.
  *
- * Ink base, ivory type, a single antique-gold accent. Gold is reserved for
- * emphasis — rules, eyebrows, active states, one CTA per view — because a
- * metal used everywhere stops reading as metal. `mint` and `sage` survive as
- * legacy token names (they are referenced across the component tree) but now
- * resolve to gold and warm ash respectively, so untouched surfaces inherit the
- * new mood instead of fighting it.
+ * Deep forest base, ivory type, one living green accent. The accent is
+ * reserved for emphasis — rules, eyebrows, active states, one CTA per view —
+ * because a green used on every surface stops reading as foliage and starts
+ * reading as a tint.
+ *
+ * `gold`, `brass` and `coral` survive as legacy token names referenced across
+ * the component tree. `gold` now resolves to the same living green as `mint`,
+ * so no warm metal is left in the interface; `brass` is the shaded green used
+ * where a token needed to sit darker than the accent; `coral` keeps its warmth
+ * for heat semantics only (spice flames, sold-out warnings), not decoration.
  */
 @theme {
-  --color-ivory: #f4efe4;
-  --color-bone: #e5dccb;
-  --color-ink: #070b08;
-  --color-ash: #a49e91;
-  --color-sage: #a49e91;
-  --color-mint: #d9bc82;
-  --color-gold: #c6a15b;
-  --color-brass: #8c6f3e;
+  --color-ivory: #f4efe3;
+  --color-bone: #dfe9dc;
+  --color-ink: #08130c;
+  --color-ash: #9db5a4;
+  --color-sage: #9db5a4;
+  --color-mint: #8fe3b0;
+  --color-gold: #8fe3b0;
+  --color-brass: #4f8a68;
   --color-coral: #b1735f;
 }
 
 :root {
-  --background: #070b08;
-  --foreground: #f4efe4;
-  --card: #0c120e;
-  --card-foreground: #f4efe4;
-  --popover: #101713;
-  --popover-foreground: #f4efe4;
-  --primary: #c6a15b;
-  --primary-foreground: #070b08;
-  --secondary: #121a15;
-  --secondary-foreground: #f4efe4;
-  --muted: #0c120e;
-  --muted-foreground: #a49e91;
-  --accent: #121a15;
-  --accent-foreground: #d9bc82;
+  --background: #0d1b12;
+  --foreground: #f4efe3;
+  --card: #14271b;
+  --card-foreground: #f4efe3;
+  --popover: #1b3424;
+  --popover-foreground: #f4efe3;
+  --primary: #8fe3b0;
+  --primary-foreground: #0d1b12;
+  --secondary: #1b3424;
+  --secondary-foreground: #f4efe3;
+  --muted: #14271b;
+  --muted-foreground: #9db5a4;
+  --accent: #1b3424;
+  --accent-foreground: #8fe3b0;
   --destructive: #c4553f;
-  --border: rgb(244 239 228 / 0.09);
-  --input: rgb(244 239 228 / 0.13);
-  --ring: #c6a15b;
-  --chart-1: #c6a15b;
-  --chart-2: #d9bc82;
-  --chart-3: #8c6f3e;
+  --border: rgb(244 239 227 / 0.1);
+  --input: rgb(244 239 227 / 0.15);
+  --ring: #8fe3b0;
+  --chart-1: #8fe3b0;
+  --chart-2: #9db5a4;
+  --chart-3: #4f8a68;
   --chart-4: #b1735f;
-  --chart-5: #f4efe4;
+  --chart-5: #f4efe3;
   /* Near-square by default: a 2px edge reads crafted, a 20px pill reads app. */
   --radius: 0.125rem;
-  --sidebar: #0c120e;
-  --sidebar-foreground: #f4efe4;
-  --sidebar-primary: #c6a15b;
-  --sidebar-primary-foreground: #070b08;
-  --sidebar-accent: #121a15;
-  --sidebar-accent-foreground: #d9bc82;
-  --sidebar-border: rgb(244 239 228 / 0.09);
-  --sidebar-ring: #c6a15b;
+  --sidebar: #14271b;
+  --sidebar-foreground: #f4efe3;
+  --sidebar-primary: #8fe3b0;
+  --sidebar-primary-foreground: #0d1b12;
+  --sidebar-accent: #1b3424;
+  --sidebar-accent-foreground: #8fe3b0;
+  --sidebar-border: rgb(244 239 227 / 0.1);
+  --sidebar-ring: #8fe3b0;
 }
 
 @layer base {
@@ -140,7 +144,7 @@
     font-feature-settings: "tnum" 1;
   }
   ::selection {
-    background: rgb(198 161 91 / 0.3);
+    background: rgb(143 227 176 / 0.3);
     color: var(--foreground);
   }
   :focus-visible {
@@ -163,13 +167,13 @@
   color: var(--color-gold);
 }
 
-/* 1px gold rule that fades out — used under eyebrows and section titles. */
+/* 1px accent rule that fades out — used under eyebrows and section titles. */
 .rule-fade {
   height: 1px;
   background: linear-gradient(
     to right,
-    rgb(198 161 91 / 0.55),
-    rgb(198 161 91 / 0.12) 55%,
+    rgb(143 227 176 / 0.55),
+    rgb(143 227 176 / 0.12) 55%,
     transparent
   );
 }

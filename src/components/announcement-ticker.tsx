@@ -35,7 +35,7 @@ export function AnnouncementTicker() {
   );
 
   return (
-    <div className="overflow-hidden border-b border-foreground/[0.07] bg-[#050805]">
+    <div className="overflow-hidden border-b border-foreground/[0.07] bg-[#071009]">
       <div className="ticker-track flex w-max items-center py-2.5">
         {/*
           The list is rendered twice. The second copy is hidden from assistive

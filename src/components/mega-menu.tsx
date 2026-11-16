@@ -172,7 +172,7 @@ export function MegaMenu({ martHref }: { martHref: string }) {
       {open ? (
         <div
           id="mega-menu"
-          className="absolute inset-x-0 top-full z-40 -mt-px animate-in border-y border-foreground/10 bg-[#080d0a] shadow-[0_32px_70px_-30px_rgba(0,0,0,0.95)] duration-200 fade-in-0 slide-in-from-top-1"
+          className="absolute inset-x-0 top-full z-40 -mt-px animate-in border-y border-foreground/10 bg-[#0b1810] shadow-[0_32px_70px_-30px_rgba(0,0,0,0.95)] duration-200 fade-in-0 slide-in-from-top-1"
         >
           <div className="mx-auto grid w-full max-w-[88rem] grid-cols-[1.6fr_1fr_1.2fr] gap-8 px-8 py-8 xl:grid-cols-[1.1fr_0.9fr_1.15fr_1fr] xl:gap-10 xl:py-10">
             {/* 1. Categories */}

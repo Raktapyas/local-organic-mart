@@ -73,7 +73,7 @@ export function MobileHeader() {
           <SheetContent
             side="left"
             showCloseButton={false}
-            className="flex w-[86vw] max-w-sm flex-col gap-0 border-r border-foreground/10 bg-[#080d0a] p-0"
+            className="flex w-[86vw] max-w-sm flex-col gap-0 border-r border-foreground/10 bg-[#0e1e14] p-0"
           >
             <SheetHeader className="border-b border-foreground/[0.08] p-6 pb-5">
               <SheetTitle className="flex flex-col items-start gap-2 text-left">
@@ -214,7 +214,7 @@ export function MobileHeader() {
             </button>
 
             {chatOpen ? (
-              <div className="absolute right-0 z-50 mt-2 w-48 border border-foreground/10 bg-[#0b110d] p-1 shadow-[0_18px_40px_-20px_rgba(0,0,0,0.9)]">
+              <div className="absolute right-0 z-50 mt-2 w-48 border border-foreground/10 bg-[#0e1e14] p-1 shadow-[0_18px_40px_-20px_rgba(0,0,0,0.9)]">
                 <a
                   href={contactChannels.whatsapp}
                   className="flex items-center gap-2 px-3 py-2 text-xs text-ash transition-colors hover:bg-foreground/5 hover:text-ivory"

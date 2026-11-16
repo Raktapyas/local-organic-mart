@@ -175,7 +175,7 @@ export default function Home() {
         <BestsellersRail excludeIds={dealProducts.map((product) => product.id)} />
 
         {/* Deals rail */}
-        <section id="deals" className="scroll-mt-24 border-b border-foreground/[0.06] bg-[#080d0a]">
+        <section id="deals" className="scroll-mt-24 border-b border-foreground/[0.06] bg-[#0b1810]">
           <div className={`${shell} py-16 lg:py-24`}>
             <div className="flex flex-wrap items-end justify-between gap-6">
               <SectionHeader
@@ -431,7 +431,7 @@ export default function Home() {
                 <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-background/45" />
               </div>
 
-              <div className="relative -mt-12 mr-3 ml-3 border border-gold/30 bg-[#080d0a] p-6 sm:-mt-20 sm:ml-10 sm:max-w-2xl sm:p-10">
+              <div className="relative -mt-12 mr-3 ml-3 border border-gold/30 bg-[#0b1810] p-6 sm:-mt-20 sm:ml-10 sm:max-w-2xl sm:p-10">
                 <div className="flex flex-col gap-6">
                   <div>
                     <span className="flex items-center gap-2 text-[10px] tracking-[0.26em] text-gold uppercase">
