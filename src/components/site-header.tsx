@@ -2,8 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { Leaf, Search, ShoppingBag, User, X } from "lucide-react";
+import { Search, ShoppingBag, User, X } from "lucide-react";
 
+import { BrandLogo } from "@/components/brand-logo";
 import { CartBadge } from "@/components/cart-badge";
 import { MegaMenu } from "@/components/mega-menu";
 import { LanguageToggle } from "@/components/language-toggle";
@@ -75,26 +76,17 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 hidden border-b border-foreground/[0.07] bg-background/85 backdrop-blur-xl backdrop-saturate-150 lg:block">
       <div className="mx-auto flex h-[4.5rem] w-full max-w-[88rem] items-center gap-7 px-8">
-        {/* Wordmark: crest + stacked lettering, in flow. */}
+        {/* Brand lockup, in flow. The mark carries the name, so the link
+            supplies the accessible label instead of repeating it twice. */}
         <Link
           href="/"
           aria-label={tr("Local Organic Mart — home", "लोकल अर्गानिक मार्ट — गृहपृष्ठ")}
-          className="group flex shrink-0 items-center gap-3"
+          className="group flex shrink-0 items-center"
         >
-          <span className="relative grid size-9 shrink-0 rotate-45 place-items-center border border-gold/45 transition-colors duration-300 group-hover:border-gold/80">
-            <Leaf
-              className="-rotate-45 size-[15px] text-gold transition-transform duration-300 group-hover:scale-110"
-              aria-hidden
-            />
-          </span>
-          <span className="flex flex-col leading-none">
-            <span className="font-heading text-[0.95rem] tracking-[0.13em] text-ivory uppercase">
-              Local Organic Mart
-            </span>
-            <span className="mt-[0.3rem] text-[8.5px] tracking-[0.34em] text-gold/75 uppercase">
-              {tr("Kathmandu Valley", "काठमाडौं उपत्यका")}
-            </span>
-          </span>
+          <BrandLogo
+            priority
+            className="h-12 transition-transform duration-300 group-hover:scale-[1.02]"
+          />
         </Link>
 
         {/* Primary navigation */}

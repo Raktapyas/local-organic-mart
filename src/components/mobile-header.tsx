@@ -2,8 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { Leaf, Menu, MessageCircle, Phone, ShoppingBag, X } from "lucide-react";
+import { Menu, MessageCircle, Phone, ShoppingBag, X } from "lucide-react";
 
+import { BrandLogo } from "@/components/brand-logo";
 import { CartBadge } from "@/components/cart-badge";
 import { LanguageToggle } from "@/components/language-toggle";
 import {
@@ -75,17 +76,17 @@ export function MobileHeader() {
             className="flex w-[86vw] max-w-sm flex-col gap-0 border-r border-foreground/10 bg-[#080d0a] p-0"
           >
             <SheetHeader className="border-b border-foreground/[0.08] p-6 pb-5">
-              <SheetTitle className="flex items-center gap-3 text-left">
-                <span className="relative grid size-8 rotate-45 place-items-center border border-gold/45">
-                  <Leaf className="-rotate-45 size-3.5 text-gold" aria-hidden />
-                </span>
-                <span className="flex flex-col leading-none">
-                  <span className="font-heading text-sm tracking-[0.12em] text-ivory uppercase">
-                    {siteName}
-                  </span>
-                  <span className="mt-1 text-[8px] tracking-[0.3em] text-gold/70 uppercase">
-                    {tr("Kathmandu Valley", "काठमाडौं उपत्यका")}
-                  </span>
+              <SheetTitle className="flex flex-col items-start gap-2 text-left">
+                <BrandLogo
+                  alt={tr(siteName, "लोकल अर्गानिक मार्ट")}
+                  className="h-10"
+                />
+                <span
+                  className={`text-[8px] text-gold/70 ${
+                    isNe ? "tracking-[0.1em]" : "tracking-[0.3em] uppercase"
+                  }`}
+                >
+                  {tr("Kathmandu Valley", "काठमाडौं उपत्यका")}
                 </span>
               </SheetTitle>
             </SheetHeader>
@@ -195,19 +196,9 @@ export function MobileHeader() {
         <Link
           href="/"
           aria-label={tr(`${siteName} — home`, `${siteName} — गृहपृष्ठ`)}
-          className="flex min-w-0 shrink items-center gap-2.5"
+          className="flex min-w-0 shrink items-center"
         >
-          <span className="relative grid size-7 shrink-0 rotate-45 place-items-center border border-gold/45">
-            <Leaf className="-rotate-45 size-3 text-gold" aria-hidden />
-          </span>
-          <span className="flex min-w-0 flex-col leading-none">
-            <span className="truncate font-heading text-[11.5px] tracking-[0.12em] text-ivory uppercase">
-              {siteName}
-            </span>
-            <span className="mt-1 text-[7px] tracking-[0.26em] text-gold/70 uppercase">
-              {tr("Kathmandu Valley", "काठमाडौं उपत्यका")}
-            </span>
-          </span>
+          <BrandLogo priority className="h-10" />
         </Link>
 
         <div className="flex shrink-0 items-center gap-1.5">

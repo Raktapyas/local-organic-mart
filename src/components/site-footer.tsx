@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { Leaf, Mail, MapPin, Phone } from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
+
+import { BrandLogo } from "@/components/brand-logo";
 
 import {
   categories,
@@ -45,17 +47,23 @@ export function SiteFooter() {
         {/* Masthead + link columns */}
         <div className="grid gap-12 py-14 lg:grid-cols-12 lg:gap-8">
           <div className="flex flex-col gap-6 lg:col-span-4">
-            <Link href="/" className="group flex items-center gap-3">
-              <span className="relative grid size-9 shrink-0 rotate-45 place-items-center border border-gold/45 transition-colors duration-300 group-hover:border-gold/80">
-                <Leaf className="-rotate-45 size-[15px] text-gold" aria-hidden />
-              </span>
-              <span className="flex flex-col leading-none">
-                <span className="font-heading text-[0.95rem] tracking-[0.13em] text-ivory uppercase">
-                  {siteName}
-                </span>
-                <span className="mt-[0.3rem] text-[8.5px] tracking-[0.34em] text-gold/75 uppercase">
-                  {tr("Kathmandu Valley", "काठमाडौं उपत्यका")}
-                </span>
+            <Link
+              href="/"
+              aria-label={tr(
+                "Local Organic Mart — home",
+                "लोकल अर्गानिक मार्ट — गृहपृष्ठ",
+              )}
+              className="group flex w-fit flex-col items-start gap-2"
+            >
+              <BrandLogo className="h-16 transition-transform duration-300 group-hover:scale-[1.02]" />
+              <span
+                className={`text-[8.5px] text-gold/75 ${
+                  lang === "ne"
+                    ? "tracking-[0.1em]"
+                    : "tracking-[0.34em] uppercase"
+                }`}
+              >
+                {tr("Kathmandu Valley", "काठमाडौं उपत्यका")}
               </span>
             </Link>
 
@@ -128,12 +136,22 @@ export function SiteFooter() {
               </li>
             ))}
           </ul>
-          <p className="text-[10px] tracking-[0.12em] text-ash/50 uppercase">
-            {tr(
-              `${siteName} Pvt. Ltd. · Kathmandu, Nepal · ${contact.email}`,
-              `लोकल अर्गानिक मार्ट प्रा. लि. · काठमाडौं, नेपाल · ${contact.email}`,
-            )}
-          </p>
+          <div className="flex flex-col gap-1.5 lg:items-end">
+            <p className="text-[10px] tracking-[0.12em] text-ash/50 uppercase">
+              {tr(
+                `${siteName} Pvt. Ltd. · Kathmandu, Nepal · ${contact.email}`,
+                `लोकल अर्गानिक मार्ट प्रा. लि. · काठमाडौं, नेपाल · ${contact.email}`,
+              )}
+            </p>
+            <a
+              href="https://megasoft.net.np/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[10px] tracking-[0.12em] text-ash/50 uppercase transition-colors duration-200 hover:text-gold"
+            >
+              {tr("Designed by Megasoft", "डिजाइन: Megasoft")}
+            </a>
+          </div>
         </div>
 
         {/*
