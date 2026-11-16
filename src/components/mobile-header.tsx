@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Menu, MessageCircle, Phone, ShoppingBag, X } from "lucide-react";
 
 import { BrandLogo } from "@/components/brand-logo";
+import { ViberIcon, WhatsAppIcon } from "@/components/brand-icons";
 import { CartBadge } from "@/components/cart-badge";
 import { LanguageToggle } from "@/components/language-toggle";
 import {
@@ -219,14 +220,14 @@ export function MobileHeader() {
                   href={contactChannels.whatsapp}
                   className="flex items-center gap-2 px-3 py-2 text-xs text-ash transition-colors hover:bg-foreground/5 hover:text-ivory"
                 >
-                  <MessageCircle className="size-3.5 text-[#25D366]" aria-hidden />
+                  <WhatsAppIcon className="size-3.5 text-[#25D366]" />
                   WhatsApp
                 </a>
                 <a
                   href={contactChannels.viber}
                   className="flex items-center gap-2 px-3 py-2 text-xs text-ash transition-colors hover:bg-foreground/5 hover:text-ivory"
                 >
-                  <MessageCircle className="size-3.5 text-[#7360f2]" aria-hidden />
+                  <ViberIcon className="size-3.5 text-[#7360f2]" />
                   Viber
                 </a>
                 <a

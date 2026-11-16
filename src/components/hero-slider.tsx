@@ -321,8 +321,9 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
           </div>
 
           {/* Arrows are a pointer affordance. On touch the numbered index is
-              enough — and the floating contact buttons sit in this corner. */}
-          <div className="hidden items-center gap-4 lg:flex">
+              enough — and the floating contact widget sits in this corner, so
+              the pair steps inward on lg to stay clear of it. */}
+          <div className="hidden items-center gap-4 lg:mr-16 lg:flex">
             <button
               type="button"
               onClick={() => go(active - 1)}

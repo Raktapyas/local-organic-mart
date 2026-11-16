@@ -6,7 +6,6 @@ import {
   Heart,
   LifeBuoy,
   MapPin,
-  MessageCircle,
   Package,
   Phone,
   RotateCcw,
@@ -15,6 +14,7 @@ import {
   Star,
 } from "lucide-react";
 
+import { ViberIcon, WhatsAppIcon } from "@/components/brand-icons";
 import { Button } from "@/components/ui/button";
 import { itemCount, useCartStore } from "@/lib/cart-store";
 import { ADDRESSES, contactChannels } from "@/lib/data";
@@ -190,13 +190,13 @@ export function AccountHome() {
           <div className="mt-4 flex flex-wrap gap-3">
             <Button variant="outline" className="rounded-[2px]" asChild>
               <a href={contactChannels.whatsapp}>
-                <MessageCircle className="size-4" aria-hidden />
+                <WhatsAppIcon className="size-4" />
                 WhatsApp
               </a>
             </Button>
             <Button variant="outline" className="rounded-[2px]" asChild>
               <a href={contactChannels.viber}>
-                <MessageCircle className="size-4" aria-hidden />
+                <ViberIcon className="size-4" />
                 Viber
               </a>
             </Button>

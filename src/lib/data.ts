@@ -1621,21 +1621,77 @@ export const contact = {
   address: "Kathmandu, Nepal",
 };
 
+/**
+ * Support lines.
+ *
+ * Both channels default to the shop's single handset, so nothing has to be
+ * edited to go live. To point one channel elsewhere — a separate Viber phone,
+ * a staging number — set `NEXT_PUBLIC_WHATSAPP_NUMBER` or
+ * `NEXT_PUBLIC_VIBER_NUMBER` in the environment with the full international
+ * number. Formatting is stripped before the links are built, and an empty
+ * value falls back to the default rather than producing a dead link.
+ */
+function supportDigits(override: string | undefined, fallback: string) {
+  const digits = (override ?? "").replace(/\D/g, "");
+  return digits || fallback;
+}
+
 /** WhatsApp hand-off for the About enquiry form. Digits only, no spaces. */
-export const whatsappNumber = "9779851054917";
+export const whatsappNumber = supportDigits(
+  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER,
+  "9779851054917",
+);
+
+export const viberNumber = supportDigits(
+  process.env.NEXT_PUBLIC_VIBER_NUMBER,
+  whatsappNumber,
+);
 
 /**
- * Messaging deep links, shared by the mobile header, the floating contact
- * buttons and the My Home support card so the three can't drift apart.
+ * `+977 9851054917` — country code, space, subscriber number. Nepal's code is
+ * three digits, so anything else prints unspaced rather than being split
+ * wrongly.
+ */
+export function formatSupportNumber(digits: string) {
+  return digits.startsWith("977") && digits.length > 3
+    ? `+977 ${digits.slice(3)}`
+    : `+${digits}`;
+}
+
+/**
+ * Messaging deep links, shared by the mobile header, the contact widget and
+ * the My Home support card so the three can't drift apart.
  *
  * E.164 digits: `wa.me` and `tel:` both want them bare, while Viber wants the
  * number percent-encoded with a leading `+`.
  */
 export const contactChannels = {
   whatsapp: `https://wa.me/${whatsappNumber}`,
-  viber: `viber://chat?number=%2B${whatsappNumber}`,
+  viber: `viber://chat?number=%2B${viberNumber}`,
   call: `tel:+${whatsappNumber}`,
 } as const;
+
+/**
+ * Channels the floating contact widget offers, in display order. `name` stays
+ * Latin in both languages — WhatsApp and Viber are brand names, like the
+ * numbers printed beneath them.
+ */
+export const chatChannels = [
+  {
+    id: "whatsapp",
+    name: "WhatsApp",
+    href: contactChannels.whatsapp,
+    number: formatSupportNumber(whatsappNumber),
+  },
+  {
+    id: "viber",
+    name: "Viber",
+    href: contactChannels.viber,
+    number: formatSupportNumber(viberNumber),
+  },
+] as const;
+
+export type ChatChannelId = (typeof chatChannels)[number]["id"];
 
 /** About page hero copy. */
 export const aboutHero = {
