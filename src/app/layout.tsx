@@ -95,7 +95,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         mobile only; `lg:pb-0` leaves desktop spacing untouched.
       */}
       <body className="flex min-h-full flex-col pb-[calc(4rem+env(safe-area-inset-bottom))] lg:pb-0">
-        <HtmlLangSync />
+        {/*
+          `usePathname()` needs a Suspense boundary under `cacheComponents`,
+          and the title effect depends on it. The fallback is null: the shell
+          is identical once resolved.
+        */}
+        <Suspense fallback={null}>
+          <HtmlLangSync />
+        </Suspense>
         {/* Not sticky: it scrolls away and the headers stick beneath it. */}
         <AnnouncementTicker />
         <MobileHeader />

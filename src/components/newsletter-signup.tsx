@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Send } from "lucide-react";
 
 import { whatsappNumber } from "@/lib/data";
+import { useLang } from "@/lib/use-lang";
 
 /**
  * Newsletter sign-up in the footer.
@@ -16,6 +17,7 @@ import { whatsappNumber } from "@/lib/data";
 export function NewsletterSignup() {
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
+  const { tr, isNe } = useLang();
 
   function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -23,7 +25,9 @@ export function NewsletterSignup() {
     const trimmed = email.trim();
     if (!trimmed) return;
 
-    const body = `Hi! I want the weekly deals newsletter for ${trimmed}.`;
+    const body = isNe
+      ? `नमस्ते! मलाई ${trimmed} का लागि साप्ताहिक अफरको समाचार चाहिन्छ।`
+      : `Hi! I want the weekly deals newsletter for ${trimmed}.`;
     window.open(
       `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(body)}`,
       "_blank",
@@ -35,19 +39,22 @@ export function NewsletterSignup() {
   return (
     <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
       <div>
-        <span className="eyebrow">The letter</span>
+        <span className="eyebrow">{tr("The letter", "समाचारपत्र")}</span>
         <h2 className="mt-2 font-heading text-2xl leading-tight text-ivory">
-          Subscribe to weekly deals
+          {tr("Subscribe to weekly deals", "साप्ताहिक अफरको सदस्यता लिनुहोस्")}
         </h2>
         <p className="mt-1.5 text-sm text-ash">
-          One message a week. Unsubscribe any time.
+          {tr(
+            "One message a week. Unsubscribe any time.",
+            "हप्तामा एउटा सन्देश। कुनै पनि बेला सदस्यता रद्द गर्न सक्नुहुन्छ।",
+          )}
         </p>
       </div>
 
       <div>
         <form onSubmit={onSubmit} className="flex flex-col gap-2 sm:flex-row">
           <label htmlFor="newsletter-email" className="sr-only">
-            Email address
+            {tr("Email address", "इमेल ठेगाना")}
           </label>
           <input
             id="newsletter-email"
@@ -63,13 +70,16 @@ export function NewsletterSignup() {
             className="inline-flex h-11 items-center justify-center gap-2 bg-gold px-6 text-[10px] font-medium tracking-[0.18em] text-ink uppercase transition-opacity duration-200 hover:opacity-85"
           >
             <Send className="size-3.5" aria-hidden />
-            Subscribe
+            {tr("Subscribe", "सदस्यता लिनुहोस्")}
           </button>
         </form>
 
         {sent ? (
           <p aria-live="polite" className="mt-2 text-[11px] text-ash">
-            Opening WhatsApp to finish your signup.
+            {tr(
+              "Opening WhatsApp to finish your signup.",
+              "सदस्यता पूरा गर्न WhatsApp खुल्दै छ।",
+            )}
           </p>
         ) : null}
       </div>

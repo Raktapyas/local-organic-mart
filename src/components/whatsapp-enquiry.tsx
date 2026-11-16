@@ -4,6 +4,7 @@ import { useState } from "react";
 import { MessageCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { useLang } from "@/lib/use-lang";
 
 /**
  * Enquiry form that hands off to WhatsApp.
@@ -26,17 +27,26 @@ export function WhatsAppEnquiry({
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
+  const { tr, isNe } = useLang();
 
   function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    const body = [
-      `Hello ${recipient},`,
-      "",
-      `Name: ${name.trim() || "—"}`,
-      `Phone: ${phone.trim() || "—"}`,
-      `Message: ${message.trim() || "—"}`,
-    ].join("\n");
+    const body = isNe
+      ? [
+          `नमस्ते ${recipient},`,
+          "",
+          `नाम: ${name.trim() || "—"}`,
+          `फोन: ${phone.trim() || "—"}`,
+          `सन्देश: ${message.trim() || "—"}`,
+        ].join("\n")
+      : [
+          `Hello ${recipient},`,
+          "",
+          `Name: ${name.trim() || "—"}`,
+          `Phone: ${phone.trim() || "—"}`,
+          `Message: ${message.trim() || "—"}`,
+        ].join("\n");
 
     window.open(
       `https://wa.me/${number}?text=${encodeURIComponent(body)}`,
@@ -52,13 +62,13 @@ export function WhatsAppEnquiry({
     <form onSubmit={onSubmit} className="flex flex-col gap-4">
       <div>
         <label htmlFor="enq-name" className="sr-only">
-          Your name
+          {tr("Your name", "तपाईंको नाम")}
         </label>
         <input
           id="enq-name"
           value={name}
           onChange={(event) => setName(event.target.value)}
-          placeholder="Your name"
+          placeholder={tr("Your name", "तपाईंको नाम")}
           autoComplete="name"
           className={field}
         />
@@ -66,14 +76,14 @@ export function WhatsAppEnquiry({
 
       <div>
         <label htmlFor="enq-phone" className="sr-only">
-          Phone number
+          {tr("Phone number", "फोन नम्बर")}
         </label>
         <input
           id="enq-phone"
           type="tel"
           value={phone}
           onChange={(event) => setPhone(event.target.value)}
-          placeholder="Phone number"
+          placeholder={tr("Phone number", "फोन नम्बर")}
           autoComplete="tel"
           className={field}
         />
@@ -81,13 +91,13 @@ export function WhatsAppEnquiry({
 
       <div>
         <label htmlFor="enq-message" className="sr-only">
-          Message
+          {tr("Message", "सन्देश")}
         </label>
         <textarea
           id="enq-message"
           value={message}
           onChange={(event) => setMessage(event.target.value)}
-          placeholder="Message"
+          placeholder={tr("Message", "सन्देश")}
           rows={4}
           className={`${field} h-auto resize-none py-3.5`}
         />
@@ -95,7 +105,7 @@ export function WhatsAppEnquiry({
 
       <Button type="submit" className="h-11 w-full rounded-[2px]">
         <MessageCircle className="size-4" aria-hidden />
-        Send on WhatsApp
+        {tr("Send on WhatsApp", "WhatsApp मा पठाउनुहोस्")}
       </Button>
     </form>
   );

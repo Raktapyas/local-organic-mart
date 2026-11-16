@@ -12,8 +12,9 @@ import {
   type SubscriptionFrequency,
   type SubscriptionPlan,
 } from "@/lib/data";
-
-const npr = new Intl.NumberFormat("en-NP");
+import { basketText, planNote } from "@/lib/i18n/localize";
+import { contentNe } from "@/lib/i18n/content-ne";
+import { useLang } from "@/lib/use-lang";
 
 /**
  * Recurring plan rows.
@@ -32,6 +33,7 @@ export function SubscriptionRows({
   const addItem = useCartStore((state) => state.addItem);
   const [frequency, setFrequency] = useState<SubscriptionFrequency>("Weekly");
   const [toast, setToast] = useState<string | null>(null);
+  const { lang, money, tr } = useLang();
 
   return (
     <div className="flex flex-col gap-4">
@@ -40,22 +42,27 @@ export function SubscriptionRows({
           const basket = baskets.find((b) => b.id === plan.basketId);
           if (!basket) return null;
 
+          const copy = basketText(basket, lang);
+
           return (
             <li
               key={plan.basketId}
               className="flex flex-wrap items-center justify-between gap-4 border-b border-border py-5 first:border-t"
             >
               <div className="flex flex-col gap-1">
-                <span className="font-heading text-base">{basket.name}</span>
+                <span className="font-heading text-base">{copy.name}</span>
                 <span className="text-xs text-muted-foreground">
-                  {plan.note} · Rs {npr.format(basket.price)}
+                  {planNote(basket.id, plan.note, lang)} · {money(basket.price)}
                 </span>
               </div>
 
               <div className="flex items-center gap-3">
                 <div className="relative">
                   <label htmlFor={`freq-${plan.basketId}`} className="sr-only">
-                    Delivery frequency for {basket.name}
+                    {tr(
+                      `Delivery frequency for ${basket.name}`,
+                      `${copy.name}को डेलिभरी आवृत्ति`,
+                    )}
                   </label>
                   <select
                     id={`freq-${plan.basketId}`}
@@ -65,8 +72,10 @@ export function SubscriptionRows({
                     }
                     className="h-9 appearance-none rounded-[2px] border border-border bg-card py-1 pr-8 pl-4 text-xs text-foreground outline-none transition-colors focus-visible:border-mint"
                   >
-                    {subscriptionFrequencies.map((option) => (
-                      <option key={option}>{option}</option>
+                    {subscriptionFrequencies.map((option, index) => (
+                      <option key={option} value={option}>
+                        {tr(option, contentNe.frequencies[index] ?? option)}
+                      </option>
                     ))}
                   </select>
                   <ChevronDown
@@ -93,11 +102,11 @@ export function SubscriptionRows({
                         `Repeats ${frequency.toLowerCase()}`,
                       ],
                     });
-                    setToast(basket.name);
+                    setToast(copy.name);
                   }}
                 >
                   <BellRing className="size-4" aria-hidden />
-                  Subscribe
+                  {tr("Subscribe", "सदस्यता लिनुहोस्")}
                 </Button>
               </div>
             </li>
@@ -115,11 +124,14 @@ export function SubscriptionRows({
           <p className="flex items-center gap-2 text-sm text-sage">
             <Check className="size-4 shrink-0 text-mint" aria-hidden />
             <span>
-              {toast} added. We&rsquo;ll repeat this — manage in{" "}
+              {tr(
+                `${toast} added. We'll repeat this — manage in`,
+                `${toast} थपियो। यो दोहोरिनेछ — व्यवस्थापन गर्नुहोस्`,
+              )}{" "}
               <Link href="/account" className="text-mint underline-offset-4 hover:underline">
-                My Home
+                {tr("My Home", "मेरो घर")}
               </Link>
-              .
+              {tr(".", "।")}
             </span>
           </p>
         ) : null}

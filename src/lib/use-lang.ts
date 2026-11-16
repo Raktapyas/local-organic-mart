@@ -7,6 +7,9 @@ import { type Lang, useLangStore } from "@/lib/lang-store";
 
 type Dict = typeof dictionary.en;
 
+/** Prices stay in Latin digits; only the currency prefix changes. */
+const npr = new Intl.NumberFormat("en-NP");
+
 /**
  * Every dot-path into the dictionary, e.g. `"cart.subtotal"`.
  *
@@ -72,5 +75,15 @@ export function useLang() {
     isNe: lang === "ne",
     toggle: useLangStore((state) => state.toggle),
     t: (path: DictPath) => lookup(dictionary[lang], path),
+    /**
+     * Inline copy for one-off strings that do not warrant a dictionary key.
+     *
+     * `tr("Add", "थप्नुहोस्")` keeps the English literal next to the Nepali one,
+     * so a reader can see both without opening another file.
+     */
+    tr: (en: string, nepali: string) => (lang === "ne" ? nepali : en),
+    /** `Rs 1,240` in English, `रु 1,240` in Nepali. */
+    money: (amount: number) =>
+      `${lang === "ne" ? "रु" : "Rs"} ${npr.format(amount)}`,
   };
 }

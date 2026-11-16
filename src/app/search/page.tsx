@@ -1,13 +1,23 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Search as SearchIcon, SearchX } from "lucide-react";
+import { SearchX } from "lucide-react";
 import { Suspense } from "react";
 
 import { DishCard } from "@/components/dish-card";
+import { L } from "@/components/localized-text";
 import { ProductCard } from "@/components/product-card";
+import { SearchField } from "@/components/search-field";
 import { SectionHeader } from "@/components/section-header";
 import { SiteFooter } from "@/components/site-footer";
 import { searchCatalogue, searchSuggestions } from "@/lib/data";
+
+/** Display labels for the suggestion chips; the query string stays English. */
+const SUGGESTION_NE: Record<string, string> = {
+  milk: "दूध",
+  rice: "चामल",
+  momo: "मःम",
+  honey: "मह",
+};
 
 export const metadata: Metadata = {
   title: "Search — Local Organic Mart",
@@ -58,34 +68,29 @@ async function SearchResults({ searchParams }: { searchParams: SearchParams }) {
         <SectionHeader
           as="h1"
           title={`${total} ${total === 1 ? "result" : "results"} for “${query}”`}
+          titleNe={`“${query}” का लागि ${total} नतिजा`}
           subline={
             total === 0
               ? "Nothing matched that search."
               : "Across Mart provisions and the Restaurant menu."
+          }
+          sublineNe={
+            total === 0
+              ? "त्यो खोजसँग केही मिलेन।"
+              : "मार्टका सामान र रेस्टुरेन्टको मेनुभर।"
           }
         />
       ) : (
         <SectionHeader
           as="h1"
           title="Search the mart"
+          titleNe="मार्टमा खोज्नुहोस्"
           subline="Look up a provision or a dish by name, in English or Nepali."
+          sublineNe="सामान वा परिकारको नाम अंग्रेजी वा नेपालीमा खोज्नुहोस्।"
         />
       )}
 
-      <form action="/search" role="search" className="relative mt-8 max-w-xl">
-        <SearchIcon
-          className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
-          aria-hidden
-        />
-        <input
-          type="search"
-          name="q"
-          defaultValue={query}
-          aria-label="Search the mart"
-          placeholder="Search provisions, dishes, or harvest dates"
-          className="h-11 w-full rounded-[2px] border border-input bg-card/70 pl-11 pr-4 text-sm outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-mint focus-visible:ring-3 focus-visible:ring-ring/40"
-        />
-      </form>
+      <SearchField defaultValue={query} />
 
       {total > 0 ? (
         <SearchResultsBody
@@ -113,7 +118,7 @@ function SearchResultsBody({
       {products.length > 0 && (
         <section className="mx-auto w-full max-w-7xl px-6 pb-14 pt-14">
           <h2 className="text-xs tracking-wider text-sage uppercase">
-            Mart provisions ({products.length})
+            <L en="Mart provisions" ne="मार्टका सामान" /> ({products.length})
           </h2>
           <ul className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
             {products.map((product) => (
@@ -132,7 +137,7 @@ function SearchResultsBody({
           }`}
         >
           <h2 className="text-xs tracking-wider text-sage uppercase">
-            Restaurant ({dishes.length})
+            <L en="Restaurant" ne="रेस्टुरेन्ट" /> ({dishes.length})
           </h2>
           <ul className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {dishes.map((dish) => (
@@ -154,12 +159,24 @@ function EmptyState({ hasQuery }: { hasQuery: boolean }) {
         <SearchX className="size-5" aria-hidden />
       </span>
       <h2 className="font-heading text-2xl tracking-tight">
-        {hasQuery ? "Nothing matched that search." : "Start typing to search."}
+        <L
+          en={hasQuery ? "Nothing matched that search." : "Start typing to search."}
+          ne={hasQuery ? "त्यो खोजसँग केही मिलेन।" : "खोज्न टाइप गर्न सुरु गर्नुहोस्।"}
+        />
       </h2>
       <p className="max-w-sm text-sm text-muted-foreground">
-        {hasQuery
-          ? "Try a shorter word, or one of these instead."
-          : "Search by product name, dish name, or category — Nepali works too."}
+        <L
+          en={
+            hasQuery
+              ? "Try a shorter word, or one of these instead."
+              : "Search by product name, dish name, or category — Nepali works too."
+          }
+          ne={
+            hasQuery
+              ? "छोटो शब्द प्रयास गर्नुहोस्, वा तलकामध्ये एउटा।"
+              : "उत्पादनको नाम, परिकारको नाम वा श्रेणीअनुसार खोज्नुहोस् — नेपालीमा पनि हुन्छ।"
+          }
+        />
       </p>
 
       <ul className="mt-2 flex flex-wrap justify-center gap-2">
@@ -169,7 +186,10 @@ function EmptyState({ hasQuery }: { hasQuery: boolean }) {
               href={`/search?q=${suggestion}`}
               className="inline-flex rounded-[2px] border border-border px-4 py-1.5 text-sm capitalize text-muted-foreground transition-colors hover:border-mint/40 hover:text-mint"
             >
-              {suggestion}
+              <L
+                en={suggestion}
+                ne={SUGGESTION_NE[suggestion] ?? suggestion}
+              />
             </Link>
           </li>
         ))}

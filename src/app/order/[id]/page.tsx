@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 
 import { OrderConfirmation } from "@/components/order-confirmation";
+import { L } from "@/components/localized-text";
 import { SiteFooter } from "@/components/site-footer";
 
 export const metadata = {
@@ -21,7 +22,7 @@ export default function OrderPage() {
         <Suspense
           fallback={
             <p className="py-24 text-center text-sm text-sage">
-              Loading your order&hellip;
+              <L en="Loading your order…" ne="तपाईंको अर्डर लोड हुँदैछ…" />
             </p>
           }
         >

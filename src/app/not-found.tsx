@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Compass } from "lucide-react";
 
 import { SiteFooter } from "@/components/site-footer";
+import { L } from "@/components/localized-text";
 import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
@@ -25,19 +26,24 @@ export default function NotFound() {
             <Compass className="size-6" aria-hidden />
           </span>
           <h1 className="text-4xl tracking-tight sm:text-5xl">
-            Lost in the valley.
+            <L en="Lost in the valley." ne="उपत्यकामा हराउनुभयो।" />
           </h1>
           <p className="max-w-md text-sm text-sage">
-            This path isn&rsquo;t planted yet.
+            <L
+              en="This path isn't planted yet."
+              ne="यो बाटो अझै रोपिएको छैन।"
+            />
           </p>
           <Button className="h-12 rounded-[2px] px-8" asChild>
-            <Link href="/mart">Back to the Mart</Link>
+            <Link href="/mart">
+              <L en="Back to the Mart" ne="मार्टमा फर्कनुहोस्" />
+            </Link>
           </Button>
           <Link
             href="/"
             className="text-xs text-muted-foreground underline-offset-4 transition-colors hover:text-sage hover:underline"
           >
-            Home
+            <L en="Home" ne="गृहपृष्ठ" />
           </Link>
         </div>
       </main>

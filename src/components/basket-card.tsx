@@ -7,8 +7,8 @@ import { Check, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/lib/cart-store";
 import type { Basket } from "@/lib/data";
-
-const npr = new Intl.NumberFormat("en-NP");
+import { basketText } from "@/lib/i18n/localize";
+import { useLang } from "@/lib/use-lang";
 
 export interface BasketCardProps {
   basket: Basket;
@@ -16,6 +16,7 @@ export interface BasketCardProps {
   accent?: "gold" | "quiet";
   /** Overrides the mint "Add entire basket" label for festival wording. */
   ctaLabel?: string;
+  ctaLabelNe?: string;
 }
 
 /**
@@ -31,9 +32,13 @@ export function BasketCard({
   basket,
   accent = "quiet",
   ctaLabel = "Add entire basket",
+  ctaLabelNe = "सम्पूर्ण टोकरी थप्नुहोस्",
 }: BasketCardProps) {
   const addItem = useCartStore((state) => state.addItem);
   const [added, setAdded] = useState(false);
+  const { lang, money, tr } = useLang();
+  const copy = basketText(basket, lang);
+  const label = lang === "ne" ? ctaLabelNe : ctaLabel;
 
   return (
     <div
@@ -58,18 +63,24 @@ export function BasketCard({
               accent === "gold" ? "text-gold" : "text-ash"
             }`}
           >
-            {basket.tag}
+            {copy.tag}
           </p>
           <h3 className="mt-1 font-heading text-xl leading-tight">
-            {basket.name}
+            {copy.name}
           </h3>
-          <p className="text-xs text-sage">{basket.nepaliName}</p>
+          {lang === "en" ? (
+            <p className="text-xs text-sage">{basket.nepaliName}</p>
+          ) : null}
         </div>
 
         <p className="text-sm text-muted-foreground">
-          {basket.includes.length} items ·{" "}
+          {tr(
+            `${copy.includes.length} items`,
+            `${copy.includes.length} वस्तु`,
+          )}{" "}
+          ·{" "}
           <span className="font-heading text-base text-foreground">
-            Rs {npr.format(basket.price)}
+            {money(basket.price)}
           </span>
         </p>
 
@@ -98,12 +109,12 @@ export function BasketCard({
           {added ? (
             <>
               <Check className="size-4" aria-hidden />
-              Added to bag
+              {tr("Added to bag", "झोलामा थपियो")}
             </>
           ) : (
             <>
               <Plus className="size-4" aria-hidden />
-              {ctaLabel}
+              {label}
             </>
           )}
         </Button>

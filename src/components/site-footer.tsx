@@ -4,16 +4,35 @@ import Link from "next/link";
 import { Leaf, Mail, MapPin, Phone } from "lucide-react";
 
 import {
+  categories,
   contact,
   footerColumns,
   paymentMethods,
   siteName,
 } from "@/lib/data";
+import { categoryText, paymentMethodLabel } from "@/lib/i18n/localize";
 import { NewsletterSignup } from "@/components/newsletter-signup";
 import { useLang } from "@/lib/use-lang";
 
+/** Footer links that are not categories, in Nepali. */
+const LINK_NE: Record<string, string> = {
+  "/farmers": "खेतबाट घर",
+  "/about": "हाम्रो कथा",
+  "/membership": "सदस्यता",
+  "/track-order": "अर्डर ट्र्याक",
+  "/delivery-zones": "डेलिभरी क्षेत्र",
+  "/refund-policy": "फिर्ता नीति",
+  "/privacy-policy": "गोपनीयता नीति",
+};
+
 export function SiteFooter() {
-  const { t } = useLang();
+  const { t, tr, lang } = useLang();
+
+  const linkLabel = (link: { label: string; href: string }) => {
+    const category = categories.find((item) => item.href === link.href);
+    if (category) return categoryText(category, lang).name;
+    return lang === "ne" ? (LINK_NE[link.href] ?? link.label) : link.label;
+  };
 
   return (
     <footer className="border-t border-foreground/[0.08] bg-[#060a07]">
@@ -35,14 +54,16 @@ export function SiteFooter() {
                   {siteName}
                 </span>
                 <span className="mt-[0.3rem] text-[8.5px] tracking-[0.34em] text-gold/75 uppercase">
-                  Kathmandu Valley
+                  {tr("Kathmandu Valley", "काठमाडौं उपत्यका")}
                 </span>
               </span>
             </Link>
 
             <p className="max-w-xs text-sm leading-relaxed text-ash">
-              Farm-fresh, delivered across Kathmandu Valley. Harvested before
-              dawn, dispatched within hours.
+              {tr(
+                "Farm-fresh, delivered across Kathmandu Valley. Harvested before dawn, dispatched within hours.",
+                "खेतकै ताजा, काठमाडौं उपत्यकाभर डेलिभरी। बिहान उज्यालो हुनुअघि टिपेर केही घण्टामै पठाइन्छ।",
+              )}
             </p>
 
             <div className="flex flex-col gap-2.5 pt-1 text-xs text-ash">
@@ -62,31 +83,36 @@ export function SiteFooter() {
               </a>
               <span className="flex items-center gap-2.5">
                 <MapPin className="size-3.5 shrink-0 text-gold/60" aria-hidden />
-                {contact.address}
+                {tr("Kathmandu, Nepal", "काठमाडौं, नेपाल")}
               </span>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:col-span-7 lg:col-start-6">
-            {footerColumns.map((column) => (
-              <nav key={column.title} aria-label={column.title}>
-                <h2 className="text-[9px] tracking-[0.24em] text-gold/80 uppercase">
-                  {column.titleKey ? t(column.titleKey) : column.title}
-                </h2>
-                <ul className="mt-4 flex flex-col gap-2.5">
-                  {column.links.map((link) => (
-                    <li key={link.label}>
-                      <Link
-                        href={link.href}
-                        className="text-[13px] text-ash transition-colors duration-200 hover:text-ivory"
-                      >
-                        {link.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
-            ))}
+            {footerColumns.map((column) => {
+              const heading = column.titleKey
+                ? t(column.titleKey)
+                : column.title;
+              return (
+                <nav key={column.title} aria-label={heading}>
+                  <h2 className="text-[9px] tracking-[0.24em] text-gold/80 uppercase">
+                    {heading}
+                  </h2>
+                  <ul className="mt-4 flex flex-col gap-2.5">
+                    {column.links.map((link) => (
+                      <li key={link.label}>
+                        <Link
+                          href={link.href}
+                          className="text-[13px] text-ash transition-colors duration-200 hover:text-ivory"
+                        >
+                          {linkLabel(link)}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </nav>
+              );
+            })}
           </div>
         </div>
 
@@ -98,13 +124,15 @@ export function SiteFooter() {
                 key={method}
                 className="border border-foreground/10 px-2.5 py-1 text-[9px] tracking-[0.16em] text-ash/60 uppercase"
               >
-                {method}
+                {paymentMethodLabel(method, lang)}
               </li>
             ))}
           </ul>
           <p className="text-[10px] tracking-[0.12em] text-ash/50 uppercase">
-            {siteName} Pvt. Ltd. &middot; Kathmandu, Nepal &middot;{" "}
-            {contact.email}
+            {tr(
+              `${siteName} Pvt. Ltd. · Kathmandu, Nepal · ${contact.email}`,
+              `लोकल अर्गानिक मार्ट प्रा. लि. · काठमाडौं, नेपाल · ${contact.email}`,
+            )}
           </p>
         </div>
 

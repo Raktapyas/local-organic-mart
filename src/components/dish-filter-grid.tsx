@@ -4,19 +4,25 @@ import { useMemo, useState } from "react";
 
 import { DishCard } from "@/components/dish-card";
 import type { Dish, DishTag } from "@/lib/data";
+import { useLang } from "@/lib/use-lang";
 
-const FILTERS: { id: DishTag | "all"; label: string }[] = [
-  { id: "all", label: "All" },
-  { id: "popular", label: "Popular" },
-  { id: "healthy", label: "Healthy" },
-  { id: "organic", label: "Organic" },
-  { id: "nepali-traditional", label: "Nepali traditional" },
-  { id: "snacks", label: "Snacks" },
-  { id: "drinks", label: "Drinks" },
+const FILTERS: { id: DishTag | "all"; label: string; labelNe: string }[] = [
+  { id: "all", label: "All", labelNe: "सबै" },
+  { id: "popular", label: "Popular", labelNe: "लोकप्रिय" },
+  { id: "healthy", label: "Healthy", labelNe: "स्वस्थ" },
+  { id: "organic", label: "Organic", labelNe: "जैविक" },
+  {
+    id: "nepali-traditional",
+    label: "Nepali traditional",
+    labelNe: "परम्परागत नेपाली",
+  },
+  { id: "snacks", label: "Snacks", labelNe: "खाजा" },
+  { id: "drinks", label: "Drinks", labelNe: "पेय" },
 ];
 
 export function DishFilterGrid({ dishes }: { dishes: Dish[] }) {
   const [active, setActive] = useState<DishTag | "all">("all");
+  const { tr } = useLang();
 
   const visible = useMemo(
     () =>
@@ -44,14 +50,17 @@ export function DishFilterGrid({ dishes }: { dishes: Dish[] }) {
                       : "inline-flex h-10 shrink-0 items-center rounded-[2px] border border-border bg-card px-5 text-sm text-muted-foreground transition-colors duration-200 hover:border-mint/35 hover:text-foreground"
                   }
                 >
-                  {filter.label}
+                  {tr(filter.label, filter.labelNe)}
                 </button>
               </li>
             );
           })}
         </ul>
         <p className="shrink-0 text-xs text-muted-foreground">
-          Showing {visible.length} of {dishes.length} dishes
+          {tr(
+            `Showing ${visible.length} of ${dishes.length} dishes`,
+            `${dishes.length} मध्ये ${visible.length} परिकार देखाइएका`,
+          )}
         </p>
       </div>
 
@@ -64,7 +73,9 @@ export function DishFilterGrid({ dishes }: { dishes: Dish[] }) {
       </ul>
 
       {visible.length === 0 && (
-        <p className="text-sm text-muted-foreground">No dishes in this category</p>
+        <p className="text-sm text-muted-foreground">
+          {tr("No dishes in this category", "यो श्रेणीमा कुनै परिकार छैन")}
+        </p>
       )}
     </div>
   );

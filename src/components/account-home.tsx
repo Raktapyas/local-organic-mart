@@ -18,9 +18,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { itemCount, useCartStore } from "@/lib/cart-store";
 import { ADDRESSES, contactChannels } from "@/lib/data";
+import { addressText } from "@/lib/i18n/localize";
 import { useOrderStore } from "@/lib/order-store";
-
-const npr = new Intl.NumberFormat("en-NP");
+import { useLang } from "@/lib/use-lang";
 
 /** Server snapshot is "not mounted"; the client snapshot is always mounted. */
 const subscribeToNothing = () => () => {};
@@ -50,6 +50,7 @@ const inertChip =
 export function AccountHome() {
   const lastOrder = useOrderStore((state) => state.lastOrder);
   const bagCount = useCartStore((state) => itemCount(state.lines));
+  const { lang, money, tr } = useLang();
 
   // The bag count lives in localStorage, so the server has no count to
   // render. Gating it on mount keeps the first client paint identical to the
@@ -63,27 +64,29 @@ export function AccountHome() {
   return (
     <>
       <header className="flex flex-wrap items-center justify-between gap-4">
-        <h1 className="font-heading text-3xl">My Organic Home</h1>
+        <h1 className="font-heading text-3xl">
+          {tr("My Organic Home", "मेरो अर्गानिक घर")}
+        </h1>
         {/* TODO: account API — the real balance comes from the account. */}
         <span className="inline-flex items-center gap-1.5 rounded-[2px] border border-foreground/10 px-3 py-1.5 text-xs text-muted-foreground">
           <Star className="size-3.5 text-gold" aria-hidden />
-          0 points &middot; Guest
+          {tr("0 points · Guest", "0 अंक · अतिथि")}
         </span>
       </header>
 
       {/* Quick actions */}
-      <section className="mt-10" aria-label="Quick actions">
+      <section className="mt-10" aria-label={tr("Quick actions", "छिटो कार्य")}>
         <ul className="flex flex-wrap gap-3">
           <li>
             {lastOrder ? (
               <Link href={`/order/${lastOrder.id}`} className={chip}>
                 <Package className="size-4" aria-hidden />
-                Orders
+                {tr("Orders", "अर्डरहरू")}
               </Link>
             ) : (
               <span aria-disabled="true" className={inertChip}>
                 <Package className="size-4" aria-hidden />
-                Orders
+                {tr("Orders", "अर्डरहरू")}
               </span>
             )}
           </li>
@@ -91,21 +94,21 @@ export function AccountHome() {
           <li>
             <Link href="/mart" className={chip}>
               <RotateCcw className="size-4" aria-hidden />
-              Reorder
+              {tr("Reorder", "फेरि अर्डर")}
             </Link>
           </li>
 
           <li>
             <Link href="/track-order" className={chip}>
               <Package className="size-4" aria-hidden />
-              Track Order
+              {tr("Track Order", "अर्डर ट्र्याक")}
             </Link>
           </li>
 
           <li>
             <Link href="/bag" className={chip}>
               <ShoppingBag className="size-4" aria-hidden />
-              Bag
+              {tr("Bag", "झोला")}
               {mounted && bagCount > 0 ? (
                 <span className="text-xs text-mint">{bagCount}</span>
               ) : null}
@@ -115,14 +118,14 @@ export function AccountHome() {
           <li>
             <span aria-disabled="true" className={inertChip}>
               <Heart className="size-4" aria-hidden />
-              Wishlist
+              {tr("Wishlist", "इच्छासूची")}
             </span>
           </li>
 
           <li>
             <span aria-disabled="true" className={inertChip}>
               <MapPin className="size-4" aria-hidden />
-              Addresses
+              {tr("Addresses", "ठेगानाहरू")}
             </span>
           </li>
         </ul>
@@ -130,25 +133,31 @@ export function AccountHome() {
         <p className="mt-6 border-l-2 border-foreground/10 pl-4 text-sm text-muted-foreground">
           {lastOrder ? (
             <>
-              Last order{" "}
+              {tr("Last order", "पछिल्लो अर्डर")}{" "}
               <span className="text-foreground">{lastOrder.id}</span> &middot;{" "}
-              {npr.format(lastOrder.totals.total)} NPR
+              {money(lastOrder.totals.total)}
             </>
           ) : (
-            "No orders yet. Once you check out, your order and its tracking live here."
+            tr(
+              "No orders yet. Once you check out, your order and its tracking live here.",
+              "अझै कुनै अर्डर छैन। चेकआउट गरेपछि तपाईंको अर्डर र ट्र्याकिङ यहीँ रहन्छ।",
+            )
           )}
         </p>
 
         <ul className="mt-6 flex flex-col gap-2 text-sm text-muted-foreground">
-          {ADDRESSES.map((address) => (
-            <li key={address.id} className="flex items-center gap-2">
-              <MapPin className="size-3.5 shrink-0" aria-hidden />
-              <span>
-                <span className="text-foreground">{address.label}</span> &middot;{" "}
-                {address.detail}
-              </span>
-            </li>
-          ))}
+          {ADDRESSES.map((address) => {
+            const copy = addressText(address.label, lang);
+            return (
+              <li key={address.id} className="flex items-center gap-2">
+                <MapPin className="size-3.5 shrink-0" aria-hidden />
+                <span>
+                  <span className="text-foreground">{copy.label}</span> &middot;{" "}
+                  {copy.detail}
+                </span>
+              </li>
+            );
+          })}
         </ul>
       </section>
 
@@ -160,18 +169,23 @@ export function AccountHome() {
         >
           <span className="inline-flex items-center gap-2 text-xs tracking-wider text-gold uppercase">
             <Sparkles className="size-3.5" aria-hidden />
-            Membership
+            {tr("Membership", "सदस्यता")}
           </span>
-          <p className="mt-3 font-heading text-xl">Farm Circle</p>
+          <p className="mt-3 font-heading text-xl">
+            {tr("Farm Circle", "फार्म सर्कल")}
+          </p>
           <p className="mt-1 text-sm text-muted-foreground">
-            Points on every basket, early access to festival reserves.
+            {tr(
+              "Points on every basket, early access to festival reserves.",
+              "हरेक टोकरीमा अंक, चाडपर्वका आरक्षणमा पहिलो पहुँच।",
+            )}
           </p>
         </Link>
 
         <div className="rounded-[2px] border border-foreground/10 p-6">
           <span className="inline-flex items-center gap-2 text-xs tracking-wider text-sage uppercase">
             <LifeBuoy className="size-3.5" aria-hidden />
-            Help &amp; support
+            {tr("Help & support", "सहयोग र समर्थन")}
           </span>
           <div className="mt-4 flex flex-wrap gap-3">
             <Button variant="outline" className="rounded-[2px]" asChild>
@@ -189,7 +203,7 @@ export function AccountHome() {
             <Button variant="outline" className="rounded-[2px]" asChild>
               <a href={contactChannels.call}>
                 <Phone className="size-4" aria-hidden />
-                Call us
+                {tr("Call us", "हामीलाई कल गर्नुहोस्")}
               </a>
             </Button>
           </div>

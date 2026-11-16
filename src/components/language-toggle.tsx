@@ -21,7 +21,9 @@ export function LanguageToggle({ className = "" }: { className?: string }) {
     <button
       type="button"
       onClick={toggle}
-      aria-label={lang === "en" ? "Switch to Nepali" : "Switch to English"}
+      aria-label={
+        lang === "en" ? "Switch to Nepali" : "अंग्रेजीमा बदल्नुहोस्"
+      }
       lang={other}
       className={`inline-flex items-center gap-1.5 border border-foreground/10 px-2.5 py-1.5 text-[9.5px] tracking-[0.16em] text-ash uppercase transition-colors duration-200 hover:border-gold/50 hover:text-gold ${className}`}
     >

@@ -17,7 +17,7 @@ export function PhotoFallback({
   return (
     <div
       role="img"
-      aria-label={`${label} — photo coming soon`}
+      aria-label={label}
       className={cn(
         "flex flex-col items-center justify-center gap-3 bg-gradient-to-br from-accent via-card to-background text-sage",
         className,

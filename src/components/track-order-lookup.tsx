@@ -7,6 +7,7 @@ import { PackageSearch } from "lucide-react";
 import { OrderNotFound } from "@/components/order-not-found";
 import { Button } from "@/components/ui/button";
 import { useOrderStore } from "@/lib/order-store";
+import { useLang } from "@/lib/use-lang";
 
 /**
  * Order lookup.
@@ -19,6 +20,7 @@ import { useOrderStore } from "@/lib/order-store";
 export function TrackOrderLookup() {
   const router = useRouter();
   const lastOrder = useOrderStore((state) => state.lastOrder);
+  const { tr } = useLang();
 
   const [reference, setReference] = useState("");
   const [missed, setMissed] = useState(false);
@@ -40,7 +42,7 @@ export function TrackOrderLookup() {
     <>
       <form onSubmit={onSubmit} className="flex w-full max-w-md flex-col gap-3">
         <label htmlFor="order-ref" className="text-xs tracking-wider text-sage uppercase">
-          Order number
+          {tr("Order number", "अर्डर नम्बर")}
         </label>
         <div className="flex items-center gap-3">
           <input
@@ -56,12 +58,12 @@ export function TrackOrderLookup() {
             className="h-11 min-w-0 flex-1 rounded-[2px] border border-input bg-card/70 px-5 text-sm uppercase outline-none transition-colors placeholder:normal-case placeholder:text-muted-foreground focus-visible:border-mint focus-visible:ring-3 focus-visible:ring-ring/40"
           />
           <Button type="submit" className="h-11 shrink-0 rounded-[2px] px-6">
-            Track
+            {tr("Track", "ट्र्याक")}
           </Button>
         </div>
         {lastOrder ? (
           <p className="text-xs text-muted-foreground">
-            This session placed order{" "}
+            {tr("This session placed order", "यो सत्रमा अर्डर गरिएको")}{" "}
             <span className="text-mint">{lastOrder.id}</span>.
           </p>
         ) : null}
@@ -74,7 +76,10 @@ export function TrackOrderLookup() {
       ) : (
         <p className="mt-10 flex items-center gap-2 text-sm text-sage">
           <PackageSearch className="size-4 shrink-0" aria-hidden />
-          Enter the reference from your confirmation to see live tracking.
+          {tr(
+            "Enter the reference from your confirmation to see live tracking.",
+            "प्रत्यक्ष ट्र्याकिङ हेर्न पुष्टिकरणमा पाएको सन्दर्भ नम्बर हाल्नुहोस्।",
+          )}
         </p>
       )}
     </>

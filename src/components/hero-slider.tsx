@@ -9,6 +9,8 @@ import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import type { HeroSlide } from "@/lib/data";
+import { contentNe } from "@/lib/i18n/content-ne";
+import { useLang } from "@/lib/use-lang";
 
 /** Milliseconds a slide holds before the next one takes over. */
 const ADVANCE_MS = 6500;
@@ -45,11 +47,25 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
   const [paused, setPaused] = useState(false);
   const pointerStart = useRef<number | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const { lang, tr } = useLang();
 
   const count = slides.length;
   // Reduced motion pins the slider to the opening slide.
   const active = reduceMotion ? 0 : Math.min(index, count - 1);
   const slide = slides[active];
+
+  /*
+    Hero copy is editorial, not catalogue data, so the Nepali version lives in
+    `content-ne.ts` rather than on the slide itself. The accent word is
+    highlighted in whichever language is showing, which is why the split runs
+    over the resolved strings rather than the raw ones.
+  */
+  const copy =
+    lang === "ne" ? contentNe.heroSlides[active] : undefined;
+  const kicker = copy ? copy.kicker : slide.kicker;
+  const headline = copy ? copy.headline : slide.headline;
+  const highlight = copy ? copy.highlight : slide.highlight;
+  const line = copy ? copy.line : slide.line;
 
   const go = useCallback(
     (next: number) => setIndex(((next % count) + count) % count),
@@ -81,7 +97,7 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
     else video.pause();
   }, [active, index, reduceMotion, slide.video]);
 
-  const { before, word, after } = headlineParts(slide.headline, slide.highlight);
+  const { before, word, after } = headlineParts(headline, highlight);
 
   return (
     <div
@@ -102,7 +118,7 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
       }}
       role="group"
       aria-roledescription="carousel"
-      aria-label="Featured highlights"
+      aria-label={tr("Featured highlights", "विशेष झलक")}
     >
       {/* Backgrounds */}
       <AnimatePresence initial={false} mode="sync">
@@ -156,7 +172,7 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
             ) : (
               <Image
                 src={slide.image}
-                alt={slide.alt}
+                alt={copy ? copy.alt : slide.alt}
                 fill
                 priority={active === 0}
                 sizes="100vw"
@@ -180,7 +196,7 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
       {/* Slide copy */}
       <AnimatePresence initial={false} mode="wait">
         <motion.div
-          key={slide.headline}
+          key={headline}
           className="relative mx-auto flex h-full w-full max-w-[88rem] flex-col justify-end px-6 pt-28 pb-24 sm:pb-24 lg:px-10 lg:pb-28"
           initial={reduceMotion ? false : "hidden"}
           animate="visible"
@@ -198,7 +214,7 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
                 variants={rise}
               >
                 <span aria-hidden className="size-1.5 rotate-45 bg-gold" />
-                {slide.kicker}
+                {kicker}
               </motion.span>
 
               <motion.h1
@@ -223,7 +239,7 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
                 className="max-w-md text-[0.9rem] leading-relaxed text-bone/70"
                 variants={rise}
               >
-                {slide.line}
+                {line}
               </motion.p>
 
               <motion.div
@@ -236,7 +252,7 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
                   variant={slide.cta.variant === "ghost" ? "outline" : "default"}
                 >
                   <Link href={slide.cta.href}>
-                    {slide.cta.label}
+                    {copy ? copy.cta : slide.cta.label}
                     <ArrowRight
                       className="size-3.5 transition-transform duration-300 group-hover:translate-x-1"
                       aria-hidden
@@ -251,7 +267,7 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
                     variant="outline"
                     className="h-11 rounded-none border-ivory/20 px-7 text-[10.5px] tracking-[0.2em] uppercase hover:border-gold/60 hover:text-gold"
                   >
-                    <Link href={slide.cta2.href}>{slide.cta2.label}</Link>
+                    <Link href={slide.cta2.href}>{copy ? copy.cta2 : slide.cta2.label}</Link>
                   </Button>
                 ) : null}
               </motion.div>
@@ -267,8 +283,10 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
               </span>
               <span aria-hidden className="h-px w-24 bg-gold/40" />
               <p className="max-w-[15rem] text-right text-[10.5px] leading-relaxed tracking-[0.12em] text-bone/45 uppercase">
-                Harvested in the valley and the high hills, dispatched the same
-                morning.
+                {tr(
+                  "Harvested in the valley and the high hills, dispatched the same morning.",
+                  "उपत्यका र उच्च पहाडमा टिपिएको, त्यही बिहान पठाइएको।",
+                )}
               </p>
             </motion.div>
           </div>
@@ -285,7 +303,11 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
                 key={item.headline}
                 type="button"
                 onClick={() => go(dot)}
-                aria-label={`Show slide ${dot + 1} of ${count}: ${item.kicker}`}
+                aria-label={
+                  lang === "ne"
+                    ? `${contentNe.heroSlides[dot]?.kicker ?? item.kicker} — स्लाइड ${dot + 1} / ${count}`
+                    : `Show slide ${dot + 1} of ${count}: ${item.kicker}`
+                }
                 aria-current={dot === active}
                 className={`tabular text-[10px] tracking-[0.24em] transition-colors duration-200 ${
                   dot === active
@@ -304,7 +326,7 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
             <button
               type="button"
               onClick={() => go(active - 1)}
-              aria-label="Previous slide"
+              aria-label={tr("Previous slide", "अघिल्लो स्लाइड")}
               className="inline-flex size-8 items-center justify-center border border-ivory/15 text-bone/60 transition-colors duration-200 hover:border-gold/50 hover:text-gold"
             >
               <ChevronLeft className="size-3.5" aria-hidden />
@@ -312,7 +334,7 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
             <button
               type="button"
               onClick={() => go(active + 1)}
-              aria-label="Next slide"
+              aria-label={tr("Next slide", "अर्को स्लाइड")}
               className="inline-flex size-8 items-center justify-center border border-ivory/15 text-bone/60 transition-colors duration-200 hover:border-gold/50 hover:text-gold"
             >
               <ChevronRight className="size-3.5" aria-hidden />

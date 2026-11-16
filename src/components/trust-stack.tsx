@@ -5,6 +5,8 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 
 import { DELIVERY_SLOTS, deliveryZones, trustCards } from "@/lib/data";
+import { contentNe } from "@/lib/i18n/content-ne";
+import { useLang } from "@/lib/use-lang";
 
 /**
  * Three expandable trust cards.
@@ -19,11 +21,14 @@ import { DELIVERY_SLOTS, deliveryZones, trustCards } from "@/lib/data";
 export function TrustStack() {
   const reduceMotion = useReducedMotion();
   const [open, setOpen] = useState<string | null>(null);
+  const { lang } = useLang();
 
   return (
     <div className="flex flex-col border-t border-foreground/[0.08]">
       {trustCards.map((card, index) => {
         const isOpen = open === card.id;
+        const copy =
+          contentNe.trustCards[card.id as keyof typeof contentNe.trustCards];
 
         return (
           <div key={card.id} className="border-b border-foreground/[0.08]">
@@ -40,7 +45,7 @@ export function TrustStack() {
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   <span className="font-heading text-lg leading-tight text-ivory transition-colors duration-200 group-hover:text-gold sm:text-xl">
-                    {card.title}
+                    {lang === "ne" ? (copy?.title ?? card.title) : card.title}
                   </span>
                 </span>
                 <ChevronDown
@@ -66,7 +71,12 @@ export function TrustStack() {
                   }}
                   className="overflow-hidden"
                 >
-                  <TrustBody cardId={card.id} fallback={card.body} />
+                  <TrustBody
+                    cardId={card.id}
+                    fallback={
+                      lang === "ne" ? (copy?.body ?? card.body) : card.body
+                    }
+                  />
                 </motion.div>
               ) : null}
             </AnimatePresence>
@@ -84,6 +94,8 @@ function TrustBody({
   cardId: string;
   fallback: string;
 }) {
+  const { tr, isNe } = useLang();
+
   if (cardId !== "delivery") {
     return (
       <p className="max-w-xl pb-6 pl-[3.15rem] text-sm leading-relaxed text-ash">
@@ -95,21 +107,30 @@ function TrustBody({
   return (
     <div className="pb-6 pl-[3.15rem] text-sm text-ash">
       <p className="max-w-xl leading-relaxed">
-        Inside the ring road in an hour, beyond it by courier. Pick a slot at
-        checkout.
+        {tr(
+          "Inside the ring road in an hour, beyond it by courier. Pick a slot at checkout.",
+          "रिङ रोडभित्र एक घण्टामा, बाहिर कुरियरमार्फत। चेकआउटमा समय छान्नुहोस्।",
+        )}
       </p>
       <ul className="mt-4 flex flex-wrap gap-px border border-foreground/[0.08] bg-foreground/[0.08]">
-        {deliveryZones.slice(0, 3).map((zone) => (
-          <li key={zone.area} className="bg-background px-3 py-1.5 text-[11px]">
-            {zone.area} &middot; {zone.estimate}
-          </li>
-        ))}
+        {deliveryZones.slice(0, 3).map((zone, index) => {
+          const copy = contentNe.deliveryZones[index];
+          return (
+            <li
+              key={zone.area}
+              className="bg-background px-3 py-1.5 text-[11px]"
+            >
+              {isNe && copy ? copy.area : zone.area} &middot;{" "}
+              {isNe && copy ? copy.estimate : zone.estimate}
+            </li>
+          );
+        })}
       </ul>
       <p className="mt-4 flex flex-wrap items-center gap-3 text-[10px] tracking-[0.16em] uppercase">
-        <span className="text-gold/70">Slots</span>
-        {DELIVERY_SLOTS.map((slot) => (
+        <span className="text-gold/70">{tr("Slots", "समय")}</span>
+        {DELIVERY_SLOTS.map((slot, index) => (
           <span key={slot.id} className="text-bone/70">
-            {slot.label}
+            {contentNe.deliverySlots[index] ?? slot.label}
           </span>
         ))}
       </p>

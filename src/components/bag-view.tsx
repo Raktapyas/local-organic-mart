@@ -9,8 +9,12 @@ import { Button } from "@/components/ui/button";
 import { cartTotals, useCartStore, type CartLine } from "@/lib/cart-store";
 import { type DictPath, useLang } from "@/lib/use-lang";
 import { DELIVERY_FEE_FLAT, paymentMethods } from "@/lib/data";
-
-const npr = new Intl.NumberFormat("en-NP");
+import {
+  customizationLabel,
+  lineName,
+  lineUnit,
+  paymentMethodLabel,
+} from "@/lib/i18n/localize";
 
 const GROUPS = [
   { kind: "product" as const, key: "cart.grocery" },
@@ -29,7 +33,7 @@ function lineHref(line: CartLine) {
 function BagRow({ line }: { line: CartLine }) {
   const setQty = useCartStore((state) => state.setQty);
   const removeLine = useCartStore((state) => state.removeLine);
-  const { t } = useLang();
+  const { t, lang, money } = useLang();
 
   return (
     <li className="flex gap-4 py-6 first:pt-0 last:pb-0">
@@ -40,7 +44,10 @@ function BagRow({ line }: { line: CartLine }) {
         {line.image ? (
           <Image src={line.image} alt="" fill sizes="80px" className="object-cover" />
         ) : (
-          <PhotoFallback label={line.name} className="absolute inset-0" />
+          <PhotoFallback
+            label={lineName(line, lang)}
+            className="absolute inset-0"
+          />
         )}
       </Link>
 
@@ -55,14 +62,15 @@ function BagRow({ line }: { line: CartLine }) {
               }
               className="font-heading text-base transition-colors hover:text-mint"
             >
-              {line.name}
+              {lineName(line, lang)}
             </Link>
             <span className="text-xs text-muted-foreground">
-              {line.nepaliName} &middot; {line.unit}
+              {lang === "en" ? `${line.nepaliName} · ` : ""}
+              {lineUnit(line, lang)}
             </span>
           </span>
           <span className="shrink-0 font-heading text-base">
-            Rs {npr.format(line.unitPrice * line.qty)}
+            {money(line.unitPrice * line.qty)}
           </span>
         </div>
 
@@ -73,7 +81,7 @@ function BagRow({ line }: { line: CartLine }) {
                 key={option}
                 className="rounded-[2px] border border-border px-2 py-0.5 text-[11px] text-sage"
               >
-                {option}
+                {customizationLabel(option, lang)}
               </li>
             ))}
           </ul>
@@ -102,7 +110,7 @@ export function BagView() {
   const lines = useCartStore((state) => state.lines);
   const clear = useCartStore((state) => state.clear);
 
-  const { t } = useLang();
+  const { t, lang, money, tr } = useLang();
 
   const food = lines.filter((line) => line.kind === "product");
   const dishes = lines.filter((line) => line.kind === "dish");
@@ -116,11 +124,13 @@ export function BagView() {
       <div className="flex flex-col items-center gap-4 py-24 text-center">
         <h1 className="font-heading text-3xl tracking-tight">{t("cart.empty")}</h1>
         <p className="max-w-sm text-sm text-sage">
-          Nothing here yet. Browse the mart for produce, pantry, and foraged
-          goods.
+          {tr(
+            "Nothing here yet. Browse the mart for produce, pantry, and foraged goods.",
+            "यहाँ अझै केही छैन। तरकारी, भण्डार र वनजन्य सामानका लागि मार्ट हेर्नुहोस्।",
+          )}
         </p>
         <Button className="mt-2 rounded-[2px]" asChild>
-          <Link href="/mart">Browse the Mart</Link>
+          <Link href="/mart">{tr("Browse the Mart", "मार्ट हेर्नुहोस्")}</Link>
         </Button>
       </div>
     );
@@ -154,7 +164,7 @@ export function BagView() {
           onClick={clear}
           className="w-fit text-xs text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
         >
-          Clear bag
+          {tr("Clear bag", "झोला खाली गर्नुहोस्")}
         </button>
       </div>
 
@@ -162,17 +172,17 @@ export function BagView() {
         <div className="flex flex-col gap-4 rounded-[2px] border border-border bg-card p-6">
           <div className="flex items-center justify-between text-sm">
             <span className="text-muted-foreground">{t("cart.subtotal")}</span>
-            <span>Rs {npr.format(itemSubtotal)}</span>
+            <span>{money(itemSubtotal)}</span>
           </div>
           <div className="flex items-center justify-between text-sm">
             <span className="text-muted-foreground">{t("cart.delivery")}</span>
-            <span>Rs {npr.format(DELIVERY_FEE_FLAT)}</span>
+            <span>{money(DELIVERY_FEE_FLAT)}</span>
           </div>
 
           <div className="border-t border-border pt-4">
             <div className="flex items-center justify-between">
               <span className="font-heading text-lg">{t("cart.total")}</span>
-              <span className="font-heading text-2xl">Rs {npr.format(total)}</span>
+              <span className="font-heading text-2xl">{money(total)}</span>
             </div>
           </div>
 
@@ -182,14 +192,14 @@ export function BagView() {
                 key={method}
                 className="rounded-[2px] border border-foreground/10 px-2.5 py-1 text-[11px] text-muted-foreground"
               >
-                {method}
+                {paymentMethodLabel(method, lang)}
               </li>
             ))}
           </ul>
 
           <Button className="h-12 w-full rounded-[2px]" asChild>
             <Link href="/checkout">
-              {t("buttons.checkout")} &middot; Rs {npr.format(total)}
+              {t("buttons.checkout")} &middot; {money(total)}
             </Link>
           </Button>
         </div>

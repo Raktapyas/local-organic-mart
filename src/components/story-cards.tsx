@@ -2,7 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
+import { L } from "@/components/localized-text";
 import { STORY_CARDS } from "@/lib/data";
+import { contentNe } from "@/lib/i18n/content-ne";
 
 /**
  * Story-card duo.
@@ -18,43 +20,47 @@ export function StoryCards() {
   return (
     <section className="border-b border-foreground/[0.06]">
       <ul className="grid gap-px bg-foreground/[0.07] md:grid-cols-2">
-        {STORY_CARDS.map((card, index) => (
-          <li key={card.title} className="bg-background">
-            <article className="group relative flex aspect-4/3 flex-col justify-end overflow-hidden p-4 lg:p-6">
-              <Image
-                src={card.image}
-                alt=""
-                fill
-                sizes="(min-width: 768px) 50vw, 100vw"
-                className="object-cover opacity-85 transition-transform duration-[900ms] group-hover:scale-[1.03]"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/10 to-transparent" />
+        {STORY_CARDS.map((card, index) => {
+          const copy = contentNe.storyCards[index];
 
-              {/* The overlapping panel is the only thing carrying copy. */}
-              <div className="relative border border-gold/25 bg-[#0a0f0c]/95 p-6 sm:max-w-sm sm:p-7">
-                <span className="tabular text-[9px] tracking-[0.24em] text-gold/70">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <h3 className="mt-2 font-heading text-2xl leading-tight text-ivory">
-                  {card.title}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-ash">
-                  {card.body}
-                </p>
-                <Link
-                  href={card.href}
-                  className="group/link mt-5 inline-flex items-center gap-2 text-[10px] tracking-[0.2em] text-gold uppercase"
-                >
-                  {card.cta}
-                  <ArrowRight
-                    className="size-3.5 transition-transform duration-300 group-hover/link:translate-x-1"
-                    aria-hidden
-                  />
-                </Link>
-              </div>
-            </article>
-          </li>
-        ))}
+          return (
+            <li key={card.title} className="bg-background">
+              <article className="group relative flex aspect-4/3 flex-col justify-end overflow-hidden p-4 lg:p-6">
+                <Image
+                  src={card.image}
+                  alt=""
+                  fill
+                  sizes="(min-width: 768px) 50vw, 100vw"
+                  className="object-cover opacity-85 transition-transform duration-[900ms] group-hover:scale-[1.03]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/10 to-transparent" />
+
+                {/* The overlapping panel is the only thing carrying copy. */}
+                <div className="relative border border-gold/25 bg-[#0a0f0c]/95 p-6 sm:max-w-sm sm:p-7">
+                  <span className="tabular text-[9px] tracking-[0.24em] text-gold/70">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <h3 className="mt-2 font-heading text-2xl leading-tight text-ivory">
+                    <L en={card.title} ne={copy?.title ?? card.title} />
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-ash">
+                    <L en={card.body} ne={copy?.body ?? card.body} />
+                  </p>
+                  <Link
+                    href={card.href}
+                    className="group/link mt-5 inline-flex items-center gap-2 text-[10px] tracking-[0.2em] text-gold uppercase"
+                  >
+                    <L en={card.cta} ne={copy?.cta ?? card.cta} />
+                    <ArrowRight
+                      className="size-3.5 transition-transform duration-300 group-hover/link:translate-x-1"
+                      aria-hidden
+                    />
+                  </Link>
+                </div>
+              </article>
+            </li>
+          );
+        })}
       </ul>
     </section>
   );

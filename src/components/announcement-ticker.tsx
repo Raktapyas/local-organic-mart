@@ -1,3 +1,5 @@
+import { L } from "@/components/localized-text";
+import { contentNe } from "@/lib/i18n/content-ne";
 import { ANNOUNCEMENTS } from "@/lib/data";
 
 /**
@@ -18,14 +20,14 @@ export function AnnouncementTicker() {
       className={`flex shrink-0 items-center ${hidden ? "ticker-dupe" : ""}`}
       {...(hidden ? { "aria-hidden": true as const } : {})}
     >
-      {ANNOUNCEMENTS.map((item) => (
+      {ANNOUNCEMENTS.map((item, index) => (
         <li key={item} className="flex items-center gap-3 px-6">
           <span
             aria-hidden
             className="size-1 rotate-45 border border-gold/60 bg-gold/20"
           />
           <span className="whitespace-nowrap text-[10px] tracking-[0.22em] text-bone/80 uppercase">
-            {item}
+            <L en={item} ne={contentNe.announcements[index] ?? item} />
           </span>
         </li>
       ))}

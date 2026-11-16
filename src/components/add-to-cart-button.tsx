@@ -3,6 +3,8 @@
 import type { ReactNode } from "react";
 
 import { useCartStore, type CartLine } from "@/lib/cart-store";
+import { lineName } from "@/lib/i18n/localize";
+import { useLang } from "@/lib/use-lang";
 import { cn } from "@/lib/utils";
 
 /**
@@ -21,11 +23,15 @@ export function AddToCartButton({
   onAdded?: () => void;
 }) {
   const addItem = useCartStore((state) => state.addItem);
+  const { lang, tr } = useLang();
 
   return (
     <button
       type="button"
-      aria-label={`Add ${line.name} to basket`}
+      aria-label={tr(
+        `Add ${line.name} to basket`,
+        `${lineName(line, lang)} झोलामा थप्नुहोस्`,
+      )}
       className={cn(
         "inline-flex items-center justify-center gap-2",
         className,

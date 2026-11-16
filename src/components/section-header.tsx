@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 
+import { L } from "@/components/localized-text";
 import { T } from "@/components/translated";
 import type { DictPath } from "@/lib/use-lang";
 
@@ -13,23 +14,29 @@ import type { DictPath } from "@/lib/use-lang";
  * it the page reads as a stack of unrelated blocks.
  *
  * `title` stays required: it is the English copy the server renders and what
- * search engines index. `titleKey` only decides what a Nepali reader sees
- * once the language store has hydrated.
+ * search engines index. `titleKey` or `titleNe` only decides what a Nepali
+ * reader sees once the language store has hydrated.
  */
 export function SectionHeader({
   title,
+  titleNe,
   subline,
+  sublineNe,
   titleKey,
   sublineKey,
   eyebrow,
+  eyebrowNe,
   aside,
   as: Heading = "h2",
 }: {
   title: string;
+  titleNe?: string;
   subline?: string;
+  sublineNe?: string;
   titleKey?: DictPath;
   sublineKey?: DictPath;
   eyebrow?: string;
+  eyebrowNe?: string;
   aside?: ReactNode;
   as?: "h1" | "h2";
 }) {
@@ -37,20 +44,30 @@ export function SectionHeader({
     <div className="flex flex-col gap-4">
       {eyebrow ? (
         <div className="flex items-center gap-4">
-          <span className="eyebrow shrink-0">{eyebrow}</span>
+          <span className="eyebrow shrink-0">
+            <L en={eyebrow} ne={eyebrowNe ?? eyebrow} />
+          </span>
           <span aria-hidden className="rule-fade flex-1" />
         </div>
       ) : null}
 
       <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-3">
         <Heading className="text-[clamp(1.65rem,2.6vw,2.4rem)] leading-[1.05] font-light tracking-[-0.025em] text-ivory">
-          {titleKey ? <T k={titleKey} /> : title}
+          {titleKey ? (
+            <T k={titleKey} />
+          ) : (
+            <L en={title} ne={titleNe ?? title} />
+          )}
         </Heading>
 
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
           {(sublineKey || subline) && (
             <p className="max-w-sm text-xs leading-relaxed text-ash">
-              {sublineKey ? <T k={sublineKey} /> : subline}
+              {sublineKey ? (
+                <T k={sublineKey} />
+              ) : (
+                <L en={subline} ne={sublineNe ?? subline} />
+              )}
             </p>
           )}
 

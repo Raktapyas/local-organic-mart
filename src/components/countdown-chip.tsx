@@ -4,15 +4,17 @@ import { useEffect, useState } from "react";
 import { Clock } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { useLang } from "@/lib/use-lang";
 
-function formatRemaining(ms: number) {
+function formatRemaining(ms: number, isNe: boolean) {
   const clamped = Math.max(0, ms);
   const days = Math.floor(clamped / 86_400_000);
   const hours = Math.floor((clamped % 86_400_000) / 3_600_000);
   const minutes = Math.floor((clamped % 3_600_000) / 60_000);
   const seconds = Math.floor((clamped % 60_000) / 1000);
   const pad = (n: number) => String(n).padStart(2, "0");
-  return `${days}d ${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+  const dayLabel = isNe ? "दिन" : "d";
+  return `${days} ${dayLabel} ${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
 }
 
 /**
@@ -23,12 +25,15 @@ export function CountdownChip({
   /** Absolute close time, ISO 8601. */
   closesAt,
   label = "Ends in",
+  labelNe = "समाप्त हुन बाँकी",
   className,
 }: {
   closesAt: string;
   label?: string;
+  labelNe?: string;
   className?: string;
 }) {
+  const { lang } = useLang();
   const target = new Date(closesAt).getTime();
   // Time is read inside the effect, never during render: reading the clock
   // while prerendering blocks the static build.
@@ -49,9 +54,11 @@ export function CountdownChip({
       )}
     >
       <Clock className="size-3.5 text-gold/70" aria-hidden />
-      <span>{label}</span>
+      <span>{lang === "ne" ? labelNe : label}</span>
       {remaining !== null && (
-        <span className="tabular text-ivory">{formatRemaining(remaining)}</span>
+        <span className="tabular text-ivory">
+          {formatRemaining(remaining, lang === "ne")}
+        </span>
       )}
     </span>
   );

@@ -1,6 +1,9 @@
+"use client";
+
 import { MessageCircle, Phone } from "lucide-react";
 
 import { contactChannels } from "@/lib/data";
+import { useLang } from "@/lib/use-lang";
 
 /**
  * Floating contact buttons.
@@ -14,6 +17,8 @@ import { contactChannels } from "@/lib/data";
  * hairline edge still reads instantly, and stops competing with the type.
  */
 export function FloatingContact() {
+  const { tr } = useLang();
+
   return (
     <div
       className="fixed right-4 z-40 flex flex-col gap-2 lg:hidden"
@@ -21,14 +26,14 @@ export function FloatingContact() {
     >
       <a
         href={contactChannels.viber}
-        aria-label="Chat with us on Viber"
+        aria-label={tr("Chat with us on Viber", "Viber मा हामीसँग कुरा गर्नुहोस्")}
         className="flex size-11 items-center justify-center border border-foreground/15 bg-background/90 backdrop-blur-sm transition-colors active:border-gold/50"
       >
         <MessageCircle className="size-[18px] text-[#7360f2]" aria-hidden />
       </a>
       <a
         href={contactChannels.whatsapp}
-        aria-label="Chat with us on WhatsApp"
+        aria-label={tr("Chat with us on WhatsApp", "WhatsApp मा हामीसँग कुरा गर्नुहोस्")}
         className="flex size-11 items-center justify-center border border-foreground/15 bg-background/90 backdrop-blur-sm transition-colors active:border-gold/50"
       >
         <Phone className="size-[18px] text-[#25D366]" aria-hidden />

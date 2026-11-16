@@ -33,7 +33,7 @@ const iconButton =
  * the messaging apps; nothing is fetched or stored.
  */
 export function MobileHeader() {
-  const { t } = useLang();
+  const { t, tr, isNe } = useLang();
   const [chatOpen, setChatOpen] = useState(false);
   const popoverRef = useRef<HTMLDivElement>(null);
 
@@ -64,7 +64,7 @@ export function MobileHeader() {
       <div className="relative mx-auto flex h-14 w-full items-center justify-between gap-3 px-4">
         <Sheet>
           <SheetTrigger asChild>
-            <button type="button" aria-label="Open menu" className={iconButton}>
+            <button type="button" aria-label={tr("Open menu", "मेनु खोल्नुहोस्")} className={iconButton}>
               <Menu className="size-4" aria-hidden />
             </button>
           </SheetTrigger>
@@ -84,7 +84,7 @@ export function MobileHeader() {
                     {siteName}
                   </span>
                   <span className="mt-1 text-[8px] tracking-[0.3em] text-gold/70 uppercase">
-                    Kathmandu Valley
+                    {tr("Kathmandu Valley", "काठमाडौं उपत्यका")}
                   </span>
                 </span>
               </SheetTitle>
@@ -97,18 +97,18 @@ export function MobileHeader() {
                 a labelled control on the menu's own rule.
               */}
               <div className="flex items-center justify-between">
-                <span className="eyebrow">Menu</span>
+                <span className="eyebrow">{tr("Menu", "मेनु")}</span>
                 <SheetClose asChild>
                   <button
                     type="button"
                     className="inline-flex items-center gap-1.5 border border-foreground/10 px-2.5 py-1.5 text-[9px] tracking-[0.22em] text-ash uppercase transition-colors hover:border-gold/50 hover:text-gold"
                   >
-                    Close
+                    {tr("Close", "बन्द गर्नुहोस्")}
                     <X className="size-3" aria-hidden />
                   </button>
                 </SheetClose>
               </div>
-              <nav aria-label="Mobile primary" className="mt-4">
+              <nav aria-label={tr("Mobile primary", "मोबाइल मुख्य मेनु")} className="mt-4">
                 <ul className="flex flex-col">
                   {navLinks.map((link, index) => (
                     <li
@@ -133,7 +133,7 @@ export function MobileHeader() {
                 </ul>
               </nav>
 
-              <span className="eyebrow mt-8 block">Account</span>
+              <span className="eyebrow mt-8 block">{tr("Account", "खाता")}</span>
               <ul className="mt-3 flex flex-col gap-3">
                 <li>
                   <SheetClose asChild>
@@ -173,7 +173,7 @@ export function MobileHeader() {
               <div className="mt-8 flex items-center gap-3 border-t border-foreground/[0.08] pt-6">
                 <LanguageToggle className="w-full justify-center py-2.5" />
                 <span className="text-[10px] tracking-[0.18em] text-ash/70 uppercase">
-                  NPR
+                  {isNe ? "रु" : "NPR"}
                 </span>
               </div>
 
@@ -184,7 +184,9 @@ export function MobileHeader() {
                 >
                   {contact.phone}
                 </a>
-                <p className="mt-1 text-ash/60">{contact.address}</p>
+                <p className="mt-1 text-ash/60">
+                  {tr("Kathmandu, Nepal", "काठमाडौं, नेपाल")}
+                </p>
               </div>
             </div>
           </SheetContent>
@@ -192,7 +194,7 @@ export function MobileHeader() {
 
         <Link
           href="/"
-          aria-label={`${siteName} — home`}
+          aria-label={tr(`${siteName} — home`, `${siteName} — गृहपृष्ठ`)}
           className="flex min-w-0 shrink items-center gap-2.5"
         >
           <span className="relative grid size-7 shrink-0 rotate-45 place-items-center border border-gold/45">
@@ -203,7 +205,7 @@ export function MobileHeader() {
               {siteName}
             </span>
             <span className="mt-1 text-[7px] tracking-[0.26em] text-gold/70 uppercase">
-              Kathmandu Valley
+              {tr("Kathmandu Valley", "काठमाडौं उपत्यका")}
             </span>
           </span>
         </Link>
@@ -212,7 +214,7 @@ export function MobileHeader() {
           <div className="relative" ref={popoverRef}>
             <button
               type="button"
-              aria-label="Chat with us"
+              aria-label={tr("Chat with us", "हामीसँग कुरा गर्नुहोस्")}
               aria-expanded={chatOpen}
               className={iconButton}
               onClick={() => setChatOpen((open) => !open)}
@@ -241,7 +243,7 @@ export function MobileHeader() {
                   className="flex items-center gap-2 px-3 py-2 text-xs text-ash transition-colors hover:bg-foreground/5 hover:text-ivory"
                 >
                   <Phone className="size-3.5 text-gold/70" aria-hidden />
-                  Call us
+                  {tr("Call us", "हामीलाई फोन गर्नुहोस्")}
                 </a>
               </div>
             ) : null}
@@ -249,7 +251,7 @@ export function MobileHeader() {
 
           <Link
             href="/bag"
-            aria-label="Open basket"
+            aria-label={tr("Open basket", "झोला खोल्नुहोस्")}
             className={`${iconButton} relative`}
           >
             <ShoppingBag className="size-4" aria-hidden />

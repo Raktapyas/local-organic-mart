@@ -15,14 +15,13 @@ import {
   type Dish,
   type Product,
 } from "@/lib/data";
+import { categoryText, dishText, productText } from "@/lib/i18n/localize";
 import { useLang } from "@/lib/use-lang";
 
-const npr = new Intl.NumberFormat("en-NP");
+const FEATURED_IDS = { honey: "wild-honey", dalBhat: "dal-bhat-set" };
 
 /** The brief's two featured picks. One is a product, one is a dish. */
 type Featured = { kind: "product"; item: Product } | { kind: "dish"; item: Dish };
-
-const FEATURED_IDS = { honey: "wild-honey", dalBhat: "dal-bhat-set" };
 
 /**
  * Full-width mega menu behind "Mart ▾".
@@ -54,7 +53,7 @@ const FEATURED_IDS = { honey: "wild-honey", dalBhat: "dal-bhat-set" };
  * search drawer instead of stopping at the `max-w` of the bar.
  */
 export function MegaMenu({ martHref }: { martHref: string }) {
-  const { t } = useLang();
+  const { t, tr, lang, money } = useLang();
   const addItem = useCartStore((state) => state.addItem);
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -106,12 +105,21 @@ export function MegaMenu({ martHref }: { martHref: string }) {
     ...(dalBhat ? [{ kind: "dish" as const, item: dalBhat }] : []),
   ];
 
+  const nameOf = (entry: Featured) =>
+    entry.kind === "product"
+      ? productText(entry.item, lang).name
+      : dishText(entry.item, lang).name;
+
   const shopByNeed = [
-    { label: "Weekly essentials", href: "/#weekly" },
-    { label: "Baskets & gifts", href: "/baskets" },
-    { label: "Subscription plans", href: "/baskets#subscriptions" },
-    { label: "Bestsellers", href: "/mart" },
-    { label: "Track order", href: "/track-order" },
+    { en: "Weekly essentials", ne: "साप्ताहिक आवश्यक", href: "/#weekly" },
+    { en: "Baskets & gifts", ne: "टोकरी र उपहार", href: "/baskets" },
+    {
+      en: "Subscription plans",
+      ne: "सदस्यता योजना",
+      href: "/baskets#subscriptions",
+    },
+    { en: "Bestsellers", ne: "सर्वाधिक बिक्री", href: "/mart" },
+    { en: "Track order", ne: "अर्डर ट्र्याक", href: "/track-order" },
   ];
 
   return (
@@ -168,9 +176,9 @@ export function MegaMenu({ martHref }: { martHref: string }) {
         >
           <div className="mx-auto grid w-full max-w-[88rem] grid-cols-[1.6fr_1fr_1.2fr] gap-8 px-8 py-8 xl:grid-cols-[1.1fr_0.9fr_1.15fr_1fr] xl:gap-10 xl:py-10">
             {/* 1. Categories */}
-            <nav aria-label="Shop by category" onClick={close}>
+            <nav aria-label={tr("Shop by category", "श्रेणी अनुसार किन्नुहोस्")} onClick={close}>
               <h2 className="text-[9px] tracking-[0.24em] text-gold/80 uppercase">
-                Shop by category
+                {tr("Shop by category", "श्रेणी अनुसार किन्नुहोस्")}
               </h2>
               <ul className="mt-5 grid grid-cols-2 gap-x-5 gap-y-1">
                 {categories.map((category) => {
@@ -185,7 +193,7 @@ export function MegaMenu({ martHref }: { martHref: string }) {
                           className="size-3.5 shrink-0 text-gold/60 transition-colors group-hover/link:text-gold"
                           aria-hidden
                         />
-                        {category.name}
+                        {categoryText(category, lang).name}
                       </Link>
                     </li>
                   );
@@ -194,18 +202,18 @@ export function MegaMenu({ martHref }: { martHref: string }) {
             </nav>
 
             {/* 2. By need */}
-            <nav aria-label="Shop by need" onClick={close}>
+            <nav aria-label={tr("Shop by need", "आवश्यकता अनुसार किन्नुहोस्")} onClick={close}>
               <h2 className="text-[9px] tracking-[0.24em] text-gold/80 uppercase">
-                Shop by need
+                {tr("Shop by need", "आवश्यकता अनुसार किन्नुहोस्")}
               </h2>
               <ul className="mt-5 flex flex-col">
                 {shopByNeed.map((item) => (
-                  <li key={item.label}>
+                  <li key={item.href}>
                     <Link
                       href={item.href}
                       className="block border-b border-foreground/[0.06] py-2.5 text-[13px] text-ash transition-colors hover:text-ivory"
                     >
-                      {item.label}
+                      {tr(item.en, item.ne)}
                     </Link>
                   </li>
                 ))}
@@ -213,9 +221,9 @@ export function MegaMenu({ martHref }: { martHref: string }) {
             </nav>
 
             {/* 3. Featured — a real product and a real dish */}
-            <section aria-label="Featured">
+            <section aria-label={tr("Featured", "विशेष")}>
               <h2 className="text-[9px] tracking-[0.24em] text-gold/80 uppercase">
-                Featured
+                {tr("Featured", "विशेष")}
               </h2>
               <ul className="mt-5 flex flex-col gap-2">
                 {featured.map((entry) => (
@@ -234,15 +242,18 @@ export function MegaMenu({ martHref }: { martHref: string }) {
                     </div>
                     <div className="min-w-0 flex-1">
                       <p className="truncate font-heading text-[13px] text-ivory">
-                        {entry.item.name}
+                        {nameOf(entry)}
                       </p>
                       <p className="tabular text-[11px] text-gold/80">
-                        Rs {npr.format(entry.item.price)}
+                        {money(entry.item.price)}
                       </p>
                     </div>
                     <button
                       type="button"
-                      aria-label={`Add ${entry.item.name} to basket`}
+                      aria-label={tr(
+                        `Add ${nameOf(entry)} to basket`,
+                        `${nameOf(entry)} झोलामा थप्नुहोस्`,
+                      )}
                       onClick={() =>
                         addItem(
                           entry.kind === "product"
@@ -294,12 +305,17 @@ export function MegaMenu({ martHref }: { martHref: string }) {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
               <div className="relative border-t border-gold/30 pt-3">
-                <span className="eyebrow">Provenance</span>
+                <span className="eyebrow">
+                  {tr("Provenance", "उत्पत्ति")}
+                </span>
                 <p className="mt-1.5 font-heading text-lg leading-tight text-ivory">
-                  Farm to Home
+                  {tr("Farm to Home", "खेतबाट घर")}
                 </p>
                 <p className="mt-1 text-[11px] text-ash">
-                  Three collectives, one cold chain.
+                  {tr(
+                    "Three collectives, one cold chain.",
+                    "तीन समूह, एउटै कोल्ड चेन।",
+                  )}
                 </p>
               </div>
             </Link>
@@ -307,7 +323,7 @@ export function MegaMenu({ martHref }: { martHref: string }) {
 
           {/* Keyboard users land here; the panel itself is not a link target. */}
           <Link href={martHref} className="sr-only">
-            All Mart departments
+            {tr("All Mart departments", "मार्टका सबै विभाग")}
           </Link>
         </div>
       ) : null}

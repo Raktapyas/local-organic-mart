@@ -10,14 +10,16 @@ import {
   Leaf,
   MapPin,
   QrCode,
-  Star,
 } from "lucide-react";
 
+import { L } from "@/components/localized-text";
+import { LocalizedNav } from "@/components/localized-nav";
 import { PhotoFallback } from "@/components/photo-fallback";
 import { ProductCard } from "@/components/product-card";
 import { ProductPurchase } from "@/components/product-purchase";
 import { SectionHeader } from "@/components/section-header";
 import { SiteFooter } from "@/components/site-footer";
+import { Stars } from "@/components/stars";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   discountPercent,
@@ -25,6 +27,7 @@ import {
   products,
   type Product,
 } from "@/lib/data";
+import { productText } from "@/lib/i18n/localize";
 
 const npr = new Intl.NumberFormat("en-NP");
 
@@ -54,24 +57,6 @@ export async function generateMetadata({
     title: `${product.name} — Local Organic Mart`,
     description: product.desc,
   };
-}
-
-function Stars({ rating }: { rating: number }) {
-  return (
-    <span className="flex items-center gap-0.5" aria-label={`${rating} out of 5`}>
-      {[1, 2, 3, 4, 5].map((star) => (
-        <Star
-          key={star}
-          aria-hidden
-          className={
-            star <= rating
-              ? "size-3.5 fill-gold text-gold"
-              : "size-3.5 text-muted-foreground/40"
-          }
-        />
-      ))}
-    </span>
-  );
 }
 
 /**
@@ -122,6 +107,14 @@ async function ProductBody({
   const frames = galleryFrames(product);
   const thumbs = frames.slice(1);
 
+  /*
+    The page is a server component, so it renders one tree and the language
+    store swaps strings after hydration. Resolving the Nepali copy here — it is
+    a pure function over the same product — lets `<L>` carry both versions
+    without shipping the catalogue to the client.
+  */
+  const ne = productText(product, "ne");
+
   const related = products
     .filter((item) => item.id !== product.id && item.category === product.category)
     .slice(0, 4);
@@ -129,23 +122,29 @@ async function ProductBody({
   return (
     <>
       <div className="mx-auto w-full max-w-7xl px-6 pt-8 pb-6">
-        <nav aria-label="Breadcrumb" className="text-xs text-muted-foreground">
+        <LocalizedNav
+          en="Breadcrumb"
+          ne="ब्रेडक्रम्ब"
+          className="text-xs text-muted-foreground"
+        >
           <ol className="flex flex-wrap items-center gap-2">
             <li>
               <Link href="/" className="transition-colors hover:text-foreground">
-                Home
+                <L en="Home" ne="गृहपृष्ठ" />
               </Link>
             </li>
             <li aria-hidden>/</li>
             <li>
               <Link href="/mart" className="transition-colors hover:text-foreground">
-                Mart
+                <L en="Mart" ne="मार्ट" />
               </Link>
             </li>
             <li aria-hidden>/</li>
-            <li className="text-foreground">{product.category}</li>
+            <li className="text-foreground">
+              <L en={product.category} ne={ne.category} />
+            </li>
           </ol>
-        </nav>
+        </LocalizedNav>
       </div>
 
       <section className="mx-auto grid w-full max-w-7xl gap-10 px-6 pb-16 lg:grid-cols-2">
@@ -155,7 +154,7 @@ async function ProductBody({
             {frames[0] ? (
               <Image
                 src={frames[0]}
-                alt={product.name}
+                alt=""
                 fill
                 priority
                 sizes="(min-width: 1024px) 45vw, 92vw"
@@ -163,7 +162,7 @@ async function ProductBody({
               />
             ) : (
               <PhotoFallback
-                label={product.category}
+                label={ne.category}
                 className="absolute inset-0"
               />
             )}
@@ -195,32 +194,38 @@ async function ProductBody({
               {product.flags.organic && (
                 <span className="inline-flex items-center gap-1.5 rounded-[2px] border border-gold/40 bg-card px-3 py-1 text-xs text-gold">
                   <Leaf className="size-3.5" aria-hidden />
-                  Organic
+                  <L en="Organic" ne="जैविक" />
                 </span>
               )}
               {product.flags.local && (
                 <span className="inline-flex items-center gap-1.5 rounded-[2px] border border-gold/40 bg-card px-3 py-1 text-xs text-gold">
                   <MapPin className="size-3.5" aria-hidden />
-                  Local
+                  <L en="Local" ne="स्थानीय" />
                 </span>
               )}
             </div>
           )}
 
           <h1 className="mt-4 text-4xl leading-tight tracking-tight sm:text-5xl">
-            {product.name}
+            <L en={product.name} ne={ne.name} />
           </h1>
           <p className="mt-1 text-sage">
-            {product.nepaliName} &middot; {product.unit}
+            {product.nepaliName} &middot; <L en={product.unit} ne={ne.unit} />
           </p>
 
           <div className="mt-6 flex flex-wrap items-baseline gap-3 border-b border-border pb-6">
             <span className="text-3xl font-medium">
-              Rs {npr.format(product.price)}
+              <L
+                en={`Rs ${npr.format(product.price)}`}
+                ne={`रु ${npr.format(product.price)}`}
+              />
             </span>
             {product.oldPrice && (
               <span className="text-sm text-muted-foreground line-through">
-                Rs {npr.format(product.oldPrice)}
+                <L
+                  en={`Rs ${npr.format(product.oldPrice)}`}
+                  ne={`रु ${npr.format(product.oldPrice)}`}
+                />
               </span>
             )}
             {off !== null && (
@@ -230,32 +235,50 @@ async function ProductBody({
             )}
           </div>
 
-          <p className="mt-6 text-sm leading-relaxed">{product.desc}</p>
+          <p className="mt-6 text-sm leading-relaxed">
+            <L en={product.desc} ne={ne.desc} />
+          </p>
 
           <dl className="mt-6 divide-y divide-border overflow-hidden rounded-[2px] border border-border bg-card">
             <div className="flex items-center gap-3 px-4 py-3">
               <CalendarDays className="size-4 shrink-0 text-mint" aria-hidden />
-              <dt className="sr-only">Harvest</dt>
+              <dt className="sr-only">
+                <L en="Harvest" ne="बाली" />
+              </dt>
               <dd className="text-sm">
-                Harvested {product.harvestedOn} &middot; {product.region}
+                <L
+                  en={`Harvested ${product.harvestedOn} · ${product.region}`}
+                  ne={`टिपिएको ${ne.harvestedOn} · ${ne.region}`}
+                />
               </dd>
             </div>
             <div className="flex items-center gap-3 px-4 py-3">
               <QrCode className="size-4 shrink-0 text-mint" aria-hidden />
-              <dt className="sr-only">Batch</dt>
-              <dd className="text-sm">Batch #{product.batch}</dd>
+              <dt className="sr-only">
+                <L en="Batch" ne="ब्याच" />
+              </dt>
+              <dd className="text-sm">
+                <L en={`Batch #${product.batch}`} ne={`ब्याच #${product.batch}`} />
+              </dd>
             </div>
             <div className="flex items-center gap-3 px-4 py-3">
               <BadgeCheck className="size-4 shrink-0 text-mint" aria-hidden />
-              <dt className="sr-only">Freshness</dt>
-              <dd className="text-sm">{product.freshness}</dd>
+              <dt className="sr-only">
+                <L en="Freshness" ne="ताजापन" />
+              </dt>
+              <dd className="text-sm">
+                <L en={product.freshness} ne={ne.freshness} />
+              </dd>
             </div>
           </dl>
 
           {product.bulkTiers && (
             <div className="mt-6">
               <h2 className="text-xs tracking-wider text-sage uppercase">
-                Volume &amp; Collective Reserve
+                <L
+                  en="Volume & Collective Reserve"
+                  ne="थोक र सामूहिक आरक्षित"
+                />
               </h2>
               <ul className="mt-2 grid grid-cols-3 gap-2">
                 {product.bulkTiers.map((tier, index) => (
@@ -274,10 +297,16 @@ async function ProductBody({
                             : "block text-sm"
                         }
                       >
-                        {tier.label}
+                        <L
+                          en={tier.label}
+                          ne={ne.bulkTiers?.[index]?.label ?? tier.label}
+                        />
                       </span>
                       <span className="mt-0.5 block text-[11px] text-muted-foreground">
-                        {tier.note}
+                        <L
+                          en={tier.note}
+                          ne={ne.bulkTiers?.[index]?.note ?? tier.note}
+                        />
                       </span>
                     </span>
                   </li>
@@ -295,7 +324,7 @@ async function ProductBody({
             className="mt-5 inline-flex w-fit items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
             <Heart className="size-4" aria-hidden />
-            Save to wishlist
+            <L en="Save to wishlist" ne="इच्छासूचीमा राख्नुहोस्" />
           </button>
         </div>
       </section>
@@ -304,17 +333,24 @@ async function ProductBody({
       <section className="mx-auto w-full max-w-7xl px-6 pb-16">
         <Tabs defaultValue="description">
           <TabsList variant="line">
-            <TabsTrigger value="description">Description</TabsTrigger>
-            <TabsTrigger value="traceability">Traceability</TabsTrigger>
+            <TabsTrigger value="description">
+              <L en="Description" ne="विवरण" />
+            </TabsTrigger>
+            <TabsTrigger value="traceability">
+              <L en="Traceability" ne="उत्पत्ति विवरण" />
+            </TabsTrigger>
             <TabsTrigger value="reviews">
-              Reviews{product.reviews ? ` (${product.reviews.length})` : ""}
+              <L en="Reviews" ne="समीक्षा" />
+              {product.reviews ? ` (${product.reviews.length})` : ""}
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="description" className="pt-6">
             <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              {product.desc} Every lot is dispatched within three hours of
-              harvest, and every crate carries the batch code printed above.
+              <L
+                en={`${product.desc} Every lot is dispatched within three hours of harvest, and every crate carries the batch code printed above.`}
+                ne={`${ne.desc} हरेक लट बाली उठाएको तीन घण्टाभित्र पठाइन्छ, र हरेक क्रेटमा माथि छापिएको ब्याच कोड हुन्छ।`}
+              />
             </p>
           </TabsContent>
 
@@ -322,23 +358,28 @@ async function ProductBody({
             <dl className="grid gap-4 sm:grid-cols-3">
               <div className="rounded-[2px] border border-border bg-card p-4">
                 <dt className="text-xs tracking-wider text-sage uppercase">
-                  Harvest
+                  <L en="Harvest" ne="बाली" />
                 </dt>
                 <dd className="mt-1 text-sm">
-                  {product.harvestedOn} &middot; {product.region}
+                  <L
+                    en={`${product.harvestedOn} · ${product.region}`}
+                    ne={`${ne.harvestedOn} · ${ne.region}`}
+                  />
                 </dd>
               </div>
               <div className="rounded-[2px] border border-border bg-card p-4">
                 <dt className="text-xs tracking-wider text-sage uppercase">
-                  Batch
+                  <L en="Batch" ne="ब्याच" />
                 </dt>
                 <dd className="mt-1 text-sm">#{product.batch}</dd>
               </div>
               <div className="rounded-[2px] border border-border bg-card p-4">
                 <dt className="text-xs tracking-wider text-sage uppercase">
-                  Freshness
+                  <L en="Freshness" ne="ताजापन" />
                 </dt>
-                <dd className="mt-1 text-sm">{product.freshness}</dd>
+                <dd className="mt-1 text-sm">
+                  <L en={product.freshness} ne={ne.freshness} />
+                </dd>
               </div>
             </dl>
           </TabsContent>
@@ -346,31 +387,39 @@ async function ProductBody({
           <TabsContent value="reviews" className="pt-6">
             {product.reviews ? (
               <ul className="grid gap-4 sm:grid-cols-2">
-                {product.reviews.map((review) => (
+                {product.reviews.map((review, index) => (
                   <li
                     key={review.id}
                     className="rounded-[2px] border border-border bg-card p-4"
                   >
                     <div className="flex items-center justify-between gap-3">
                       <span className="text-sm">
-                        {review.author} &middot; {review.locality}
+                        <L
+                          en={`${review.author} · ${review.locality}`}
+                          ne={`${ne.reviews?.[index]?.author ?? review.author} · ${ne.reviews?.[index]?.locality ?? review.locality}`}
+                        />
                       </span>
                       <Stars rating={review.rating} />
                     </div>
                     <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                      {review.body}
+                      <L
+                        en={review.body}
+                        ne={ne.reviews?.[index]?.body ?? review.body}
+                      />
                     </p>
                     {review.verified && (
                       <span className="mt-3 inline-flex items-center gap-1.5 text-xs text-sage">
                         <BadgeCheck className="size-3.5" aria-hidden />
-                        Verified patron
+                        <L en="Verified patron" ne="प्रमाणित ग्राहक" />
                       </span>
                     )}
                   </li>
                 ))}
               </ul>
             ) : (
-              <p className="text-sm text-muted-foreground">No reviews yet</p>
+              <p className="text-sm text-muted-foreground">
+                <L en="No reviews yet" ne="अझै कुनै समीक्षा छैन" />
+              </p>
             )}
           </TabsContent>
         </Tabs>
@@ -381,7 +430,9 @@ async function ProductBody({
         <section className="mx-auto w-full max-w-7xl px-6 pb-24">
           <SectionHeader
             title="You may also like"
+            titleNe="तपाईंलाई यी पनि मन पर्न सक्छ"
             subline={`More from ${product.category.toLowerCase()}`}
+            sublineNe={`${ne.category} मा अरू पनि`}
           />
           <ul className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {related.map((item) => (

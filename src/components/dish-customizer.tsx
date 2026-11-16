@@ -12,8 +12,9 @@ import {
   type Dish,
   type DishSpice,
 } from "@/lib/data";
-
-const npr = new Intl.NumberFormat("en-NP");
+import { dishText } from "@/lib/i18n/localize";
+import { contentNe } from "@/lib/i18n/content-ne";
+import { useLang } from "@/lib/use-lang";
 
 function spiceLevelLabel(spice: DishSpice): string {
   return spiceLevels.find((level) => level.id === spice)?.label ?? spice;
@@ -25,6 +26,8 @@ export function DishCustomizer({ dish }: { dish: Dish }) {
   const [spice, setSpice] = useState<DishSpice>(() => spicePreset(dish));
   const [addons, setAddons] = useState<string[]>([]);
   const [quantity, setQuantity] = useState(1);
+  const { lang, money, tr } = useLang();
+  const copy = dishText(dish, lang);
 
   const portion = dish.portions.find((p) => p.id === portionId) ?? dish.portions[0];
 
@@ -45,10 +48,11 @@ export function DishCustomizer({ dish }: { dish: Dish }) {
     <div className="flex flex-col gap-4">
       {/* Portion */}
       <fieldset className="rounded-[2px] border border-border bg-card p-5">
-        <legend className="px-1 text-sm">Portion</legend>
+        <legend className="px-1 text-sm">{tr("Portion", "भाग")}</legend>
         <div className="mt-3 grid grid-cols-2 gap-3">
-          {dish.portions.map((option) => {
+          {dish.portions.map((option, index) => {
             const selected = option.id === portionId;
+            const copyOption = copy.portions[index];
             return (
               <label
                 key={option.id}
@@ -78,11 +82,13 @@ export function DishCustomizer({ dish }: { dish: Dish }) {
                     {selected && <span className="size-2 rounded-full bg-mint" />}
                   </span>
                   <span className={selected ? "text-sm text-mint" : "text-sm"}>
-                    {option.label}
+                    {copyOption.label}
                   </span>
                 </span>
                 <span className="text-xs text-sage">
-                  {option.price === 0 ? option.serves : `+Rs ${option.price}`}
+                  {option.price === 0
+                    ? copyOption.serves
+                    : `+${money(option.price)}`}
                 </span>
               </label>
             );
@@ -92,7 +98,7 @@ export function DishCustomizer({ dish }: { dish: Dish }) {
 
       {/* Spice level */}
       <fieldset className="rounded-[2px] border border-border bg-card p-5">
-        <legend className="px-1 text-sm">Spice level</legend>
+        <legend className="px-1 text-sm">{tr("Spice level", "पिरो स्तर")}</legend>
         <div className="mt-3 grid grid-cols-3 gap-2.5">
           {spiceLevels.map((level) => {
             const selected = level.id === spice;
@@ -113,7 +119,10 @@ export function DishCustomizer({ dish }: { dish: Dish }) {
                   onChange={() => setSpice(level.id)}
                   className="sr-only"
                 />
-                {level.label}
+                {tr(
+                  level.label,
+                  contentNe.enums.dishSpice[level.id] ?? level.label,
+                )}
               </label>
             );
           })}
@@ -122,10 +131,11 @@ export function DishCustomizer({ dish }: { dish: Dish }) {
 
       {/* Add-ons */}
       <fieldset className="rounded-[2px] border border-border bg-card p-5">
-        <legend className="px-1 text-sm">Add-ons</legend>
+        <legend className="px-1 text-sm">{tr("Add-ons", "थप विकल्प")}</legend>
         <ul className="mt-3 flex flex-col gap-2.5">
-          {dish.addons.map((addon) => {
+          {dish.addons.map((addon, index) => {
             const checked = addons.includes(addon.id);
+            const copyAddon = copy.addons[index];
             return (
               <li key={addon.id}>
                 <label className="flex cursor-pointer items-center justify-between gap-3 text-sm">
@@ -149,10 +159,10 @@ export function DishCustomizer({ dish }: { dish: Dish }) {
                       {checked && <Check className="size-3" />}
                     </span>
                     <span className={checked ? "text-foreground" : "text-muted-foreground"}>
-                      {addon.label}
+                      {copyAddon.label}
                     </span>
                   </span>
-                  <span className="text-xs text-sage">+Rs {addon.price}</span>
+                  <span className="text-xs text-sage">+{money(addon.price)}</span>
                 </label>
               </li>
             );
@@ -163,8 +173,9 @@ export function DishCustomizer({ dish }: { dish: Dish }) {
       <div className="flex flex-wrap items-center gap-3">
         <QuantityStepper onChange={setQuantity} />
         <span className="text-sm text-sage">
-          {portion.serves}
-          {portion.id !== dish.portions[0].id && " (large)"}
+          {copy.portions.find((p) => p.id === portionId)?.serves ?? portion.serves}
+          {portion.id !== dish.portions[0].id &&
+            tr(" (large)", " (ठूलो)")}
         </span>
       </div>
 
@@ -198,7 +209,7 @@ export function DishCustomizer({ dish }: { dish: Dish }) {
           })
         }
       >
-        Add to bag &middot; Rs {npr.format(total)}
+        {tr("Add to bag", "झोलामा थप्नुहोस्")} &middot; {money(total)}
       </Button>
     </div>
   );

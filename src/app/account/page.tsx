@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 
 import { AccountHome } from "@/components/account-home";
+import { L } from "@/components/localized-text";
 import { SiteFooter } from "@/components/site-footer";
 
 export const metadata: Metadata = {
@@ -17,7 +18,7 @@ export default function AccountPage() {
         <Suspense
           fallback={
             <p className="py-24 text-center text-sm text-sage">
-              Loading your home&hellip;
+              <L en="Loading your home…" ne="तपाईंको घर लोड हुँदैछ…" />
             </p>
           }
         >

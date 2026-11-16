@@ -1,4 +1,5 @@
 import { CheckoutFlow } from "@/components/checkout-flow";
+import { L } from "@/components/localized-text";
 import { SiteFooter } from "@/components/site-footer";
 
 export const metadata = {
@@ -11,7 +12,9 @@ export default function CheckoutPage() {
     <>
 
       <main className="mx-auto w-full max-w-7xl flex-1 px-6 py-12 pb-24">
-        <h1 className="sr-only">Checkout</h1>
+        <h1 className="sr-only">
+          <L en="Checkout" ne="चेकआउट" />
+        </h1>
         <CheckoutFlow />
       </main>
 

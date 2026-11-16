@@ -11,18 +11,20 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
+import { useLang, type DictPath } from "@/lib/use-lang";
+
 interface Tab {
-  label: string;
+  labelKey: DictPath;
   href: string;
   icon: LucideIcon;
 }
 
 const TABS: Tab[] = [
-  { label: "Home", href: "/", icon: House },
-  { label: "Mart", href: "/mart", icon: ShoppingBasket },
-  { label: "Restaurant", href: "/restaurant", icon: UtensilsCrossed },
-  { label: "Offers", href: "/offers", icon: Flame },
-  { label: "My Home", href: "/account", icon: User },
+  { labelKey: "nav.home", href: "/", icon: House },
+  { labelKey: "nav.mart", href: "/mart", icon: ShoppingBasket },
+  { labelKey: "nav.restaurant", href: "/restaurant", icon: UtensilsCrossed },
+  { labelKey: "nav.offers", href: "/offers", icon: Flame },
+  { labelKey: "nav.myHome", href: "/account", icon: User },
 ];
 
 /**
@@ -37,10 +39,11 @@ function isActive(pathname: string, href: string) {
 /** Fixed mobile tab bar. Below `lg` only — the desktop header has no tabs. */
 export function BottomNav() {
   const pathname = usePathname();
+  const { t, tr } = useLang();
 
   return (
     <nav
-      aria-label="Primary mobile"
+      aria-label={tr("Primary mobile", "मुख्य मोबाइल")}
       className="fixed inset-x-0 bottom-0 z-40 border-t border-foreground/10 bg-background/90 backdrop-blur-xl lg:hidden"
     >
       <ul className="grid grid-cols-5 pb-[env(safe-area-inset-bottom)]">
@@ -64,7 +67,7 @@ export function BottomNav() {
                   }`}
                 />
                 <Icon className="size-[18px]" aria-hidden />
-                <span>{tab.label}</span>
+                <span>{t(tab.labelKey)}</span>
               </Link>
             </li>
           );

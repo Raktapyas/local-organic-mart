@@ -18,17 +18,48 @@ import type { LucideIcon } from "lucide-react";
 import { OrderNotFound } from "@/components/order-not-found";
 import { Button } from "@/components/ui/button";
 import { RIDER } from "@/lib/data";
+import {
+  customizationLabel,
+  deliverySlotLabelFromLabel,
+  lineName,
+  paymentMethodLabel,
+} from "@/lib/i18n/localize";
+import { contentNe } from "@/lib/i18n/content-ne";
 import { useOrderStore } from "@/lib/order-store";
+import { useLang } from "@/lib/use-lang";
 
-const npr = new Intl.NumberFormat("en-NP");
-
-const NODES: { id: string; label: string; icon: LucideIcon }[] = [
-  { id: "placed", label: "Order placed", icon: ClipboardList },
-  { id: "confirmed", label: "Confirmed", icon: CheckCircle2 },
-  { id: "preparing", label: "Preparing", icon: CookingPot },
-  { id: "packed", label: "Packed", icon: Package },
-  { id: "out", label: "Out for delivery", icon: Store },
-  { id: "delivered", label: "Delivered", icon: Check },
+const NODES: {
+  id: string;
+  label: string;
+  labelNe: string;
+  icon: LucideIcon;
+}[] = [
+  {
+    id: "placed",
+    label: "Order placed",
+    labelNe: "अर्डर गरियो",
+    icon: ClipboardList,
+  },
+  {
+    id: "confirmed",
+    label: "Confirmed",
+    labelNe: "पुष्टि भयो",
+    icon: CheckCircle2,
+  },
+  {
+    id: "preparing",
+    label: "Preparing",
+    labelNe: "तयार हुँदै",
+    icon: CookingPot,
+  },
+  { id: "packed", label: "Packed", labelNe: "प्याक भयो", icon: Package },
+  {
+    id: "out",
+    label: "Out for delivery",
+    labelNe: "डेलिभरीमा",
+    icon: Store,
+  },
+  { id: "delivered", label: "Delivered", labelNe: "पुग्यो", icon: Check },
 ];
 
 /** The demo starts with the first two nodes already complete. */
@@ -49,6 +80,7 @@ export function OrderConfirmation() {
   const params = useParams<{ id: string }>();
   const id = params?.id;
   const lastOrder = useOrderStore((state) => state.lastOrder);
+  const { lang, money, tr } = useLang();
   // `lastOrder` only exists in the client store, so render nothing until the
   // client has hydrated.
   const mounted = useSyncExternalStore(
@@ -86,9 +118,14 @@ export function OrderConfirmation() {
         <span className="inline-flex size-12 items-center justify-center rounded-[2px] bg-mint text-primary-foreground">
           <Check className="size-6" aria-hidden />
         </span>
-        <h1 className="text-4xl tracking-tight sm:text-5xl">Order confirmed.</h1>
+        <h1 className="text-4xl tracking-tight sm:text-5xl">
+          {tr("Order confirmed.", "अर्डर पुष्टि भयो।")}
+        </h1>
         <p className="text-sm text-sage">
-          Order #{lastOrder.id} &middot; Arriving in 45&ndash;60 min.
+          {tr(
+            `Order #${lastOrder.id} · Arriving in 45–60 min.`,
+            `अर्डर #${lastOrder.id} · 45–60 मिनेटमा पुग्नेछ।`,
+          )}
         </p>
       </header>
 
@@ -137,7 +174,7 @@ export function OrderConfirmation() {
                       : "px-1 text-center text-xs text-muted-foreground"
                 }
               >
-                {node.label}
+                {tr(node.label, node.labelNe)}
               </span>
             </li>
           );
@@ -152,17 +189,21 @@ export function OrderConfirmation() {
               aria-hidden
               className="inline-flex size-11 items-center justify-center rounded-[2px] bg-muted font-heading text-base text-sage"
             >
-              {RIDER.name.slice(0, 1)}
+              {(lang === "ne" ? contentNe.rider.name : RIDER.name).slice(0, 1)}
             </span>
             <span className="flex flex-col">
-              <span className="font-heading text-base">{RIDER.name}</span>
-              <span className="text-xs text-muted-foreground">{RIDER.role}</span>
+              <span className="font-heading text-base">
+                {lang === "ne" ? contentNe.rider.name : RIDER.name}
+              </span>
+              <span className="text-xs text-muted-foreground">
+                {lang === "ne" ? contentNe.rider.role : RIDER.role}
+              </span>
             </span>
           </div>
           <div className="flex gap-2">
             <Button variant="outline" size="sm" className="rounded-[2px]">
               <Phone className="size-4" aria-hidden />
-              Call
+              {tr("Call", "कल गर्नुहोस्")}
             </Button>
             <Button variant="outline" size="sm" className="rounded-[2px]">
               <MessageCircle className="size-4" aria-hidden />
@@ -173,40 +214,58 @@ export function OrderConfirmation() {
 
         {/* Snapshot */}
         <div className="flex flex-col gap-4 rounded-[2px] border border-border bg-card p-6">
-          <h2 className="font-heading text-lg">Order snapshot</h2>
+          <h2 className="font-heading text-lg">
+            {tr("Order snapshot", "अर्डरको विवरण")}
+          </h2>
           <ul className="flex flex-col gap-2 border-y border-border py-3">
             {lastOrder.lines.map((line) => (
               <li key={line.id} className="flex justify-between gap-3 text-sm">
                 <span className="text-muted-foreground">
-                  {line.name}
+                  {lineName(line, lang)}
                   {line.qty > 1 && ` × ${line.qty}`}
+                  {line.customizations && line.customizations.length > 0 && (
+                    <span className="block text-[11px] text-sage">
+                      {line.customizations
+                        .map((option) => customizationLabel(option, lang))
+                        .join(" · ")}
+                    </span>
+                  )}
                 </span>
-                <span>Rs {npr.format(line.unitPrice * line.qty)}</span>
+                <span>{money(line.unitPrice * line.qty)}</span>
               </li>
             ))}
           </ul>
 
           <dl className="flex flex-col gap-2 text-sm">
             <div className="flex justify-between gap-3">
-              <dt className="text-muted-foreground">Delivering to</dt>
-              <dd>{lastOrder.address}</dd>
+              <dt className="text-muted-foreground">
+                {tr("Delivering to", "डेलिभरी ठेगाना")}
+              </dt>
+              <dd>
+                {tr(
+                  lastOrder.address,
+                  contentNe.addresses.find(
+                    (address) => address.label === lastOrder.address,
+                  )?.label ?? lastOrder.address,
+                )}
+              </dd>
             </div>
             <div className="flex justify-between gap-3">
-              <dt className="text-muted-foreground">Slot</dt>
-              <dd>{lastOrder.slot}</dd>
+              <dt className="text-muted-foreground">{tr("Slot", "समय")}</dt>
+              <dd>{deliverySlotLabelFromLabel(lastOrder.slot, lang)}</dd>
             </div>
             <div className="flex items-center justify-between gap-3">
-              <dt className="text-muted-foreground">Payment</dt>
+              <dt className="text-muted-foreground">{tr("Payment", "भुक्तानी")}</dt>
               <dd className="rounded-[2px] border border-foreground/10 px-2.5 py-1 text-xs">
-                {lastOrder.payment}
+                {paymentMethodLabel(lastOrder.payment, lang)}
               </dd>
             </div>
           </dl>
 
           <div className="flex items-center justify-between border-t border-border pt-4">
-            <span className="font-heading text-lg">Total</span>
+            <span className="font-heading text-lg">{tr("Total", "कुल")}</span>
             <span className="font-heading text-2xl">
-              Rs {npr.format(lastOrder.totals.total)}
+              {money(lastOrder.totals.total)}
             </span>
           </div>
         </div>
@@ -214,7 +273,9 @@ export function OrderConfirmation() {
 
       <div>
         <Button variant="outline" className="rounded-[2px]" asChild>
-          <Link href="/mart">Continue shopping</Link>
+          <Link href="/mart">
+            {tr("Continue shopping", "किनमेल जारी राख्नुहोस्")}
+          </Link>
         </Button>
       </div>
     </div>

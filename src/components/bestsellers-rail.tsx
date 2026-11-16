@@ -7,6 +7,7 @@ import { ArrowRight } from "lucide-react";
 import { ProductCard } from "@/components/product-card";
 import { T } from "@/components/translated";
 import { products, productsInCategory } from "@/lib/data";
+import { useLang } from "@/lib/use-lang";
 
 /**
  * Tabbed bestsellers rail.
@@ -23,11 +24,11 @@ import { products, productsInCategory } from "@/lib/data";
  * thing in the band, which is the opposite of what a register should do.
  */
 const TABS = [
-  { id: "all", label: "All" },
-  { id: "produce", label: "Fresh produce" },
-  { id: "dairy", label: "Dairy" },
-  { id: "pantry", label: "Pantry" },
-  { id: "herbs", label: "Herbs" },
+  { id: "all", label: "All", labelNe: "सबै" },
+  { id: "produce", label: "Fresh produce", labelNe: "ताजा तरकारी" },
+  { id: "dairy", label: "Dairy", labelNe: "दुग्ध पदार्थ" },
+  { id: "pantry", label: "Pantry", labelNe: "भण्डार" },
+  { id: "herbs", label: "Herbs", labelNe: "जडीबुटी" },
 ] as const;
 
 export function BestsellersRail({
@@ -38,6 +39,7 @@ export function BestsellersRail({
 }) {
   const [tab, setTab] = useState<string>("all");
   const excluded = new Set(excludeIds);
+  const { tr } = useLang();
 
   /*
     The Deals rail sits directly below this one, and the catalogue happens to
@@ -56,7 +58,9 @@ export function BestsellersRail({
       <div className="mx-auto w-full max-w-[88rem] px-6 py-16 lg:px-10 lg:py-24">
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-4">
-            <span className="eyebrow shrink-0">The register</span>
+            <span className="eyebrow shrink-0">
+              {tr("The register", "बिक्रीको सूची")}
+            </span>
             <span aria-hidden className="rule-fade flex-1" />
           </div>
 
@@ -65,14 +69,17 @@ export function BestsellersRail({
               <T k="sections.bestsellers" />
             </h2>
             <p className="max-w-sm text-xs leading-relaxed text-ash">
-              Ranked by what leaves the cold store fastest.
+              {tr(
+                "Ranked by what leaves the cold store fastest.",
+                "चिसो भण्डारबाट सबैभन्दा छिटो बिक्नेका आधारमा क्रमबद्ध।",
+              )}
             </p>
           </div>
         </div>
 
         <div
           role="tablist"
-          aria-label="Bestseller departments"
+          aria-label={tr("Bestseller departments", "सर्वाधिक बिक्रीका विभाग")}
           className="mt-10 flex flex-wrap gap-x-7 gap-y-2 border-b border-foreground/[0.08]"
         >
           {TABS.map((entry) => {
@@ -90,7 +97,7 @@ export function BestsellersRail({
                     : "text-ash/70 hover:text-ivory"
                 }`}
               >
-                {entry.label}
+                {tr(entry.label, entry.labelNe)}
                 <span
                   aria-hidden
                   className={`absolute inset-x-0 -bottom-px h-px bg-gold transition-transform duration-300 ${
@@ -115,7 +122,7 @@ export function BestsellersRail({
             href="/mart"
             className="group inline-flex h-11 items-center gap-2 border border-foreground/15 px-7 text-[10.5px] tracking-[0.2em] text-ivory uppercase transition-colors duration-200 hover:border-gold/60 hover:text-gold"
           >
-            Shop all bestsellers
+            {tr("Shop all bestsellers", "सबै सर्वाधिक बिक्री हेर्नुहोस्")}
             <ArrowRight
               className="size-3.5 transition-transform duration-300 group-hover:translate-x-1"
               aria-hidden

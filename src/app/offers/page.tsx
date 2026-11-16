@@ -4,6 +4,7 @@ import { ArrowRight, Lock } from "lucide-react";
 
 import { ComboCard } from "@/components/combo-card";
 import { CountdownChip } from "@/components/countdown-chip";
+import { L } from "@/components/localized-text";
 import { ProductCard } from "@/components/product-card";
 import { SiteFooter } from "@/components/site-footer";
 import { Button } from "@/components/ui/button";
@@ -39,14 +40,20 @@ export default function OffersPage() {
               <CountdownChip
                 closesAt={dealsCloseAt}
                 label="Deal window closes in"
+                labelNe="अफर अवधि सकिन बाँकी"
                 className="text-base"
               />
               <h1 className="max-w-2xl text-4xl tracking-tight text-balance sm:text-5xl md:text-6xl">
-                This week&rsquo;s big deals
+                <L
+                  en="This week's big deals"
+                  ne="यो हप्ताका मुख्य अफर"
+                />
               </h1>
               <p className="max-w-xl text-base text-sage">
-                Monday&ndash;Thursday. Prices update automatically when the
-                window ends.
+                <L
+                  en="Monday–Thursday. Prices update automatically when the window ends."
+                  ne="सोमबार–बिहीबार। अवधि सकिएपछि मूल्य आफैं अद्यावधिक हुन्छ।"
+                />
               </p>
             </div>
           </div>
@@ -57,11 +64,16 @@ export default function OffersPage() {
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div className="flex flex-col gap-2">
               <h2 className="text-xs tracking-wider text-sage uppercase">
-                Direct from orchard &amp; field
+                <L en="Direct from orchard & field" ne="बगैंचा र खेतबाट सिधै" />
               </h2>
-              <h3 className="text-3xl tracking-tight">Live now</h3>
+              <h3 className="text-3xl tracking-tight">
+                <L en="Live now" ne="अहिले उपलब्ध" />
+              </h3>
               <p className="text-sm text-muted-foreground">
-                {dealProducts.length} limited harvest allocations
+                <L
+                  en={`${dealProducts.length} limited harvest allocations`}
+                  ne={`${dealProducts.length} सीमित बाली आवंटन`}
+                />
               </p>
             </div>
           </div>
@@ -82,11 +94,13 @@ export default function OffersPage() {
               <Lock className="size-5" aria-hidden />
             </span>
             <h2 className="max-w-xl text-2xl tracking-tight sm:text-3xl">
-              Member prices unlock here
+              <L en="Member prices unlock here" ne="सदस्य मूल्य यहाँ खुल्छ" />
             </h2>
             <p className="max-w-lg text-sm text-muted-foreground">
-              A flat 10% off Mart provisions, 2x reward points, and first
-              refusal on the next allocation window.
+              <L
+                en="A flat 10% off Mart provisions, 2x reward points, and first refusal on the next allocation window."
+                ne="मार्टका सामानमा स्थिर 10% छुट, 2× रिवार्ड अंक, र अर्को आवंटन अवधिमा पहिलो अधिकार।"
+              />
             </p>
             <Button
               variant="outline"
@@ -94,7 +108,7 @@ export default function OffersPage() {
               asChild
             >
               <Link href="/membership">
-                Join membership
+                <L en="Join membership" ne="सदस्यता लिनुहोस्" />
                 <ArrowRight className="size-4" aria-hidden />
               </Link>
             </Button>
@@ -105,12 +119,16 @@ export default function OffersPage() {
         <section className="mx-auto w-full max-w-7xl px-6 pb-24">
           <div className="flex flex-col gap-2">
             <h2 className="text-xs tracking-wider text-sage uppercase">
-              Kitchen pairings
+              <L en="Kitchen pairings" ne="भान्साका जोडी" />
             </h2>
-            <h3 className="text-3xl tracking-tight">Combo &amp; save</h3>
+            <h3 className="text-3xl tracking-tight">
+              <L en="Combo & save" ne="कम्बो र बचत" />
+            </h3>
             <p className="max-w-xl text-sm text-muted-foreground">
-              Two Restaurant dishes, one tap. The saving is already taken off
-              the second item when it lands in your bag.
+              <L
+                en="Two Restaurant dishes, one tap. The saving is already taken off the second item when it lands in your bag."
+                ne="दुई रेस्टुरेन्ट परिकार, एउटै क्लिक। झोलामा पुग्दा नै दोस्रो वस्तुबाट बचत घटाइएको हुन्छ।"
+              />
             </p>
           </div>
 

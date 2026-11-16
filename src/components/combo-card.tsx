@@ -6,6 +6,8 @@ import { Check, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/lib/cart-store";
 import { dishBySlug, type Dish } from "@/lib/data";
+import { dishText } from "@/lib/i18n/localize";
+import { useLang } from "@/lib/use-lang";
 
 /**
  * A two-dish bundle. Pressing "Add combo" pushes *both* dishes to the cart as
@@ -21,6 +23,7 @@ export function ComboCard({
 }) {
   const addItem = useCartStore((state) => state.addItem);
   const [added, setAdded] = useState(false);
+  const { lang, money, tr } = useLang();
 
   const dishes = dishIds
     .map((id) => dishBySlug(id))
@@ -28,29 +31,36 @@ export function ComboCard({
 
   if (dishes.length < 2) return null;
 
+  const copies = dishes.map((dish) => dishText(dish, lang));
+
   const listPrice = dishes.reduce((sum, dish) => sum + dish.price, 0);
   const comboPrice = listPrice - saving;
-  const bundleLabel = dishes.map((dish) => dish.name).join(" + ");
+  const bundleLabel = copies.map((copy) => copy.name).join(" + ");
 
   return (
     <div className="flex h-full flex-col gap-4 rounded-[2px] border border-border bg-card p-6">
       <div>
         <h3 className="font-heading text-lg leading-tight">{bundleLabel}</h3>
-        <p className="mt-1 text-xs text-sage">Save Rs {saving}</p>
+        <p className="mt-1 text-xs text-sage">
+          {tr(`Save ${money(saving)}`, `${money(saving)} बचत`)}
+        </p>
       </div>
 
       <ul className="flex flex-col gap-2">
-        {dishes.map((dish) => (
+        {dishes.map((dish, index) => (
           <li
             key={dish.id}
             className="flex items-baseline justify-between gap-3 text-sm"
           >
             <span className="text-muted-foreground">
-              {dish.name}
-              <span className="text-xs text-sage"> · {dish.portion}</span>
+              {copies[index].name}
+              <span className="text-xs text-sage">
+                {" · "}
+                {copies[index].portion}
+              </span>
             </span>
             <span className="text-xs text-muted-foreground line-through">
-              Rs {dish.price.toLocaleString("en-NP")}
+              {money(dish.price)}
             </span>
           </li>
         ))}
@@ -58,11 +68,9 @@ export function ComboCard({
 
       <div className="mt-auto flex items-center justify-between gap-3 border-t border-border pt-4">
         <p className="flex items-baseline gap-1.5">
-          <span className="font-heading text-2xl">
-            Rs {comboPrice.toLocaleString("en-NP")}
-          </span>
+          <span className="font-heading text-2xl">{money(comboPrice)}</span>
           <span className="text-xs text-muted-foreground line-through">
-            Rs {listPrice.toLocaleString("en-NP")}
+            {money(listPrice)}
           </span>
         </p>
 
@@ -85,7 +93,9 @@ export function ComboCard({
                 unitPrice: dish.price - discount,
                 qty: 1,
                 image: dish.image,
-                customizations: [`${bundleLabel} combo`],
+                customizations: [
+                  `${dishes.map((entry) => entry.name).join(" + ")} combo`,
+                ],
               });
             });
             setAdded(true);
@@ -94,12 +104,12 @@ export function ComboCard({
           {added ? (
             <>
               <Check className="size-4" aria-hidden />
-              Added
+              {tr("Added", "थपियो")}
             </>
           ) : (
             <>
               <Plus className="size-4" aria-hidden />
-              Add combo
+              {tr("Add combo", "कम्बो थप्नुहोस्")}
             </>
           )}
         </Button>

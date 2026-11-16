@@ -17,7 +17,9 @@ export default function TrackOrderPage() {
         <SectionHeader
           as="h1"
           title="Track your order"
+          titleNe="आफ्नो अर्डर ट्र्याक गर्नुहोस्"
           subline="Enter the reference from your confirmation to see where it is."
+          sublineNe="यो कहाँ छ हेर्न पुष्टिकरणमा पाएको सन्दर्भ नम्बर हाल्नुहोस्।"
         />
 
         <div className="mt-10">

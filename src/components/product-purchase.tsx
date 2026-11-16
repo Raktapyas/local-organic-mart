@@ -6,8 +6,7 @@ import { QuantityStepper } from "@/components/quantity-stepper";
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/lib/cart-store";
 import type { Product } from "@/lib/data";
-
-const npr = new Intl.NumberFormat("en-NP");
+import { useLang } from "@/lib/use-lang";
 
 /**
  * Basket action block. Holds quantity locally and pushes a line to the cart
@@ -23,6 +22,7 @@ export function ProductPurchase({
 }) {
   const addItem = useCartStore((state) => state.addItem);
   const [quantity, setQuantity] = useState(1);
+  const { money, tr } = useLang();
   // TODO: server-side recalc — these client totals are a preview only. The API
   // owns real pricing, tier eligibility, and the authoritative line total.
   const unit = Math.round(product.price * (1 - bulkDiscountPct / 100));
@@ -33,13 +33,13 @@ export function ProductPurchase({
       <div className="flex flex-wrap items-center gap-3">
         <QuantityStepper onChange={setQuantity} />
         <span className="text-sm text-muted-foreground">
-          Rs {npr.format(total)} total
+          {tr(`${money(total)} total`, `जम्मा ${money(total)}`)}
         </span>
       </div>
 
       {product.outOfStock ? (
         <Button variant="outline" className="h-12 w-full rounded-[2px] text-[10.5px] tracking-[0.2em] uppercase">
-          Notify me
+          {tr("Notify me", "मलाई खबर गर्नुहोस्")}
         </Button>
       ) : (
         <Button
@@ -60,7 +60,7 @@ export function ProductPurchase({
             })
           }
         >
-          Add to bag &middot; Rs {npr.format(total)}
+          {tr("Add to bag", "झोलामा थप्नुहोस्")} &middot; {money(total)}
         </Button>
       )}
     </div>

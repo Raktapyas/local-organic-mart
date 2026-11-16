@@ -6,6 +6,8 @@ import type { LucideIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import type { Product } from "@/lib/data";
+import { productText } from "@/lib/i18n/localize";
+import { useLang } from "@/lib/use-lang";
 
 interface TrailStop {
   icon: LucideIcon;
@@ -22,37 +24,40 @@ interface TrailStop {
  * The last two stops are the site's own dispatch promise rather than product
  * fields, and are labelled as such.
  */
-function trailFor(product: Product): TrailStop[] {
+function trailFor(product: Product, lang: "en" | "ne"): TrailStop[] {
+  const copy = productText(product, lang);
+  const ne = lang === "ne";
+
   return [
     {
       icon: Sprout,
-      label: "Grown in",
-      value: product.region,
-      note: product.freshness,
+      label: ne ? "उमारिएको" : "Grown in",
+      value: copy.region,
+      note: copy.freshness ?? "",
     },
     {
       icon: Route,
-      label: "Harvested",
-      value: product.harvestedOn,
-      note: product.badge,
+      label: ne ? "टिपिएको" : "Harvested",
+      value: copy.harvestedOn,
+      note: copy.badge ?? "",
     },
     {
       icon: Check,
-      label: "Batch",
+      label: ne ? "ब्याच" : "Batch",
       value: product.batch,
-      note: `${product.unit} · ${product.nepaliName}`,
+      note: ne ? copy.unit : `${copy.unit} · ${product.nepaliName}`,
     },
     {
       icon: Check,
-      label: "Packed",
-      value: "Within 24h",
-      note: "Sealed at the valley depot",
+      label: ne ? "प्याक भएको" : "Packed",
+      value: ne ? "24 घण्टाभित्र" : "Within 24h",
+      note: ne ? "उपत्यका डिपोमा सिल गरिएको" : "Sealed at the valley depot",
     },
     {
       icon: MapPin,
-      label: "Delivered",
-      value: "45–60 min",
-      note: "Same-day cold-chain drop",
+      label: ne ? "डेलिभरी" : "Delivered",
+      value: ne ? "45–60 मिनेट" : "45–60 min",
+      note: ne ? "उही दिन कोल्ड चेन डेलिभरी" : "Same-day cold-chain drop",
     },
   ];
 }
@@ -60,6 +65,7 @@ function trailFor(product: Product): TrailStop[] {
 export function KnowYourProduct({ products }: { products: Product[] }) {
   const [selectedId, setSelectedId] = useState(products[0]?.id ?? "");
   const [revealed, setRevealed] = useState<string | null>(null);
+  const { lang, tr } = useLang();
 
   const product = products.find((item) => item.id === selectedId);
   const shown = revealed === selectedId ? product : undefined;
@@ -69,18 +75,20 @@ export function KnowYourProduct({ products }: { products: Product[] }) {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div className="flex flex-col gap-2">
           <h2 className="text-xs tracking-wider text-sage uppercase">
-            Know your product
+            {tr("Know your product", "आफ्नो उत्पादन चिन्नुहोस्")}
           </h2>
           <p className="max-w-lg text-sm text-muted-foreground">
-            Pick any lot in the mart and follow it from the terrace it was
-            grown on to the hour it reaches your kitchen.
+            {tr(
+              "Pick any lot in the mart and follow it from the terrace it was grown on to the hour it reaches your kitchen.",
+              "मार्टको कुनै पनि लट छान्नुहोस् र त्यो कुन टेरासमा उमारियो, कति बेला तपाईंको भान्सामा पुग्छ — सुरुदेखि अन्त्यसम्म पछ्याउनुहोस्।",
+            )}
           </p>
         </div>
 
         <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
           <div className="relative">
             <label htmlFor="trail-product" className="sr-only">
-              Choose a product
+              {tr("Choose a product", "उत्पादन छान्नुहोस्")}
             </label>
             <select
               id="trail-product"
@@ -90,7 +98,7 @@ export function KnowYourProduct({ products }: { products: Product[] }) {
             >
               {products.map((item) => (
                 <option key={item.id} value={item.id}>
-                  {item.name} · {item.batch}
+                  {productText(item, lang).name} · {item.batch}
                 </option>
               ))}
             </select>
@@ -104,14 +112,14 @@ export function KnowYourProduct({ products }: { products: Product[] }) {
             className="h-11 rounded-[2px] px-6"
             onClick={() => setRevealed(selectedId)}
           >
-            Show trail
+            {tr("Show trail", "यात्रा देखाउनुहोस्")}
           </Button>
         </div>
       </div>
 
       {shown ? (
         <ol className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
-          {trailFor(shown).map((stop, index) => {
+          {trailFor(shown, lang).map((stop, index) => {
             const Icon = stop.icon;
             return (
               <li key={stop.label} className="relative flex flex-col gap-3">
@@ -143,7 +151,10 @@ export function KnowYourProduct({ products }: { products: Product[] }) {
         </ol>
       ) : (
         <p className="mt-10 rounded-[2px] border border-dashed border-border px-6 py-10 text-center text-sm text-sage">
-          Choose a lot, then press Show trail to open its custody record.
+          {tr(
+            "Choose a lot, then press Show trail to open its custody record.",
+            "लट छानेर ‘यात्रा देखाउनुहोस्’ थिच्नुहोस् — त्यसको अभिरक्षण विवरण खुल्छ।",
+          )}
         </p>
       )}
     </div>

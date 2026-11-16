@@ -6,8 +6,8 @@ import { Check, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/lib/cart-store";
 import { WEEKLY_ESSENTIALS, type Product } from "@/lib/data";
-
-const npr = new Intl.NumberFormat("en-NP");
+import { productText } from "@/lib/i18n/localize";
+import { useLang } from "@/lib/use-lang";
 
 /**
  * Weekly restock card.
@@ -23,6 +23,7 @@ const npr = new Intl.NumberFormat("en-NP");
 export function WeeklyEssentials({ products }: { products: Product[] }) {
   const addItem = useCartStore((state) => state.addItem);
   const [added, setAdded] = useState(false);
+  const { lang, money, tr } = useLang();
 
   const items = WEEKLY_ESSENTIALS.map((entry) => ({
     entry,
@@ -51,9 +52,12 @@ export function WeeklyEssentials({ products }: { products: Product[] }) {
   return (
     <div className="flex flex-col gap-7 border border-foreground/[0.08] bg-card/40 p-6 lg:flex-row lg:items-center lg:gap-12 lg:p-8">
       <div className="flex shrink-0 flex-col gap-1.5 lg:max-w-[13rem]">
-        <span className="eyebrow">The usual</span>
+        <span className="eyebrow">{tr("The usual", "जे सधैं लिनुहुन्छ")}</span>
         <p className="text-xs leading-relaxed text-ash">
-          Last week&rsquo;s basket, ready to repeat.
+          {tr(
+            "Last week's basket, ready to repeat.",
+            "गएको हप्ताको टोकरी, फेरि दोहोर्‍याउन तयार।",
+          )}
         </p>
       </div>
 
@@ -67,10 +71,10 @@ export function WeeklyEssentials({ products }: { products: Product[] }) {
               {entry.qty > 1 ? (
                 <span className="tabular mr-1.5 text-gold/80">{entry.qty}×</span>
               ) : null}
-              {product.name}
+              {productText(product, lang).name}
             </span>
             <span className="tabular text-xs text-ash">
-              Rs {npr.format(product.price)}
+              {money(product.price)}
             </span>
           </li>
         ))}
@@ -84,12 +88,12 @@ export function WeeklyEssentials({ products }: { products: Product[] }) {
         {added ? (
           <>
             <Check className="size-3.5" aria-hidden />
-            Added to bag
+            {tr("Added to bag", "झोलामा थपियो")}
           </>
         ) : (
           <>
             <RotateCcw className="size-3.5" aria-hidden />
-            Reorder all
+            {tr("Reorder all", "सबै फेरि अर्डर गर्नुहोस्")}
           </>
         )}
       </Button>

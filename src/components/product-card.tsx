@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { Heart, Plus } from "lucide-react";
 
@@ -5,6 +7,8 @@ import { AddToCartButton } from "@/components/add-to-cart-button";
 import { PhotoFallback } from "@/components/photo-fallback";
 import { Button } from "@/components/ui/button";
 import { discountPercent, memberPrice, type Product } from "@/lib/data";
+import { productText } from "@/lib/i18n/localize";
+import { useLang } from "@/lib/use-lang";
 
 const npr = new Intl.NumberFormat("en-NP");
 
@@ -27,6 +31,8 @@ export function ProductCard({
   const off = discountPercent(product);
   const sold = product.outOfStock;
   const member = memberPrice(product);
+  const { lang, money, tr } = useLang();
+  const copy = productText(product, lang);
 
   return (
     <article
@@ -38,7 +44,7 @@ export function ProductCard({
         {product.image ? (
           <Image
             src={product.image}
-            alt={product.name}
+            alt={copy.name}
             fill
             priority={priority}
             sizes="(min-width: 1280px) 18vw, (min-width: 768px) 30vw, (min-width: 640px) 45vw, 46vw"
@@ -49,7 +55,7 @@ export function ProductCard({
             }
           />
         ) : (
-          <PhotoFallback label={product.category} className="absolute inset-0" />
+          <PhotoFallback label={copy.category} className="absolute inset-0" />
         )}
 
         {/* A single gold hairline at the top of the plate on hover. */}
@@ -63,13 +69,13 @@ export function ProductCard({
         {sold ? (
           <div className="absolute inset-0 flex items-center justify-center bg-background/60 p-3">
             <span className="border border-foreground/20 bg-background/90 px-3 py-1.5 text-[10px] tracking-[0.2em] text-ash uppercase">
-              {product.soldOutNote ?? "Sold out"}
+              {copy.soldOutNote ?? tr("Sold out", "सकियो")}
             </span>
           </div>
         ) : (
           <button
             type="button"
-            aria-label={`Save ${product.name}`}
+            aria-label={tr(`Save ${copy.name}`, `${copy.name} इच्छासूचीमा राख्नुहोस्`)}
             className="absolute top-3 right-3 grid size-7 place-items-center border border-ivory/10 bg-background/60 text-ash/70 backdrop-blur-sm transition-colors duration-200 hover:border-gold/40 hover:text-gold"
           >
             <Heart className="size-3.5" aria-hidden />
@@ -82,9 +88,9 @@ export function ProductCard({
               &minus;{off}%
             </span>
           )}
-          {product.season && (
+          {copy.season && (
             <span className="border border-ivory/10 bg-background/75 px-1.5 py-0.5 text-[9px] tracking-[0.14em] text-ash uppercase backdrop-blur-sm">
-              {product.season}
+              {copy.season}
             </span>
           )}
         </div>
@@ -93,23 +99,25 @@ export function ProductCard({
       <div className="flex flex-1 flex-col justify-between gap-3 p-3.5">
         <div>
           <span className="block text-[9px] leading-tight tracking-[0.2em] text-gold/70 uppercase">
-            {product.badge}
+            {copy.badge}
           </span>
           <h3 className="mt-1.5 font-heading text-[0.95rem] leading-tight text-ivory">
-            {product.name}
+            {copy.name}
           </h3>
           <p className="mt-1 text-[10.5px] leading-tight text-ash/70">
-            {product.nepaliName} &middot; {product.unit}
+            {lang === "ne"
+              ? copy.unit
+              : `${product.nepaliName} · ${copy.unit}`}
           </p>
         </div>
 
         <div>
           <div className="flex items-center justify-between gap-2 border-t border-foreground/[0.08] pt-2.5">
             <span className="tabular flex items-baseline gap-1.5 text-[0.8rem] text-ivory">
-              Rs {npr.format(product.price)}
+              {money(product.price)}
               {product.oldPrice && (
                 <span className="text-[10.5px] text-ash/45 line-through">
-                  {npr.format(product.oldPrice)}
+                  {money(product.oldPrice)}
                 </span>
               )}
             </span>
@@ -120,7 +128,7 @@ export function ProductCard({
                 variant="outline"
                 className="h-7 rounded-none px-2.5 text-[10px] tracking-[0.12em] uppercase"
               >
-                Notify
+                {tr("Notify", "खबर गर्नुहोस्")}
               </Button>
             ) : (
               <AddToCartButton
@@ -154,7 +162,9 @@ export function ProductCard({
             makes a grid look assembled rather than composed.
           */}
           <p className="tabular mt-1.5 min-h-[13px] text-[10px] leading-tight text-gold/80">
-            {member !== null ? `Members ${npr.format(member)}` : ""}
+            {member !== null
+              ? tr(`Members ${npr.format(member)}`, `सदस्य ${npr.format(member)}`)
+              : ""}
           </p>
         </div>
       </div>

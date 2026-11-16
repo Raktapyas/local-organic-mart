@@ -34,7 +34,7 @@ import { useLang } from "@/lib/use-lang";
  * used to leave 16px of page visible at 1440 and 256px at 1920.
  */
 export function SiteHeader() {
-  const { t } = useLang();
+  const { t, tr, isNe } = useLang();
   const [searchOpen, setSearchOpen] = useState(false);
   const searchRef = useRef<HTMLFormElement>(null);
   const searchTriggerRef = useRef<HTMLButtonElement>(null);
@@ -78,7 +78,7 @@ export function SiteHeader() {
         {/* Wordmark: crest + stacked lettering, in flow. */}
         <Link
           href="/"
-          aria-label="Local Organic Mart — home"
+          aria-label={tr("Local Organic Mart — home", "लोकल अर्गानिक मार्ट — गृहपृष्ठ")}
           className="group flex shrink-0 items-center gap-3"
         >
           <span className="relative grid size-9 shrink-0 rotate-45 place-items-center border border-gold/45 transition-colors duration-300 group-hover:border-gold/80">
@@ -92,14 +92,14 @@ export function SiteHeader() {
               Local Organic Mart
             </span>
             <span className="mt-[0.3rem] text-[8.5px] tracking-[0.34em] text-gold/75 uppercase">
-              Kathmandu Valley
+              {tr("Kathmandu Valley", "काठमाडौं उपत्यका")}
             </span>
           </span>
         </Link>
 
         {/* Primary navigation */}
         <nav
-          aria-label="Primary"
+          aria-label={tr("Primary", "मुख्य नेभिगेसन")}
           className="flex items-center gap-6 xl:gap-7"
         >
           <MegaMenu martHref={martLink.href} />
@@ -130,7 +130,7 @@ export function SiteHeader() {
             ref={searchTriggerRef}
             type="button"
             onClick={() => setSearchOpen(true)}
-            aria-label="Open search"
+            aria-label={tr("Open search", "खोज खोल्नुहोस्")}
             aria-expanded={searchOpen}
             aria-controls={searchOpen ? "site-search" : undefined}
             className="grid size-9 place-items-center border border-foreground/10 text-ash transition-colors duration-200 hover:border-gold/50 hover:text-gold"
@@ -141,12 +141,12 @@ export function SiteHeader() {
           <LanguageToggle />
 
           <span className="px-1.5 text-[10px] tracking-[0.18em] text-ash/80 uppercase">
-            NPR
+            {isNe ? "रु" : "NPR"}
           </span>
 
           <Link
             href="/bag"
-            aria-label="Open basket"
+            aria-label={tr("Open basket", "झोला खोल्नुहोस्")}
             className="relative grid size-9 place-items-center border border-foreground/10 text-ash transition-colors duration-200 hover:border-gold/50 hover:text-gold"
           >
             <ShoppingBag className="size-[15px]" aria-hidden />
@@ -155,7 +155,7 @@ export function SiteHeader() {
 
           <Link
             href="/account"
-            aria-label="My Organic Home"
+            aria-label={tr("My Organic Home", "मेरो अर्गानिक घर")}
             className="grid size-9 place-items-center border border-foreground/10 text-ash transition-colors duration-200 hover:border-gold/50 hover:text-gold"
           >
             <User className="size-[15px]" aria-hidden />
@@ -181,17 +181,20 @@ export function SiteHeader() {
               type="search"
               name="q"
               autoFocus
-              aria-label="Search the mart"
-              placeholder="Search the mart — produce, pantry, the kitchen"
+              aria-label={tr("Search the mart", "मार्टमा खोज्नुहोस्")}
+              placeholder={tr(
+                "Search the mart — produce, pantry, the kitchen",
+                "मार्टमा खोज्नुहोस् — तरकारी, भण्डार, भान्सा",
+              )}
               className="h-9 min-w-0 flex-1 bg-transparent font-heading text-lg text-ivory outline-none placeholder:text-ash/55"
             />
             <span className="hidden text-[9px] tracking-[0.24em] text-ash/60 uppercase sm:block">
-              Press Enter
+              {tr("Press Enter", "Enter थिच्नुहोस्")}
             </span>
             <button
               type="button"
               onClick={() => setSearchOpen(false)}
-              aria-label="Close search"
+              aria-label={tr("Close search", "खोज बन्द गर्नुहोस्")}
               className="grid size-9 place-items-center border border-foreground/10 text-ash transition-colors hover:border-gold/50 hover:text-gold"
             >
               <X className="size-4" aria-hidden />

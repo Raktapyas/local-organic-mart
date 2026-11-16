@@ -7,9 +7,12 @@ import { Clock, Flame, Leaf, MapPin } from "lucide-react";
 
 import { DishCard } from "@/components/dish-card";
 import { DishCustomizer } from "@/components/dish-customizer";
+import { L } from "@/components/localized-text";
+import { LocalizedNav } from "@/components/localized-nav";
 import { SectionHeader } from "@/components/section-header";
 import { SiteFooter } from "@/components/site-footer";
 import { dishes, dishBySlug, type Dish } from "@/lib/data";
+import { dishText } from "@/lib/i18n/localize";
 
 const npr = new Intl.NumberFormat("en-NP");
 
@@ -85,6 +88,7 @@ async function DishBody({
   const frames = galleryFrames(dish);
   const thumbs = frames.slice(1);
   const flames = SPICE_FLAMES[dish.spice] ?? 0;
+  const ne = dishText(dish, "ne");
 
   // Prefer dishes sharing a tag, then fall back to the rest of the menu.
   const related = [
@@ -103,11 +107,15 @@ async function DishBody({
   return (
     <>
       <div className="mx-auto w-full max-w-7xl px-6 pt-8 pb-6">
-        <nav aria-label="Breadcrumb" className="text-xs text-muted-foreground">
+        <LocalizedNav
+          en="Breadcrumb"
+          ne="ब्रेडक्रम्ब"
+          className="text-xs text-muted-foreground"
+        >
           <ol className="flex flex-wrap items-center gap-2">
             <li>
               <Link href="/" className="transition-colors hover:text-foreground">
-                Home
+                <L en="Home" ne="गृहपृष्ठ" />
               </Link>
             </li>
             <li aria-hidden>/</li>
@@ -116,13 +124,15 @@ async function DishBody({
                 href="/restaurant"
                 className="transition-colors hover:text-foreground"
               >
-                Restaurant
+                <L en="Restaurant" ne="रेस्टुरेन्ट" />
               </Link>
             </li>
             <li aria-hidden>/</li>
-            <li className="text-foreground">{dish.name}</li>
+            <li className="text-foreground">
+              <L en={dish.name} ne={ne.name} />
+            </li>
           </ol>
-        </nav>
+        </LocalizedNav>
       </div>
 
       <section className="mx-auto grid w-full max-w-7xl gap-10 px-6 pb-16 lg:grid-cols-2">
@@ -131,7 +141,7 @@ async function DishBody({
           <div className="relative aspect-4/3 overflow-hidden rounded-[2px] border border-border">
             <Image
               src={frames[0]}
-              alt={dish.name}
+              alt=""
               fill
               priority
               sizes="(min-width: 1024px) 45vw, 92vw"
@@ -162,17 +172,22 @@ async function DishBody({
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-3">
             <h1 className="text-4xl leading-tight tracking-tight sm:text-5xl">
-              {dish.name}
+              <L en={dish.name} ne={ne.name} />
             </h1>
             <p className="text-sage">
-              {dish.nepaliName} &middot; {dish.portion}
+              {dish.nepaliName} &middot; <L en={dish.portion} ne={ne.portion} />
             </p>
-            <p className="text-sm leading-relaxed">{dish.desc}</p>
+            <p className="text-sm leading-relaxed">
+              <L en={dish.desc} ne={ne.desc} />
+            </p>
           </div>
 
           <div className="flex flex-wrap items-baseline gap-3 border-b border-border pb-5">
             <span className="font-heading text-3xl font-medium">
-              Rs {npr.format(dish.price)}
+              <L
+                en={`Rs ${npr.format(dish.price)}`}
+                ne={`रु ${npr.format(dish.price)}`}
+              />
             </span>
           </div>
 
@@ -180,10 +195,13 @@ async function DishBody({
           <ul className="flex flex-wrap items-center gap-2">
             <li className="inline-flex items-center gap-1.5 rounded-[2px] border border-border px-3 py-1 text-xs text-muted-foreground">
               <Clock className="size-3.5" aria-hidden />
-              Prep: {dish.prepTime}
+              <L
+                en={`Prep: ${dish.prepTime}`}
+                ne={`तयारी: ${ne.prepTime}`}
+              />
             </li>
             <li className="inline-flex items-center gap-1.5 rounded-[2px] border border-border px-3 py-1 text-xs text-muted-foreground">
-              {dish.spice}
+              <L en={dish.spice} ne={ne.spice} />
               {flames > 0 && (
                 <span className="flex items-center gap-0.5">
                   {Array.from({ length: flames }, (_, i) => (
@@ -193,7 +211,7 @@ async function DishBody({
               )}
             </li>
             <li className="rounded-[2px] border border-border px-3 py-1 text-xs text-muted-foreground">
-              {dish.diet}
+              <L en={dish.diet} ne={ne.diet} />
             </li>
           </ul>
 
@@ -201,7 +219,10 @@ async function DishBody({
 
           <p className="flex items-center gap-2 text-xs text-muted-foreground">
             <MapPin className="size-3.5" aria-hidden />
-            Delivered warm in 30&ndash;45 min inside Ring Road
+            <L
+              en="Delivered warm in 30–45 min inside Ring Road"
+              ne="रिङ रोडभित्र 30–45 मिनेटमा तातै डेलिभरी"
+            />
           </p>
 
           <button
@@ -209,7 +230,7 @@ async function DishBody({
             className="inline-flex w-fit items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
             <Leaf className="size-4" aria-hidden />
-            Save to favorites
+            <L en="Save to favorites" ne="मनपर्नेमा राख्नुहोस्" />
           </button>
         </div>
       </section>
@@ -219,7 +240,9 @@ async function DishBody({
         <section className="mx-auto w-full max-w-7xl px-6 pb-24">
           <SectionHeader
             title="Pairs well with"
+            titleNe="यससँग राम्रो लाग्छ"
             subline="More from the kitchen"
+            sublineNe="भान्साबाट अरू पनि"
           />
           <ul className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {related.map((item) => (

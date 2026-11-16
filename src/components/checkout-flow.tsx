@@ -12,15 +12,25 @@ import {
   DELIVERY_SLOTS,
   paymentMethods,
 } from "@/lib/data";
+import {
+  addressText,
+  customizationLabel,
+  deliverySlotLabelFromLabel,
+  lineName,
+  paymentMethodLabel,
+} from "@/lib/i18n/localize";
+import { contentNe } from "@/lib/i18n/content-ne";
 import { useOrderStore } from "@/lib/order-store";
 import { useLang } from "@/lib/use-lang";
 
-const npr = new Intl.NumberFormat("en-NP");
-
-const STEPS = ["Address", "Delivery", "Payment"] as const;
+const STEPS = [
+  { en: "Address", ne: "ठेगाना" },
+  { en: "Delivery", ne: "डेलिभरी" },
+  { en: "Payment", ne: "भुक्तानी" },
+] as const;
 
 export function CheckoutFlow() {
-  const { t } = useLang();
+  const { t, tr, lang, money } = useLang();
   const router = useRouter();
   const lines = useCartStore((state) => state.lines);
   const placeOrder = useOrderStore((state) => state.placeOrder);
@@ -35,13 +45,16 @@ export function CheckoutFlow() {
     return (
       <div className="flex flex-col items-center gap-4 py-24 text-center">
         <h1 className="font-heading text-3xl tracking-tight">
-          Nothing to check out.
+          {tr("Nothing to check out.", "चेकआउट गर्न केही छैन।")}
         </h1>
         <p className="max-w-sm text-sm text-sage">
-          Your bag is empty, so there is nothing to pay for yet.
+          {tr(
+            "Your bag is empty, so there is nothing to pay for yet.",
+            "तपाईंको झोला खाली छ, त्यसैले अहिले तिर्न केही छैन।",
+          )}
         </p>
         <Button className="mt-2 rounded-[2px]" asChild>
-          <Link href="/bag">Return to bag</Link>
+          <Link href="/bag">{tr("Return to bag", "झोलामा फर्कनुहोस्")}</Link>
         </Button>
       </div>
     );
@@ -56,11 +69,13 @@ export function CheckoutFlow() {
         {/* Step rail */}
         <ol className="flex items-center gap-2 border-b border-border pb-5">
           {STEPS.map((step, index) => (
-            <li key={step} className="flex items-center gap-2">
+            <li key={step.en} className="flex items-center gap-2">
               <span className="inline-flex size-6 items-center justify-center rounded-[2px] bg-mint text-[11px] font-semibold text-primary-foreground">
                 {index + 1}
               </span>
-              <span className="text-sm text-mint">{step}</span>
+              <span className="text-sm text-mint">
+                {tr(step.en, step.ne)}
+              </span>
               {index < STEPS.length - 1 && (
                 <span aria-hidden className="mx-1 h-px w-6 bg-border" />
               )}
@@ -72,23 +87,26 @@ export function CheckoutFlow() {
         <section className="flex flex-col gap-3">
           <h2 className="flex items-center gap-2 font-heading text-base">
             <MapPin className="size-4 text-sage" aria-hidden />
-            Address
+            {tr("Address", "ठेगाना")}
           </h2>
           <ul className="grid gap-3 sm:grid-cols-2">
-            {ADDRESSES.map((option) => (
-              <li key={option.id}>
-                <OptionCard
-                  selected={option.id === address}
-                  onSelect={() => setAddress(option.id)}
-                  title={option.label}
-                  detail={option.detail}
-                />
-              </li>
-            ))}
+            {ADDRESSES.map((option, index) => {
+              const copy = addressText(option.label, lang);
+              return (
+                <li key={option.id}>
+                  <OptionCard
+                    selected={option.id === address}
+                    onSelect={() => setAddress(option.id)}
+                    title={copy.label}
+                    detail={copy.detail || contentNe.addresses[index]?.detail}
+                  />
+                </li>
+              );
+            })}
           </ul>
           <Button variant="ghost" size="sm" className="w-fit rounded-[2px]">
             <Plus className="size-4" aria-hidden />
-            Add new address
+            {tr("Add new address", "नयाँ ठेगाना थप्नुहोस्")}
           </Button>
         </section>
 
@@ -96,10 +114,10 @@ export function CheckoutFlow() {
         <section className="flex flex-col gap-3">
           <h2 className="flex items-center gap-2 font-heading text-base">
             <Truck className="size-4 text-sage" aria-hidden />
-            Delivery
+            {tr("Delivery", "डेलिभरी")}
           </h2>
           <ul className="flex flex-wrap gap-2">
-            {DELIVERY_SLOTS.map((option) => (
+            {DELIVERY_SLOTS.map((option, index) => (
               <li key={option.id}>
                 <button
                   type="button"
@@ -111,7 +129,10 @@ export function CheckoutFlow() {
                       : "h-10 rounded-[2px] border border-border bg-card px-5 text-sm text-muted-foreground transition-colors hover:border-mint/35 hover:text-foreground"
                   }
                 >
-                  {option.label}
+                  {tr(
+                    option.label,
+                    contentNe.deliverySlots[index] ?? option.label,
+                  )}
                 </button>
               </li>
             ))}
@@ -122,7 +143,7 @@ export function CheckoutFlow() {
         <section className="flex flex-col gap-3">
           <h2 className="flex items-center gap-2 font-heading text-base">
             <CreditCard className="size-4 text-sage" aria-hidden />
-            Payment
+            {tr("Payment", "भुक्तानी")}
           </h2>
           <ul className="flex flex-col gap-2.5">
             {paymentMethods.map((method) => (
@@ -130,7 +151,7 @@ export function CheckoutFlow() {
                 <OptionCard
                   selected={method === payment}
                   onSelect={() => setPayment(method)}
-                  title={method}
+                  title={paymentMethodLabel(method, lang)}
                 />
               </li>
             ))}
@@ -141,32 +162,43 @@ export function CheckoutFlow() {
       {/* Summary */}
       <aside className="lg:sticky lg:top-24 lg:self-start">
         <div className="flex flex-col gap-4 rounded-[2px] border border-border bg-card p-6">
-          <h2 className="font-heading text-lg">Summary</h2>
+          <h2 className="font-heading text-lg">{tr("Summary", "सारांश")}</h2>
 
           <ul className="flex flex-col gap-2 border-y border-border py-4">
             {lines.map((line) => (
               <li key={line.id} className="flex justify-between gap-3 text-sm">
                 <span className="text-muted-foreground">
-                  {line.name}
+                  {lineName(line, lang)}
                   {line.qty > 1 && ` × ${line.qty}`}
+                  {line.customizations && line.customizations.length > 0 && (
+                    <span className="block text-[11px] text-sage">
+                      {line.customizations
+                        .map((option) => customizationLabel(option, lang))
+                        .join(" · ")}
+                    </span>
+                  )}
                 </span>
-                <span>Rs {npr.format(line.unitPrice * line.qty)}</span>
+                <span>{money(line.unitPrice * line.qty)}</span>
               </li>
             ))}
           </ul>
 
           <div className="flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">Subtotal</span>
-            <span>Rs {npr.format(itemSubtotal)}</span>
+            <span className="text-muted-foreground">
+              {tr("Subtotal", "जम्मा")}
+            </span>
+            <span>{money(itemSubtotal)}</span>
           </div>
           <div className="flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">Delivery</span>
-            <span>Rs {npr.format(delivery)}</span>
+            <span className="text-muted-foreground">
+              {tr("Delivery", "डेलिभरी")}
+            </span>
+            <span>{money(delivery)}</span>
           </div>
 
           <div className="flex items-center justify-between border-t border-border pt-4">
-            <span className="font-heading text-lg">Total</span>
-            <span className="font-heading text-2xl">Rs {npr.format(total)}</span>
+            <span className="font-heading text-lg">{tr("Total", "कुल")}</span>
+            <span className="font-heading text-2xl">{money(total)}</span>
           </div>
 
           <Button
@@ -182,12 +214,14 @@ export function CheckoutFlow() {
               router.push(`/order/${order.id}`);
             }}
           >
-            {t("buttons.placeOrder")} &middot; Rs {npr.format(total)}
+            {t("buttons.placeOrder")} &middot; {money(total)}
           </Button>
 
           <p className="text-center text-xs text-muted-foreground">
-            Delivered to {addressLabel || "your address"} &middot;{" "}
-            {slotLabel || "soon"}
+            {tr(
+              `Delivered to ${addressLabel || "your address"} · ${slotLabel || "soon"}`,
+              `${addressText(addressLabel, lang).label || "तपाईंको ठेगाना"} मा डेलिभरी · ${deliverySlotLabelFromLabel(slotLabel, lang) || "चाँडै"}`,
+            )}
           </p>
         </div>
       </aside>

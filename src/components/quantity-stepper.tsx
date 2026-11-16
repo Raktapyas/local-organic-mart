@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Minus, Plus } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { useLang } from "@/lib/use-lang";
 
 export function QuantityStepper({
   initial = 1,
@@ -24,6 +25,7 @@ export function QuantityStepper({
   const [uncontrolled, setUncontrolled] = useState(initial);
   const controlledMode = controlled !== undefined;
   const value = controlledMode ? controlled : uncontrolled;
+  const { tr } = useLang();
 
   function update(next: number) {
     const clamped = Math.min(max, Math.max(min, next));
@@ -40,7 +42,7 @@ export function QuantityStepper({
     >
       <button
         type="button"
-        aria-label="Decrease quantity"
+        aria-label={tr("Decrease quantity", "मात्रा घटाउनुहोस्")}
         disabled={value <= min}
         onClick={() => update(value - 1)}
         className="text-muted-foreground transition-colors hover:text-mint disabled:opacity-40 disabled:hover:text-muted-foreground"
@@ -52,7 +54,7 @@ export function QuantityStepper({
       </span>
       <button
         type="button"
-        aria-label="Increase quantity"
+        aria-label={tr("Increase quantity", "मात्रा बढाउनुहोस्")}
         disabled={value >= max}
         onClick={() => update(value + 1)}
         className="text-muted-foreground transition-colors hover:text-mint disabled:opacity-40 disabled:hover:text-muted-foreground"
