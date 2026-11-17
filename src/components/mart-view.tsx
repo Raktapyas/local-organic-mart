@@ -180,15 +180,15 @@ export function MartView({
           </form>
 
           <nav aria-label={tr("Product categories", "उत्पादन श्रेणी")}>
-            <ul className="-mx-6 flex gap-2 overflow-x-auto px-6 pb-1">
+            <ul className="-mx-6 flex gap-2 overflow-x-auto px-6 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               <li>
                 <Link
                   href="/mart"
                   aria-current={categoryId ? undefined : "page"}
                   className={
                     categoryId
-                      ? "inline-flex h-9 shrink-0 items-center rounded-[2px] border border-border px-4 text-sm text-muted-foreground transition-colors hover:border-mint/35 hover:text-foreground"
-                      : "inline-flex h-9 shrink-0 items-center rounded-[2px] bg-mint px-4 text-sm font-medium text-primary-foreground"
+                      ? "inline-flex h-10 shrink-0 items-center whitespace-nowrap rounded-[2px] border border-border px-4 text-sm text-muted-foreground transition-colors hover:border-mint/35 hover:text-foreground"
+                      : "inline-flex h-10 shrink-0 items-center whitespace-nowrap rounded-[2px] bg-mint px-4 text-sm font-medium text-primary-foreground"
                   }
                 >
                   {tr("All", "सबै")}
@@ -203,8 +203,8 @@ export function MartView({
                       aria-current={isActive ? "page" : undefined}
                       className={
                         isActive
-                          ? "inline-flex h-9 shrink-0 items-center rounded-[2px] bg-mint px-4 text-sm font-medium text-primary-foreground"
-                          : "inline-flex h-9 shrink-0 items-center rounded-[2px] border border-border px-4 text-sm text-muted-foreground transition-colors hover:border-mint/35 hover:text-foreground"
+                          ? "inline-flex h-10 shrink-0 items-center whitespace-nowrap rounded-[2px] bg-mint px-4 text-sm font-medium text-primary-foreground"
+                          : "inline-flex h-10 shrink-0 items-center whitespace-nowrap rounded-[2px] border border-border px-4 text-sm text-muted-foreground transition-colors hover:border-mint/35 hover:text-foreground"
                       }
                     >
                       {categoryText(category, lang).name}

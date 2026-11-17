@@ -52,7 +52,21 @@ export function SectionHeader({
       ) : null}
 
       <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-3">
-        <Heading className="text-[clamp(1.65rem,2.6vw,2.4rem)] leading-[1.05] font-light tracking-[-0.025em] text-ivory">
+        {/*
+          A section heading and a page title are not the same rank. When this
+          component is promoted to `h1` (the Mart and Baskets indexes do that)
+          it takes the page-title ramp used by the other interior pages, so the
+          two indexes stop reading a size below every page they link to.
+          `clamp()` remains for `h2`, where the heading sits inside content
+          rather than opening the page.
+        */}
+        <Heading
+          className={
+            Heading === "h1"
+              ? "text-4xl leading-[1.05] tracking-tight text-balance text-ivory sm:text-5xl md:text-6xl"
+              : "text-[clamp(1.65rem,2.6vw,2.4rem)] leading-[1.05] font-light tracking-[-0.025em] text-ivory"
+          }
+        >
           {titleKey ? (
             <T k={titleKey} />
           ) : (

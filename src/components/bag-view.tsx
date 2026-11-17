@@ -129,7 +129,7 @@ export function BagView() {
             "यहाँ अझै केही छैन। तरकारी, भण्डार र वनजन्य सामानका लागि मार्ट हेर्नुहोस्।",
           )}
         </p>
-        <Button className="mt-2 rounded-[2px]" asChild>
+        <Button className="mt-2 h-10 rounded-[2px] px-5" asChild>
           <Link href="/mart">{tr("Browse the Mart", "मार्ट हेर्नुहोस्")}</Link>
         </Button>
       </div>

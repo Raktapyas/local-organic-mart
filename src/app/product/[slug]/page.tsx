@@ -321,7 +321,7 @@ async function ProductBody({
 
           <button
             type="button"
-            className="mt-5 inline-flex w-fit items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+            className="mt-5 inline-flex min-h-9 w-fit items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
             <Heart className="size-4" aria-hidden />
             <L en="Save to wishlist" ne="इच्छासूचीमा राख्नुहोस्" />
@@ -437,9 +437,10 @@ async function ProductBody({
           <ul className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {related.map((item) => (
               <li key={item.id}>
-                <Link href={`/product/${item.id}`} className="block h-full">
-                  <ProductCard product={item} />
-                </Link>
+                {/* The card owns its own links. Wrapping it in another <a>
+                    produced nested anchors, which the browser silently
+                    rewrites and React reports as a hydration mismatch. */}
+                <ProductCard product={item} />
               </li>
             ))}
           </ul>

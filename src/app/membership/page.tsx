@@ -55,7 +55,7 @@ export default function MembershipPage() {
           <span className="inline-flex size-12 items-center justify-center rounded-[2px] border border-gold/40 bg-gold/10 text-gold">
             <Sparkles className="size-6" aria-hidden />
           </span>
-          <h1 className="text-4xl tracking-tight text-balance sm:text-5xl md:text-6xl">
+          <h1 className="text-4xl leading-[1.05] tracking-tight text-balance sm:text-5xl md:text-6xl">
             <L
               en="One membership. Every reward."
               ne="एक सदस्यता। हरेक लाभ।"

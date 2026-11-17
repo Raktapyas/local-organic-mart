@@ -25,7 +25,7 @@ export function LanguageToggle({ className = "" }: { className?: string }) {
         lang === "en" ? "Switch to Nepali" : "अंग्रेजीमा बदल्नुहोस्"
       }
       lang={other}
-      className={`inline-flex items-center gap-1.5 border border-foreground/10 px-2.5 py-1.5 text-[9.5px] tracking-[0.16em] text-ash uppercase transition-colors duration-200 hover:border-gold/50 hover:text-gold ${className}`}
+      className={`inline-flex h-9 items-center gap-1.5 border border-foreground/10 px-3 text-[10px] tracking-[0.16em] whitespace-nowrap text-ash uppercase transition-colors duration-200 hover:border-gold/50 hover:text-gold ${className}`}
     >
       <Languages className="size-3.5" aria-hidden />
       {otherLabel}

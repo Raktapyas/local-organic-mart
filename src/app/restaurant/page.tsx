@@ -26,7 +26,7 @@ export default function RestaurantPage() {
 
       <main className="flex flex-1 flex-col">
         {/* Hero band */}
-        <section className="mx-auto w-full max-w-7xl px-6 pt-8">
+        <section className="mx-auto w-full max-w-7xl px-6 pt-12">
           <div className="relative isolate flex min-h-[22rem] items-end overflow-hidden rounded-[2px] border border-border">
             <Image
               src={restaurantBandImage}
@@ -40,7 +40,7 @@ export default function RestaurantPage() {
 
             <div className="relative flex w-full flex-col gap-6 p-8 sm:p-12">
               <div className="flex flex-col gap-3">
-                <h1 className="max-w-2xl text-4xl leading-tight tracking-tight text-balance sm:text-5xl">
+                <h1 className="max-w-2xl text-4xl leading-[1.05] tracking-tight text-balance sm:text-5xl md:text-6xl">
                   <L
                     en="Local Organic Restaurant"
                     ne="लोकल अर्गानिक रेस्टुरेन्ट"

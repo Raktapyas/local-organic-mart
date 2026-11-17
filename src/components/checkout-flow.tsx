@@ -53,7 +53,7 @@ export function CheckoutFlow() {
             "तपाईंको झोला खाली छ, त्यसैले अहिले तिर्न केही छैन।",
           )}
         </p>
-        <Button className="mt-2 rounded-[2px]" asChild>
+        <Button className="mt-2 h-10 rounded-[2px] px-5" asChild>
           <Link href="/bag">{tr("Return to bag", "झोलामा फर्कनुहोस्")}</Link>
         </Button>
       </div>

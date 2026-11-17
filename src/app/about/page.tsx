@@ -51,7 +51,7 @@ export default function AboutPage() {
       <main className="flex flex-1 flex-col">
         {/* Hero */}
         <section className="mx-auto flex w-full max-w-3xl flex-col items-center gap-6 px-6 pt-20 pb-16 text-center">
-          <h1 className="text-4xl tracking-tight text-balance sm:text-5xl">
+          <h1 className="text-4xl leading-[1.05] tracking-tight text-balance sm:text-5xl md:text-6xl">
             <L en={aboutHero.headline} ne={contentNe.about.headline} />
           </h1>
           <p className="max-w-2xl text-base text-sage">

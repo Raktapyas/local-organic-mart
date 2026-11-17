@@ -45,7 +45,7 @@ export function QuantityStepper({
         aria-label={tr("Decrease quantity", "मात्रा घटाउनुहोस्")}
         disabled={value <= min}
         onClick={() => update(value - 1)}
-        className="text-muted-foreground transition-colors hover:text-mint disabled:opacity-40 disabled:hover:text-muted-foreground"
+        className="grid size-8 place-items-center text-muted-foreground transition-colors hover:text-mint disabled:opacity-40 disabled:hover:text-muted-foreground"
       >
         <Minus className="size-4" aria-hidden />
       </button>
@@ -57,7 +57,7 @@ export function QuantityStepper({
         aria-label={tr("Increase quantity", "मात्रा बढाउनुहोस्")}
         disabled={value >= max}
         onClick={() => update(value + 1)}
-        className="text-muted-foreground transition-colors hover:text-mint disabled:opacity-40 disabled:hover:text-muted-foreground"
+        className="grid size-8 place-items-center text-muted-foreground transition-colors hover:text-mint disabled:opacity-40 disabled:hover:text-muted-foreground"
       >
         <Plus className="size-4" aria-hidden />
       </button>

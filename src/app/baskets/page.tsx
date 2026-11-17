@@ -25,7 +25,7 @@ export default function BasketsPage() {
     <>
 
       <main className="flex flex-1 flex-col">
-        <section className="mx-auto w-full max-w-7xl px-6 pt-16 pb-10">
+        <section className="mx-auto w-full max-w-7xl px-6 pt-12 pb-12">
           <SectionHeader
             as="h1"
             title="Baskets, gifts & plans"

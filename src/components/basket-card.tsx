@@ -88,8 +88,8 @@ export function BasketCard({
           variant={accent === "gold" ? "default" : "outline"}
           className={
             accent === "gold"
-              ? "w-fit rounded-[2px] px-5 text-[10px] tracking-[0.18em] uppercase"
-              : "w-fit rounded-[2px] border-gold/35 px-5 text-[10px] tracking-[0.18em] text-gold uppercase hover:border-gold hover:bg-gold hover:text-ink"
+              ? "h-10 w-fit rounded-[2px] px-5 text-[11px] tracking-[0.18em] uppercase"
+              : "h-10 w-fit rounded-[2px] border-gold/35 px-5 text-[11px] tracking-[0.18em] text-gold uppercase hover:border-gold hover:bg-gold hover:text-ink"
           }
           onClick={() => {
             addItem({

@@ -103,9 +103,9 @@ export function ProductCard({
           <button
             type="button"
             aria-label={tr(`Save ${copy.name}`, `${copy.name} इच्छासूचीमा राख्नुहोस्`)}
-            className="absolute top-3 right-3 z-20 grid size-7 place-items-center border border-ivory/10 bg-background/60 text-ash/70 backdrop-blur-sm transition-colors duration-200 hover:border-gold/40 hover:text-gold"
+            className="absolute top-3 right-3 z-20 grid size-8 place-items-center border border-ivory/10 bg-background/60 text-ash/70 backdrop-blur-sm transition-colors duration-200 hover:border-gold/40 hover:text-gold"
           >
-            <Heart className="size-3.5" aria-hidden />
+            <Heart className="size-4" aria-hidden />
           </button>
         )}
       </div>
@@ -151,7 +151,7 @@ export function ProductCard({
               </Button>
             ) : (
               <AddToCartButton
-                className="size-[30px] shrink-0 rounded-none bg-gold text-ink transition-opacity duration-200 hover:opacity-85"
+                className="size-8 shrink-0 rounded-none bg-gold text-ink transition-opacity duration-200 hover:opacity-85"
                 line={{
                   kind: "product",
                   refId: product.id,

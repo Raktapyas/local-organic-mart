@@ -173,7 +173,7 @@ export function MobileHeader() {
               </ul>
 
               <div className="mt-8 flex items-center gap-3 border-t border-foreground/[0.08] pt-6">
-                <LanguageToggle className="w-full justify-center py-2.5" />
+                <LanguageToggle className="w-full justify-center" />
                 <span className="text-[10px] tracking-[0.18em] text-ash/70 uppercase">
                   {isNe ? "रु" : "NPR"}
                 </span>

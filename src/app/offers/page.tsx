@@ -41,9 +41,8 @@ export default function OffersPage() {
                 closesAt={dealsCloseAt}
                 label="Deal window closes in"
                 labelNe="अफर अवधि सकिन बाँकी"
-                className="text-base"
               />
-              <h1 className="max-w-2xl text-4xl tracking-tight text-balance sm:text-5xl md:text-6xl">
+              <h1 className="max-w-2xl text-4xl leading-[1.05] tracking-tight text-balance sm:text-5xl md:text-6xl">
                 <L
                   en="This week's big deals"
                   ne="यो हप्ताका मुख्य अफर"
@@ -63,12 +62,12 @@ export default function OffersPage() {
         <section className="mx-auto w-full max-w-7xl px-6 pb-20">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div className="flex flex-col gap-2">
-              <h2 className="text-xs tracking-wider text-sage uppercase">
+              <p className="text-xs tracking-wider text-sage uppercase">
                 <L en="Direct from orchard & field" ne="बगैंचा र खेतबाट सिधै" />
-              </h2>
-              <h3 className="text-3xl tracking-tight">
+              </p>
+              <h2 className="text-3xl tracking-tight">
                 <L en="Live now" ne="अहिले उपलब्ध" />
-              </h3>
+              </h2>
               <p className="text-sm text-muted-foreground">
                 <L
                   en={`${dealProducts.length} limited harvest allocations`}
@@ -118,12 +117,12 @@ export default function OffersPage() {
         {/* Combos */}
         <section className="mx-auto w-full max-w-7xl px-6 pb-24">
           <div className="flex flex-col gap-2">
-            <h2 className="text-xs tracking-wider text-sage uppercase">
+            <p className="text-xs tracking-wider text-sage uppercase">
               <L en="Kitchen pairings" ne="भान्साका जोडी" />
-            </h2>
-            <h3 className="text-3xl tracking-tight">
+            </p>
+            <h2 className="text-3xl tracking-tight">
               <L en="Combo & save" ne="कम्बो र बचत" />
-            </h3>
+            </h2>
             <p className="max-w-xl text-sm text-muted-foreground">
               <L
                 en="Two Restaurant dishes, one tap. The saving is already taken off the second item when it lands in your bag."

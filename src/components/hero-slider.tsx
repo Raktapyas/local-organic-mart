@@ -309,10 +309,10 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
                     : `Show slide ${dot + 1} of ${count}: ${item.kicker}`
                 }
                 aria-current={dot === active}
-                className={`tabular text-[10px] tracking-[0.24em] transition-colors duration-200 ${
+                className={`tabular py-2 text-[10px] tracking-[0.24em] transition-colors duration-200 ${
                   dot === active
                     ? "text-gold"
-                    : "text-bone/35 hover:text-bone/70"
+                    : "text-bone/45 hover:text-bone/80"
                 }`}
               >
                 {String(dot + 1).padStart(2, "0")}
@@ -328,17 +328,17 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
               type="button"
               onClick={() => go(active - 1)}
               aria-label={tr("Previous slide", "अघिल्लो स्लाइड")}
-              className="inline-flex size-8 items-center justify-center border border-ivory/15 text-bone/60 transition-colors duration-200 hover:border-gold/50 hover:text-gold"
+              className="inline-flex size-9 items-center justify-center border border-ivory/15 text-bone/60 transition-colors duration-200 hover:border-gold/50 hover:text-gold"
             >
-              <ChevronLeft className="size-3.5" aria-hidden />
+              <ChevronLeft className="size-4" aria-hidden />
             </button>
             <button
               type="button"
               onClick={() => go(active + 1)}
               aria-label={tr("Next slide", "अर्को स्लाइड")}
-              className="inline-flex size-8 items-center justify-center border border-ivory/15 text-bone/60 transition-colors duration-200 hover:border-gold/50 hover:text-gold"
+              className="inline-flex size-9 items-center justify-center border border-ivory/15 text-bone/60 transition-colors duration-200 hover:border-gold/50 hover:text-gold"
             >
-              <ChevronRight className="size-3.5" aria-hidden />
+              <ChevronRight className="size-4" aria-hidden />
             </button>
           </div>
         </div>
