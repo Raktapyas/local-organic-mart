@@ -85,7 +85,7 @@ export function SiteHeader() {
         >
           <BrandLogo
             priority
-            className="h-12 transition-transform duration-300 group-hover:scale-[1.02]"
+            className="h-[56px] transition-transform duration-300 group-hover:scale-[1.02]"
           />
         </Link>
 

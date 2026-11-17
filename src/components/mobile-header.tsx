@@ -80,7 +80,7 @@ export function MobileHeader() {
               <SheetTitle className="flex flex-col items-start gap-2 text-left">
                 <BrandLogo
                   alt={tr(siteName, "लोकल अर्गानिक मार्ट")}
-                  className="h-10"
+                  className="h-[48px]"
                 />
                 <span
                   className={`text-[8px] text-gold/70 ${
@@ -199,7 +199,7 @@ export function MobileHeader() {
           aria-label={tr(`${siteName} — home`, `${siteName} — गृहपृष्ठ`)}
           className="flex min-w-0 shrink items-center"
         >
-          <BrandLogo priority className="h-10" />
+          <BrandLogo priority className="h-[44px]" />
         </Link>
 
         <div className="flex shrink-0 items-center gap-1.5">

@@ -55,7 +55,7 @@ export function SiteFooter() {
               )}
               className="group flex w-fit flex-col items-start gap-2"
             >
-              <BrandLogo className="h-16 transition-transform duration-300 group-hover:scale-[1.02]" />
+              <BrandLogo className="h-[64px] transition-transform duration-300 group-hover:scale-[1.02]" />
               <span
                 className={`text-[8.5px] text-gold/75 ${
                   lang === "ne"

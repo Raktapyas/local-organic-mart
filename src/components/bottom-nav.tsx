@@ -39,7 +39,7 @@ function isActive(pathname: string, href: string) {
 /** Fixed mobile tab bar. Below `lg` only — the desktop header has no tabs. */
 export function BottomNav() {
   const pathname = usePathname();
-  const { t, tr } = useLang();
+  const { t, tr, isNe } = useLang();
 
   return (
     <nav
@@ -56,9 +56,18 @@ export function BottomNav() {
               <Link
                 href={tab.href}
                 aria-current={active ? "page" : undefined}
-                className={`relative flex flex-col items-center gap-1.5 py-2.5 text-[9px] tracking-[0.14em] uppercase transition-colors ${
-                  active ? "text-gold" : "text-ash/70"
-                }`}
+                className={`relative flex flex-col items-center gap-1.5 py-2.5 transition-colors ${
+                  isNe
+                    ? /*
+                       * Five equal columns at 320px leave ~64px each, and the
+                       * Nepali floor that the rest of the site gets (11px)
+                       * overflows them — "गृहपृष्ठ" alone runs past the edge.
+                       * The tab bar is the one place where fitting beats the
+                       * reading scale, so it opts out to 10px and no tracking.
+                       */
+                      "[font-size:10px] tracking-[0.01em]"
+                    : "text-[9px] tracking-[0.14em] uppercase"
+                } ${active ? "text-gold" : "text-ash/70"}`}
               >
                 <span
                   aria-hidden

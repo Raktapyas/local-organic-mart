@@ -2,8 +2,8 @@ import type { Metadata, Viewport } from "next";
 import {
   Fraunces,
   Geist_Mono,
-  Inter,
   Noto_Sans_Devanagari,
+  Poppins,
   Tiro_Devanagari_Hindi,
 } from "next/font/google";
 import { Suspense } from "react";
@@ -16,9 +16,18 @@ import { HtmlLangSync } from "@/components/html-lang-sync";
 import { MobileHeader } from "@/components/mobile-header";
 import { SiteHeader } from "@/components/site-header";
 
-const inter = Inter({
-  variable: "--font-inter",
+const poppins = Poppins({
+  variable: "--font-poppins",
+  /*
+   * Poppins ships as static weights, so each one in use has to be named.
+   * Only the Latin subset is fetched: Poppins does carry Devanagari, and
+   * letting it through would give the Nepali text two competing voices —
+   * body copy from Poppins and anything Noto covers from Noto. The Latin
+   * subset has no Devanagari codepoints, so those fall straight through
+   * to `--font-devanagari-sans`.
+   */
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -43,15 +52,15 @@ const geistMono = Geist_Mono({
 /*
  * Devanagari companions for the Latin brand fonts.
  *
- * Fraunces and Inter carry no Devanagari glyphs, so every Nepali string was
- * silently falling through to whatever the OS picked — the same name rendered
- * in a different face on a card than in a heading. These sit behind the
- * Latin fonts in the stack: Latin text still resolves to Fraunces/Inter, and
- * Devanagari falls through to these.
+ * The Latin subsets of Fraunces and Poppins carry no Devanagari glyphs, so
+ * every Nepali string was silently falling through to whatever the OS picked —
+ * the same name rendered in a different face on a card than in a heading.
+ * These sit behind the Latin fonts in the stack: Latin text still resolves to
+ * Fraunces/Poppins, and Devanagari falls through to these.
  *
  * `next/font` self-hosts both at build time, so there is no request to Google
  * at runtime. Tiro is a 400-only serif that carries Fraunces' voice; Noto
- * Sans pairs with Inter, which is the body font here.
+ * Sans pairs with Poppins, which is the body font here.
  */
 const tiroDevanagari = Tiro_Devanagari_Hindi({
   variable: "--font-devanagari-serif",
@@ -81,7 +90,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${fraunces.variable} ${geistMono.variable} ${tiroDevanagari.variable} ${notoDevanagari.variable} h-full antialiased`}
+      className={`${poppins.variable} ${fraunces.variable} ${geistMono.variable} ${tiroDevanagari.variable} ${notoDevanagari.variable} h-full antialiased`}
     >
       {/*
         Both headers live here, not in the pages. Pages used to render their
