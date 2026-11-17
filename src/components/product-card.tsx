@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { Heart, Plus } from "lucide-react";
 
 import { AddToCartButton } from "@/components/add-to-cart-button";
@@ -41,33 +42,59 @@ export function ProductCard({
       }`}
     >
       <div className="relative aspect-4/5 w-full overflow-hidden bg-muted">
-        {product.image ? (
-          <Image
-            src={product.image}
-            alt={copy.name}
-            fill
-            priority={priority}
-            sizes="(min-width: 1280px) 18vw, (min-width: 768px) 30vw, (min-width: 640px) 45vw, 46vw"
-            className={
-              sold
-                ? "object-cover grayscale"
-                : "object-cover opacity-90 transition-all duration-700 group-hover:scale-[1.04] group-hover:opacity-100"
-            }
-          />
-        ) : (
-          <PhotoFallback label={copy.category} className="absolute inset-0" />
-        )}
+        {/*
+          The plate is a pointer-only duplicate of the title link below, so it
+          is hidden from assistive tech and out of the tab order — otherwise
+          every card would announce the same destination twice. Interactive
+          controls (wishlist, sold-out overlay) sit outside it and paint above.
+        */}
+        <Link
+          href={`/product/${product.id}`}
+          tabIndex={-1}
+          aria-hidden
+          className="absolute inset-0 z-10 block"
+        >
+          {product.image ? (
+            <Image
+              src={product.image}
+              alt={copy.name}
+              fill
+              priority={priority}
+              sizes="(min-width: 1280px) 18vw, (min-width: 768px) 30vw, (min-width: 640px) 45vw, 46vw"
+              className={
+                sold
+                  ? "object-cover grayscale"
+                  : "object-cover opacity-90 transition-all duration-700 group-hover:scale-[1.04] group-hover:opacity-100"
+              }
+            />
+          ) : (
+            <PhotoFallback label={copy.category} className="absolute inset-0" />
+          )}
 
-        {/* A single gold hairline at the top of the plate on hover. */}
-        {!sold ? (
-          <span
-            aria-hidden
-            className="absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-gold/70 transition-transform duration-500 group-hover:scale-x-100"
-          />
-        ) : null}
+          {/* A single gold hairline at the top of the plate on hover. */}
+          {!sold ? (
+            <span
+              aria-hidden
+              className="absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-gold/70 transition-transform duration-500 group-hover:scale-x-100"
+            />
+          ) : null}
+
+          <div className="absolute top-3 left-3 flex flex-col items-start gap-1">
+            {off !== null && (
+              <span className="bg-gold px-1.5 py-0.5 text-[9px] font-medium tracking-[0.16em] text-ink uppercase">
+                &minus;{off}%
+              </span>
+            )}
+            {copy.season && (
+              <span className="border border-ivory/10 bg-background/75 px-1.5 py-0.5 text-[9px] tracking-[0.14em] text-ash uppercase backdrop-blur-sm">
+                {copy.season}
+              </span>
+            )}
+          </div>
+        </Link>
 
         {sold ? (
-          <div className="absolute inset-0 flex items-center justify-center bg-background/60 p-3">
+          <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center bg-background/60 p-3">
             <span className="border border-foreground/20 bg-background/90 px-3 py-1.5 text-[10px] tracking-[0.2em] text-ash uppercase">
               {copy.soldOutNote ?? tr("Sold out", "सकियो")}
             </span>
@@ -76,24 +103,11 @@ export function ProductCard({
           <button
             type="button"
             aria-label={tr(`Save ${copy.name}`, `${copy.name} इच्छासूचीमा राख्नुहोस्`)}
-            className="absolute top-3 right-3 grid size-7 place-items-center border border-ivory/10 bg-background/60 text-ash/70 backdrop-blur-sm transition-colors duration-200 hover:border-gold/40 hover:text-gold"
+            className="absolute top-3 right-3 z-20 grid size-7 place-items-center border border-ivory/10 bg-background/60 text-ash/70 backdrop-blur-sm transition-colors duration-200 hover:border-gold/40 hover:text-gold"
           >
             <Heart className="size-3.5" aria-hidden />
           </button>
         )}
-
-        <div className="absolute top-3 left-3 flex flex-col items-start gap-1">
-          {off !== null && (
-            <span className="bg-gold px-1.5 py-0.5 text-[9px] font-medium tracking-[0.16em] text-ink uppercase">
-              &minus;{off}%
-            </span>
-          )}
-          {copy.season && (
-            <span className="border border-ivory/10 bg-background/75 px-1.5 py-0.5 text-[9px] tracking-[0.14em] text-ash uppercase backdrop-blur-sm">
-              {copy.season}
-            </span>
-          )}
-        </div>
       </div>
 
       <div className="flex flex-1 flex-col justify-between gap-3 p-3.5">
@@ -102,7 +116,12 @@ export function ProductCard({
             {copy.badge}
           </span>
           <h3 className="mt-1.5 font-heading text-[0.95rem] leading-tight text-ivory">
-            {copy.name}
+            <Link
+              href={`/product/${product.id}`}
+              className="transition-colors duration-200 hover:text-gold"
+            >
+              {copy.name}
+            </Link>
           </h3>
           <p className="mt-1 text-[10.5px] leading-tight text-ash/70">
             {lang === "ne"
