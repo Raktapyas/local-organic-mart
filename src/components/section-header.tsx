@@ -64,7 +64,7 @@ export function SectionHeader({
           className={
             Heading === "h1"
               ? "text-4xl leading-[1.05] tracking-tight text-balance text-ivory sm:text-5xl md:text-6xl"
-              : "text-[clamp(1.65rem,2.6vw,2.4rem)] leading-[1.05] font-light tracking-[-0.025em] text-ivory"
+              : "text-[clamp(1.7rem,2.7vw,2.5rem)] leading-[1.1] font-light tracking-[-0.02em] text-ivory"
           }
         >
           {titleKey ? (

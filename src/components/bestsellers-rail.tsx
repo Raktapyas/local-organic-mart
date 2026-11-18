@@ -65,7 +65,7 @@ export function BestsellersRail({
           </div>
 
           <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
-            <h2 className="text-[clamp(1.65rem,2.6vw,2.4rem)] leading-[1.05] font-light tracking-[-0.025em] text-ivory">
+            <h2 className="text-[clamp(1.7rem,2.7vw,2.5rem)] leading-[1.1] font-light tracking-[-0.02em] text-ivory">
               <T k="sections.bestsellers" />
             </h2>
             <p className="max-w-sm text-xs leading-relaxed text-ash">

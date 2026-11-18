@@ -8,14 +8,18 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   /*
-   * Devanagari sits behind the Latin faces rather than beside them. Fraunces
-   * and Poppins have no Devanagari glyphs in their Latin subsets, so the
-   * browser walks the list and lands on Tiro / Noto for those codepoints only.
-   * Latin text is unaffected.
+   * One family, two scripts.
+   *
+   * Poppins ships Latin and Devanagari as separate files, and `next/font`
+   * emits each with a `unicode-range`, so a single family name covers both
+   * scripts and the browser fetches only the file a given codepoint needs.
+   * `--font-serif` is deliberately aliased to the same sans: nothing in the
+   * design is serif any more, and leaving a serif behind the token would let
+   * a stray `font-serif` quietly reintroduce one.
    */
-  --font-sans: var(--font-poppins), var(--font-devanagari-sans), sans-serif;
-  --font-serif: var(--font-fraunces), var(--font-devanagari-serif), serif;
-  --font-heading: var(--font-fraunces), var(--font-devanagari-serif), serif;
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -81,6 +85,43 @@
   --color-coral: #b1735f;
 }
 
+/*
+ * Reading scale.
+ *
+ * Poppins is wide for its point size and carries a tall x-height, so the whole
+ * ramp moves up one notch rather than sitting on Tailwind's defaults: +1px
+ * through body and UI, +2px on display. Leading rises with it — a larger line
+ * on an ink ground needs more air, not the same fixed pixel leading.
+ *
+ * Defining it here scales every `text-*` utility on the site from one place,
+ * which is why the components keep their existing class names. Nepali overrides
+ * the same tokens one step higher; see the reading-scale block further down.
+ */
+@theme {
+  --text-xs: 0.8125rem; /* 13px, from 12 */
+  --text-xs--line-height: 1.45;
+  --text-sm: 0.9375rem; /* 15px, from 14 */
+  --text-sm--line-height: 1.55;
+  --text-base: 1.0625rem; /* 17px, from 16 */
+  --text-base--line-height: 1.6;
+  --text-lg: 1.1875rem; /* 19px, from 18 */
+  --text-lg--line-height: 1.55;
+  --text-xl: 1.3125rem; /* 21px, from 20 */
+  --text-xl--line-height: 1.5;
+  --text-2xl: 1.5625rem; /* 25px, from 24 */
+  --text-2xl--line-height: 1.4;
+  --text-3xl: 2rem; /* 32px, from 30 */
+  --text-3xl--line-height: 1.3;
+  --text-4xl: 2.375rem; /* 38px, from 36 */
+  --text-4xl--line-height: 1.2;
+  --text-5xl: 3.125rem; /* 50px, from 48 */
+  --text-5xl--line-height: 1.12;
+  --text-6xl: 3.875rem; /* 62px, from 60 */
+  --text-6xl--line-height: 1.08;
+  --text-7xl: 4.625rem; /* 74px, from 72 */
+  --text-7xl--line-height: 1.05;
+}
+
 :root {
   --background: #0d1b12;
   --foreground: #f4efe3;
@@ -134,9 +175,7 @@
   h4,
   h5,
   h6 {
-    font-family: var(--font-fraunces), var(--font-devanagari-serif), serif;
-    font-optical-sizing: auto;
-    font-variation-settings: "SOFT" 30, "WONK" 0;
+    font-family: var(--font-heading);
     letter-spacing: -0.015em;
   }
   /* Prices and indices align in a column; proportional digits do not. */
@@ -224,15 +263,14 @@
 }
 
 /*
- * When the document declares Nepali, headings lead with the Devanagari serif
- * instead of falling through to it.
+ * Devanagari headings in one voice.
  *
- * The fallback chain in `--font-heading` already renders Devanagari in Tiro —
- * this is not required for legibility. The difference is that a mixed
- * heading ("बास्केटहरू · Baskets") currently starts in Fraunces and switches
- * partway through, which reads as a change of font mid-sentence. When Nepali
- * is the document language, Tiro leads so the whole heading is one voice.
- * `HtmlLangSync` keeps `lang` in step with the persisted preference.
+ * Poppins already supplies the Devanagari glyphs, so the family no longer
+ * changes per language — what changes is the tracking. Negative tracking is a
+ * Latin display trick; on Devanagari it pulls conjuncts into each other and
+ * blurs the shirorekha into a smear, so it is flattened to zero whenever the
+ * document declares Nepali. `HtmlLangSync` keeps `lang` in step with the
+ * persisted preference.
  */
 html[lang="ne"] h1,
 html[lang="ne"] h2,
@@ -242,9 +280,6 @@ html[lang="ne"] h5,
 html[lang="ne"] h6,
 html[lang="ne"] .font-heading,
 html[lang="ne"] .font-serif {
-  font-family: var(--font-devanagari-serif), serif;
-  /* Negative tracking is a Latin display trick. On Devanagari it pulls
-     conjuncts into each other and blurs the shirorekha into a smear. */
   letter-spacing: 0;
 }
 
@@ -259,33 +294,33 @@ html[lang="ne"] .font-serif {
 /*                                                                     */
 /* Everything here is scoped to html[lang="ne"], which `HtmlLangSync`   */
 /* keeps in step with the persisted preference, so the English site     */
-/* keeps its exact sizes. Tailwind's `text-*` utilities resolve their   */
-/* size and leading through custom properties, which is why the scale   */
-/* can be raised once here instead of per component.                    */
+/* keeps its own scale untouched. Tailwind's `text-*` utilities resolve */
+/* their size and leading through custom properties, which is why the   */
+/* scale can be raised once here instead of per component.              */
 /* ------------------------------------------------------------------ */
 html[lang="ne"] {
-  --text-xs: 0.84375rem; /* 13.5px, from 12 */
-  --text-xs--line-height: 1.65;
-  --text-sm: 0.96875rem; /* 15.5px, from 14 */
-  --text-sm--line-height: 1.7;
-  --text-base: 1.0625rem; /* 17px, from 16 */
-  --text-base--line-height: 1.75;
-  --text-lg: 1.1875rem; /* 19px, from 18 */
-  --text-lg--line-height: 1.7;
-  --text-xl: 1.3125rem; /* 21px, from 20 */
-  --text-xl--line-height: 1.6;
-  --text-2xl: 1.59375rem; /* 25.5px, from 24 */
-  --text-2xl--line-height: 1.5;
-  --text-3xl: 2rem; /* 32px, from 30 */
-  --text-3xl--line-height: 1.42;
-  --text-4xl: 2.375rem; /* 38px, from 36 */
-  --text-4xl--line-height: 1.36;
-  --text-5xl: 3.125rem; /* 50px, from 48 */
-  --text-5xl--line-height: 1.3;
-  --text-6xl: 3.875rem; /* 62px, from 60 */
-  --text-6xl--line-height: 1.26;
-  --text-7xl: 4.625rem; /* 74px, from 72 */
-  --text-7xl--line-height: 1.22;
+  --text-xs: 0.90625rem; /* 14.5px, +1.5 over the Latin 13 */
+  --text-xs--line-height: 1.6;
+  --text-sm: 1.03125rem; /* 16.5px, +1.5 over the Latin 15 */
+  --text-sm--line-height: 1.65;
+  --text-base: 1.125rem; /* 18px, +1 over the Latin 17 */
+  --text-base--line-height: 1.7;
+  --text-lg: 1.25rem; /* 20px, +1 over the Latin 19 */
+  --text-lg--line-height: 1.65;
+  --text-xl: 1.375rem; /* 22px, +1 over the Latin 21 */
+  --text-xl--line-height: 1.58;
+  --text-2xl: 1.65625rem; /* 26.5px, +1.5 over the Latin 25 */
+  --text-2xl--line-height: 1.48;
+  --text-3xl: 2.125rem; /* 34px, +2 over the Latin 32 */
+  --text-3xl--line-height: 1.4;
+  --text-4xl: 2.5rem; /* 40px, +2 over the Latin 38 */
+  --text-4xl--line-height: 1.34;
+  --text-5xl: 3.25rem; /* 52px, +2 over the Latin 50 */
+  --text-5xl--line-height: 1.28;
+  --text-6xl: 4rem; /* 64px, +2 over the Latin 62 */
+  --text-6xl--line-height: 1.24;
+  --text-7xl: 4.75rem; /* 76px, +2 over the Latin 74 */
+  --text-7xl--line-height: 1.2;
 
   /* Devanagari separates words more loosely than Latin; a hair of extra
      word spacing stops clusters from running together at small sizes. */

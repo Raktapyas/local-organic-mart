@@ -64,7 +64,7 @@ export function AccountHome() {
   return (
     <>
       <header className="flex flex-wrap items-center justify-between gap-4">
-        <h1 className="font-heading text-3xl">
+        <h1 className="font-heading text-4xl leading-[1.05] tracking-tight text-balance sm:text-5xl md:text-6xl">
           {tr("My Organic Home", "मेरो अर्गानिक घर")}
         </h1>
         {/* TODO: account API — the real balance comes from the account. */}

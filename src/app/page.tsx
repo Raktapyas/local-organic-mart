@@ -317,7 +317,7 @@ export default function Home() {
                 <span className="eyebrow">
                   <L en="Cooked to order" ne="अर्डरअनुसार पकाइने" />
                 </span>
-                <h2 className="max-w-lg text-[clamp(2rem,3.4vw,3rem)] leading-[1.02] font-light tracking-[-0.025em] text-ivory text-balance">
+                <h2 className="max-w-lg text-[clamp(2.1rem,3.5vw,3.125rem)] leading-[1.1] font-light tracking-[-0.02em] text-ivory text-balance">
                   <L
                     en="The kitchen at Local Organic"
                     ne="लोकल अर्गानिकको भान्सा"
@@ -480,7 +480,7 @@ export default function Home() {
                 <span className="eyebrow">
                   <L en="Standing order" ne="स्थायी अर्डर" />
                 </span>
-                <h2 className="max-w-xl text-[clamp(1.6rem,2.6vw,2.2rem)] leading-[1.05] font-light tracking-[-0.02em] text-ivory text-balance">
+                <h2 className="max-w-xl text-[clamp(1.7rem,2.7vw,2.3rem)] leading-[1.1] font-light tracking-[-0.015em] text-ivory text-balance">
                   <L
                     en="Milk, vegetables or fruit on repeat."
                     ne="दूध, तरकारी वा फलफूल दोहोरिने अर्डरमा।"

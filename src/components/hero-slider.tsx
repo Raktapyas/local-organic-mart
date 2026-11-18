@@ -218,7 +218,7 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
               </motion.span>
 
               <motion.h1
-                className="max-w-5xl text-[clamp(1.95rem,7.1vw,5.25rem)] leading-[0.95] font-light tracking-[-0.03em] text-ivory text-balance lg:leading-[0.94]"
+                className="max-w-5xl text-[clamp(1.95rem,7.1vw,5.5rem)] leading-[1.02] font-light tracking-[-0.025em] text-ivory text-balance"
                 variants={rise}
               >
                 {before}
@@ -229,7 +229,7 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
                       behind it reads as decoration; the metal itself is the
                       accent and needs nothing else.
                     */}
-                    <span className="font-heading text-gold italic">{word}</span>
+                    <span className="font-heading font-medium text-gold">{word}</span>
                     {after}
                   </>
                 ) : null}

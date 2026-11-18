@@ -160,7 +160,7 @@ export function SiteFooter() {
           with the columns above.
         */}
         <div aria-hidden className="overflow-hidden pb-2">
-          <p className="translate-y-[0.18em] text-center text-[clamp(2rem,7.5vw,6.5rem)] leading-[0.8] font-light tracking-[-0.04em] text-ivory/[0.06] select-none">
+          <p className="translate-y-[0.18em] text-center text-[clamp(2rem,7.5vw,6.5rem)] leading-[0.86] font-light tracking-[-0.02em] text-ivory/[0.06] select-none">
             {siteName}
           </p>
         </div>
