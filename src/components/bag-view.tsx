@@ -51,9 +51,9 @@ function BagRow({ line }: { line: CartLine }) {
         )}
       </Link>
 
-      <div className="flex flex-1 flex-col gap-2">
+      <div className="flex min-w-0 flex-1 flex-col gap-2">
         <div className="flex items-start justify-between gap-3">
-          <span className="flex flex-col gap-0.5">
+          <span className="flex min-w-0 flex-col gap-0.5">
             <Link
               href={
                 line.kind === "product"
@@ -87,11 +87,11 @@ function BagRow({ line }: { line: CartLine }) {
           </ul>
         )}
 
-        <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center justify-between gap-2 sm:gap-3">
           <QuantityStepper
             quantity={line.qty}
             onChange={(qty) => setQty(line.id, qty)}
-            className="h-9 w-28"
+            className="h-9 w-20 sm:w-28"
           />
           <button
             type="button"
@@ -138,7 +138,7 @@ export function BagView() {
 
   return (
     <div className="grid gap-10 lg:grid-cols-[1fr_360px]">
-      <div className="flex flex-col gap-10">
+      <div className="flex min-w-0 flex-col gap-10">
         {GROUPS.map((group) => {
           const groupLines =
             group.kind === "product"
@@ -168,7 +168,7 @@ export function BagView() {
         </button>
       </div>
 
-      <aside className="lg:sticky lg:top-24 lg:self-start">
+      <aside className="min-w-0 lg:sticky lg:top-24 lg:self-start">
         <div className="flex flex-col gap-4 rounded-[2px] border border-border bg-card p-6">
           <div className="flex items-center justify-between text-sm">
             <span className="text-muted-foreground">{t("cart.subtotal")}</span>

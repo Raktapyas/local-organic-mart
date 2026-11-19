@@ -332,14 +332,26 @@ async function ProductBody({
       {/* Tabs */}
       <section className="mx-auto w-full max-w-7xl px-6 pb-16">
         <Tabs defaultValue="description">
-          <TabsList variant="line">
-            <TabsTrigger value="description">
+          {/* The three labels need ~325px at the full size, so below `sm`
+              they drop to the label scale and tighten their padding rather
+              than pushing the page into horizontal scroll. */}
+          <TabsList variant="line" className="gap-0.5 sm:gap-1">
+            <TabsTrigger
+              value="description"
+              className="px-1.5 text-[12px] sm:px-4 sm:text-sm"
+            >
               <L en="Description" ne="विवरण" />
             </TabsTrigger>
-            <TabsTrigger value="traceability">
+            <TabsTrigger
+              value="traceability"
+              className="px-1.5 text-[12px] sm:px-4 sm:text-sm"
+            >
               <L en="Traceability" ne="उत्पत्ति विवरण" />
             </TabsTrigger>
-            <TabsTrigger value="reviews">
+            <TabsTrigger
+              value="reviews"
+              className="px-1.5 text-[12px] sm:px-4 sm:text-sm"
+            >
               <L en="Reviews" ne="समीक्षा" />
               {product.reviews ? ` (${product.reviews.length})` : ""}
             </TabsTrigger>

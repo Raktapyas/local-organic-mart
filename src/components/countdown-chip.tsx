@@ -6,6 +6,8 @@ import { Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLang } from "@/lib/use-lang";
 
+const WEEK_MS = 7 * 86_400_000;
+
 function formatRemaining(ms: number, isNe: boolean) {
   const clamped = Math.max(0, ms);
   const days = Math.floor(clamped / 86_400_000);
@@ -34,17 +36,30 @@ export function CountdownChip({
   className?: string;
 }) {
   const { lang } = useLang();
-  const target = new Date(closesAt).getTime();
   // Time is read inside the effect, never during render: reading the clock
   // while prerendering blocks the static build.
   const [remaining, setRemaining] = useState<number | null>(null);
 
   useEffect(() => {
-    const tick = () => setRemaining(target - Date.now());
+    const base = new Date(closesAt).getTime();
+    if (!Number.isFinite(base)) return;
+
+    const tick = () => {
+      const now = Date.now();
+      // The allocation is weekly, so a past anchor is rolled forward by whole
+      // weeks instead of clamping to zero forever. This keeps the authored
+      // weekday and time and means the chip never needs a data edit.
+      const target =
+        base > now
+          ? base
+          : base + Math.ceil((now - base) / WEEK_MS) * WEEK_MS;
+      setRemaining(target - now);
+    };
+
     tick();
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
-  }, [target]);
+  }, [closesAt]);
 
   return (
     <span

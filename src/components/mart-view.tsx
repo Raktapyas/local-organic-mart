@@ -172,7 +172,7 @@ export function MartView({
               name="q"
               aria-label={tr("Search the mart", "मार्टमा खोज्नुहोस्")}
               placeholder={tr(
-                "Search provisions, farms, or harvest dates",
+                "Search provisions, farms, dates",
                 "सामान, खेत वा बाली उठाएको मिति खोज्नुहोस्",
               )}
               className="h-11 w-full rounded-[2px] border border-input bg-card/70 pl-11 pr-4 text-sm outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-mint focus-visible:ring-3 focus-visible:ring-ring/40"

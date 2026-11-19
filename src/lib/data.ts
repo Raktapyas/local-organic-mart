@@ -1762,7 +1762,11 @@ export const sortOptions = [
 /** Ceiling of the Mart price slider, in NPR. */
 export const priceCeiling = 3000;
 
-/** When the weekly deals allocation closes. Drives the live countdown chip. */
+/**
+ * Anchor for the weekly deals allocation. The countdown chip rolls a past
+ * anchor forward by whole weeks, so this only needs editing if the weekday or
+ * time of the allocation itself changes.
+ */
 export const dealsCloseAt = "2026-10-13T05:00:00+05:45";
 
 // TODO: delivery zones — one flat fee for now, not zone-dependent.

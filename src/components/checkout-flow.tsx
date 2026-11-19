@@ -65,19 +65,24 @@ export function CheckoutFlow() {
 
   return (
     <div className="grid gap-10 lg:grid-cols-[1fr_360px]">
-      <div className="flex flex-col gap-10">
-        {/* Step rail */}
-        <ol className="flex items-center gap-2 border-b border-border pb-5">
+      <div className="flex min-w-0 flex-col gap-10">
+        {/* Step rail. Wraps below `sm` because three numbered labels are
+            wider than a 305px viewport; the connectors only make sense on
+            one line, so they are desktop-only. */}
+        <ol className="flex flex-wrap items-center gap-x-2 gap-y-2.5 border-b border-border pb-5">
           {STEPS.map((step, index) => (
             <li key={step.en} className="flex items-center gap-2">
-              <span className="inline-flex size-6 items-center justify-center rounded-[2px] bg-mint text-[11px] font-semibold text-primary-foreground">
+              <span className="inline-flex size-6 shrink-0 items-center justify-center rounded-[2px] bg-mint text-[11px] font-semibold text-primary-foreground">
                 {index + 1}
               </span>
               <span className="text-sm text-mint">
                 {tr(step.en, step.ne)}
               </span>
               {index < STEPS.length - 1 && (
-                <span aria-hidden className="mx-1 h-px w-6 bg-border" />
+                <span
+                  aria-hidden
+                  className="mx-1 hidden h-px w-6 bg-border sm:block"
+                />
               )}
             </li>
           ))}
@@ -160,7 +165,7 @@ export function CheckoutFlow() {
       </div>
 
       {/* Summary */}
-      <aside className="lg:sticky lg:top-24 lg:self-start">
+      <aside className="min-w-0 lg:sticky lg:top-24 lg:self-start">
         <div className="flex flex-col gap-4 rounded-[2px] border border-border bg-card p-6">
           <h2 className="font-heading text-lg">{tr("Summary", "सारांश")}</h2>
 

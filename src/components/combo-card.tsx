@@ -52,21 +52,21 @@ export function ComboCard({
             key={dish.id}
             className="flex items-baseline justify-between gap-3 text-sm"
           >
-            <span className="text-muted-foreground">
+            <span className="min-w-0 text-muted-foreground">
               {copies[index].name}
               <span className="text-xs text-sage">
                 {" · "}
                 {copies[index].portion}
               </span>
             </span>
-            <span className="text-xs text-muted-foreground line-through">
+            <span className="shrink-0 whitespace-nowrap text-xs text-muted-foreground line-through">
               {money(dish.price)}
             </span>
           </li>
         ))}
       </ul>
 
-      <div className="mt-auto flex items-center justify-between gap-3 border-t border-border pt-4">
+      <div className="mt-auto flex flex-col gap-3 border-t border-border pt-4 sm:flex-row sm:items-center sm:justify-between">
         <p className="flex items-baseline gap-1.5">
           <span className="font-heading text-2xl">{money(comboPrice)}</span>
           <span className="text-xs text-muted-foreground line-through">
@@ -75,7 +75,7 @@ export function ComboCard({
         </p>
 
         <Button
-          className="h-10 rounded-[2px] px-5"
+          className="h-10 w-full rounded-[2px] px-5 sm:w-auto"
           onClick={() => {
             // The saving is taken off the second line so the bag totals match
             // the price advertised here. The combo note rides along as a
