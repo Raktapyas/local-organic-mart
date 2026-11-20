@@ -20,7 +20,7 @@ const ICONS = {
 export function TrustStrip() {
   return (
     <section className="border-y border-foreground/10">
-      <ul className="mx-auto grid w-full max-w-7xl grid-cols-2 gap-y-4 px-6 py-6 lg:grid-cols-4">
+      <ul className="mx-auto flex w-full max-w-7xl flex-wrap items-center justify-center gap-x-8 gap-y-4 px-6 py-6 lg:gap-x-12">
         {TRUST_STRIP.map((item, index) => {
           const Icon = ICONS[item.icon];
           const text = contentNe.trustStrip[index] ?? item.text;
